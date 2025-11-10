@@ -80,16 +80,18 @@ const Swipper_Hero = () => {
                 }
             `}} />
 
-            <div className="relative w-full h-[600px] overflow-hidden"
+            <div className=" relative w-full border h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] xl:h-[600px] overflow-hidden"
                 onMouseEnter={() => setShowControls(true)}
                 onMouseLeave={() => setShowControls(false)} >
                 {/* Slides */}
-                <div className="flex h-full transition-transform duration-500 ease-out" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+                <div className="flex h-full transition-transform duration-500 ease-out"
+                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
                     {herodata.map((slide, idx) => (
                         <div key={idx} className="min-w-full h-full relative" >
-                            <img src={slide.image} alt={slide.text2} className="w-full h-full object-cover" />
+                            <img src={slide.image} alt={slide.text2} className="h-full w-full object-cover" />
                             <div className="absolute inset-0 bg-black/40"></div>
-                            <div className="absolute inset-0 z-10 text-white px-6 sm:px-10 md:px-16 lg:px-20 flex flex-col justify-center max-w-full sm:max-w-xl md:max-w-2xl">
+                            <div className=" absolute inset-0 z-10 text-white px-6 sm:px-10 
+                            md:px-16 lg:px-20 flex flex-col justify-center max-w-full sm:max-w-xl md:max-w-2xl">
                                 <p className="text-xs sm:text-sm mb-3 sm:mb-4 hero-fade-in">{slide.text1}</p>
                                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-tight hero-fade-in-up">{slide.text2}</h1>
                                 <p className="text-sm sm:text-base lg:text-lg leading-relaxed hero-fade-in-up-delay">{slide.text3}</p>
@@ -120,13 +122,13 @@ const Swipper_Hero = () => {
                 </div>
 
             </div>
-            <div className='flex justify-center gap-10 text-[15px]  py-4'>
-                <p className='flex items-center gap-1'> <CiBadgeDollar size={20} />Installments Without Card</p>
-                <p className='flex items-center gap-1'><FaRegWindowRestore />Free pickup in stores</p>
-                <p className='flex items-center gap-1'><TbTruckDelivery />Delivery form $20</p>
-                <p className='flex items-center gap-1'><GoIssueTrackedBy />Track your order</p>
-                <p className='flex items-center gap-1'><SlLike />100% Cusmoter satisfaction rate</p>
-            </div>
+            <div className='flex overflow-auto xl:justify-center gap-10 text-[15px]  py-4'>
+                <div className='flex items-center gap-1'> <CiBadgeDollar size={22} color='red' /><p className='w-[170]'>Installments Without Card</p></div>
+                <div className='flex items-center gap-1.5'><FaRegWindowRestore size={17} color='red'/><p className='w-[140]'>Free pickup in stores</p></div>
+                <div className='flex items-center gap-1.5'><TbTruckDelivery size={21} color='red' /><p className='w-[120] '>Delivery form $20</p></div>
+                <div className='flex items-center gap-1.5'><GoIssueTrackedBy size={20} color='red'/><p className='w-[110]'>Track your order</p></div>
+                <div className='flex items-center gap-1.5'><SlLike size={18} color='red' /><p className='w-[230]'>100% Cusmoter satisfaction rate</p></div>
+            </div >
         </>
     );
 };

@@ -89,7 +89,7 @@ const MidNavbar = () => {
             </div>
 
             {/* for small device */}
-            <div className="xl:hidden flex justify-between items-center container  mx-auto px-10 py-2 sm:py-3">
+            <div className="xl:hidden flex justify-between items-center container  mx-auto px-5 py-2 sm:py-3">
                 <RxHamburgerMenu onClick={handleModal} className="cursor-pointer" size={26} />
                 <div><img src="/smallogo.png" className="h-10 sm:h-14 " alt="" /></div>
                 <div className="relative mr-1 cursor-pointer">
