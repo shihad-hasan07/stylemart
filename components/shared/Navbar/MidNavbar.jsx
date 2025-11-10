@@ -105,7 +105,7 @@ const MidNavbar = () => {
                     <p className="text-xs tracking-wider text-[#b9c5e1] font-normal">MAIN MENU</p>
                     <div onClick={handleModal} className="text-[15px] pl-1.5 mt-3 flex flex-col font-[450] gap-4.5 tracking-wide">
                         <Link href='/'>Home</Link>
-                        <Link href='/about-us'>Shop</Link>
+                        <Link href='/shop'>Shop</Link>
                         <Link href='/faq'>Women</Link>
                         <Link href='/'>Men</Link>
                         <Link href='/about-us'>Outerwear</Link>
