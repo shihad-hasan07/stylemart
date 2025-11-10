@@ -77,7 +77,15 @@ const MidNavbar = () => {
                         <p className="text-sm font-semibold">৳100</p>
                     </div>
                 </div>
-
+            </div>
+            <div className="hidden xl:flex gap-8 mb-2 mt-2 text-[16px] font-[450] container mx-auto px-20 ">
+                <Link href='/'><p>Home</p></Link>
+                <Link href='/'><p>Shop</p></Link>
+                <Link href='/'><p>Women</p></Link>
+                <Link href='/'><p>Men</p></Link>
+                <Link href='/'><p>Outwear</p></Link>
+                <Link href='/'><p>Blog</p></Link>
+                <Link href='/'><p>Best Discount</p></Link>
             </div>
 
             {/* for small device */}
