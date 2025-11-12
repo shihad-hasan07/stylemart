@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Faq_page = () => {
+const page = () => {
     return (
         <div>
-            Frequently asked question page
+            frequntly asked question
         </div>
     );
 };
 
-export default Faq_page;
+export default page;

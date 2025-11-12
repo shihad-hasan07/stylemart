@@ -80,7 +80,7 @@ const Swipper_Hero = () => {
                 }
             `}} />
 
-            <div className=" relative w-full border h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] xl:h-[600px] overflow-hidden"
+            <div className="relative w-full border h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] xl:h-[600px] overflow-hidden"
                 onMouseEnter={() => setShowControls(true)}
                 onMouseLeave={() => setShowControls(false)} >
                 {/* Slides */}
@@ -90,8 +90,7 @@ const Swipper_Hero = () => {
                         <div key={idx} className="min-w-full h-full relative" >
                             <img src={slide.image} alt={slide.text2} className="h-full w-full object-cover" />
                             <div className="absolute inset-0 bg-black/40"></div>
-                            <div className=" absolute inset-0 z-10 text-white px-6 sm:px-10 
-                            md:px-16 lg:px-20 flex flex-col justify-center max-w-full sm:max-w-xl md:max-w-2xl">
+                            <div className="absolute inset-0 z-10 text-white px-6 sm:px-10 md:px-16 lg:px-20 flex flex-col justify-center max-w-full sm:max-w-xl md:max-w-2xl">
                                 <p className="text-xs sm:text-sm mb-3 sm:mb-4 hero-fade-in">{slide.text1}</p>
                                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 leading-tight hero-fade-in-up">{slide.text2}</h1>
                                 <p className="text-sm sm:text-base lg:text-lg leading-relaxed hero-fade-in-up-delay">{slide.text3}</p>

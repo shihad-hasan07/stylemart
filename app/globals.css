@@ -8,7 +8,7 @@
 @theme inline {
   /* --color-background: var(--background);
   --color-foreground: var(--foreground); */
-  
+
   --font-jost: var(--font-jost), sans-serif;
   --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
 }
@@ -29,6 +29,26 @@ body {
 
 @layer utilities {
   .scrollbar-thin {
-    scrollbar-width: thin; 
+    scrollbar-width: thin;
   }
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

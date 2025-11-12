@@ -1,0 +1,251 @@
+{
+    "products": [
+        {
+            "id": "MEN-001",
+            "sku": "URB-EDG-DJ-LB-M",
+            "name": "Classic Denim Jacket",
+            "slug": "classic-denim-jacket",
+            "brand": "Urban Edge",
+            "description": "A timeless denim jacket with a modern fit. Features button closure, chest pockets, and durable cotton construction perfect for layering.",
+            "price": 79.99,
+            "sale": {
+                "active": true,
+                "price": 59.99,
+                "ends": "2025-11-25T23:59:59Z"
+            },
+            "images": ["https://res.cloudinary.com/dd12wnlx0/image/upload/v1762929273/otqtq3uiytns2lvayuuq.jpg"],
+            "categories": [
+                "Men",
+                "Outerwear"
+            ],
+            "tags": [
+                "denim",
+                "jacket",
+                "casual",
+                "layering"
+            ],
+            "rating": {
+                "average": 2,
+                "count": 142
+            },
+            "stock": {
+                "inStock": true,
+                "quantity": 28
+            },
+            "variations": [
+                {
+                    "attribute": "Color",
+                    "options": [
+                        "Light Blue",
+                        "Dark Blue",
+                        "Black"
+                    ]
+                },
+                {
+                    "attribute": "Size",
+                    "options": [
+                        "S",
+                        "M",
+                        "L",
+                        "XL",
+                        "XXL"
+                    ]
+                }
+            ],
+            "cartCount": 67,
+            "wishlistCount": 34,
+            "createdAt": "2025-10-15T10:30:00Z",
+            "updatedAt": "2025-11-09T14:20:00Z"
+        },
+        {
+            "id": "MEN-002",
+            "sku": "STY-CRF-CP-KH-32",
+            "name": "Slim Fit Chino Pants",
+            "slug": "slim-fit-chino-pants",
+            "brand": "StyleCraft",
+            "description": "Versatile chino pants with a modern slim fit. Made from comfortable stretch cotton blend, perfect for both office and casual wear.",
+            "price": 49.99,
+            "sale": {
+                "active": false,
+                "price": 0,
+                "ends": ""
+            },
+            "images": ["https://res.cloudinary.com/dd12wnlx0/image/upload/v1762929539/bvbrxvk9dmaxpuihzvfx.jpg"],
+            "categories": [
+                "Men",
+                "Clothing"
+            ],
+            "tags": [
+                "chino",
+                "pants",
+                "slim-fit",
+                "office-wear"
+            ],
+            "rating": {
+                "average": 4.4,
+                "count": 89
+            },
+            "stock": {
+                "inStock": true,
+                "quantity": 52
+            },
+            "variations": [
+                {
+                    "attribute": "Color",
+                    "options": [
+                        "Khaki",
+                        "Navy",
+                        "Gray",
+                        "Black"
+                    ]
+                },
+                {
+                    "attribute": "Size",
+                    "options": [
+                        "30",
+                        "32",
+                        "34",
+                        "36",
+                        "38"
+                    ]
+                }
+            ],
+            "cartCount": 45,
+            "wishlistCount": 18,
+            "createdAt": "2025-10-20T08:15:00Z",
+            "updatedAt": "2025-11-08T16:45:00Z"
+        },
+        {
+            "id": "MEN-003",
+            "sku": "ACT-FIT-HD-BLK-L",
+            "name": "Performance Athletic Hoodie",
+            "slug": "performance-athletic-hoodie",
+            "brand": "ActiveFit",
+            "description": "Moisture-wicking athletic hoodie with breathable fabric. Features kangaroo pocket, adjustable drawstring hood, and ribbed cuffs.",
+            "price": 64.99,
+            "sale": {
+                "active": true,
+                "price": 49.99,
+                "ends": "2025-12-01T23:59:59Z"
+            },
+            "images": ["https://res.cloudinary.com/dd12wnlx0/image/upload/v1762929629/au2bichnec7yw8sqqvza.jpg"],
+            "categories": [
+                "Men",
+                "Clothing"
+            ],
+            "tags": [
+                "hoodie",
+                "athletic",
+                "sportswear",
+                "performance"
+            ],
+            "rating": {
+                "average": 4.6,
+                "count": 127
+            },
+            "stock": {
+                "inStock": true,
+                "quantity": 41
+            },
+            "variations": [
+                {
+                    "attribute": "Color",
+                    "options": [
+                        "Black",
+                        "Gray",
+                        "Navy",
+                        "Olive"
+                    ]
+                },
+                {
+                    "attribute": "Size",
+                    "options": [
+                        "S",
+                        "M",
+                        "L",
+                        "XL",
+                        "XXL"
+                    ]
+                }
+            ],
+            "cartCount": 83,
+            "wishlistCount": 42,
+            "createdAt": "2025-10-25T11:00:00Z",
+            "updatedAt": "2025-11-09T09:30:00Z"
+        },
+        {
+            "id": "WOMEN-001",
+            "sku": "BEL-VST-MD-PNK-M",
+            "name": "Floral Maxi Dress",
+            "slug": "floral-maxi-dress",
+            "brand": "Bella Vista",
+            "description": "Elegant floral print maxi dress with flowing silhouette. Features adjustable straps, side pockets, and soft breathable fabric perfect for summer.",
+            "price": 89.99,
+            "sale": {
+                "active": true,
+                "price": 69.99,
+                "ends": "2025-11-20T23:59:59Z"
+            },
+            "images": ["https://res.cloudinary.com/dd12wnlx0/image/upload/v1762929689/vxzd10a7vaqrthmsvdkl.jpg"],
+            "categories": [
+                "Women",
+                "Clothing"
+            ],
+            "tags": [
+                "dress",
+                "maxi",
+                "floral",
+                "summer",
+                "elegant"
+            ],
+            "rating": {
+                "average": 4.8,
+                "count": 203
+            },
+            "stock": {
+                "inStock": true,
+                "quantity": 19
+            },
+            "variations": [
+                {
+                    "attribute": "Color",
+                    "options": [
+                        "Pink Floral",
+                        "Blue Floral",
+                        "Yellow Floral"
+                    ]
+                },
+                {
+                    "attribute": "Size",
+                    "options": [
+                        "XS",
+                        "S",
+                        "M",
+                        "L",
+                        "XL"
+                    ]
+                }
+            ],
+            "cartCount": 96,
+            "wishlistCount": 58,
+            "createdAt": "2025-10-10T13:45:00Z",
+            "updatedAt": "2025-11-09T17:20:00Z"
+        }
+        
+    ],
+    "comments": [
+        {
+            "id": "1",
+            "text": "a comment about post 1",
+            "postId": "1"
+        },
+        {
+            "id": "2",
+            "text": "another comment about post 1",
+            "postId": "1"
+        }
+    ],
+    "profile": {
+        "name": "typicode"
+    }
+}
