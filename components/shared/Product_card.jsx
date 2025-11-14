@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { IoIosHeartEmpty } from "react-icons/io";
 import Link from 'next/link';
 
-const Product_card = ({ product, shopPage }) => {
+const Product_card = ({ product, shopPage, home }) => {
     const { _id, name, images, rating, price, sale, stock, slug } = product;
     return (
-        <div className='pb-10 group overflow-hidden'>
+        <div className={`${home ? 'pb-10' : 'pb-1'} group overflow-hidden`}>
             {/* image */}
             <Link href={`/shop/${_id}/${slug}`}>
                 <div className={`relative ${shopPage ? 'h-[400px] sm:h-[360px] lg:h-[370px]' : 'h-[400px] sm:h-[360px] lg:h-[400px]'}  bg-[#faf7fa]`}>
@@ -39,7 +39,7 @@ const Product_card = ({ product, shopPage }) => {
                 <Star_Rating rating={rating.average}></Star_Rating>
                 <span className='text-xs font-semibold'>({rating.count})</span>
             </div>
-            <Link href={`/shop/${slug}`}><h2 className='my-2 hover:underline text-left font-[450] text-[15px]'>{name}</h2></Link>
+            <Link href={`/shop/${_id}/${slug}`}><h2 className='my-0.5 hover:underline text-left font-[450] text-[15px]'>{name}</h2></Link>
             <div className='text-left'>
                 {
                     sale?.active

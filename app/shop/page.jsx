@@ -83,7 +83,7 @@ const shop_page = () => {
 
                 <div className='grid min-[500px]:grid-cols-2 min-[800px]:grid-cols-3 2xl:grid-cols-4  grow pl-0 xl:pl-6 gap-4'>
                     {
-                        filteredProducts?.map((product, idx) => <Product_card key={idx} product={product} shopPage={true}></Product_card>)
+                        filteredProducts?.map((product, idx) => <Product_card home={false} key={idx} product={product} shopPage={true}></Product_card>)
                     }
                 </div>
             </div>
