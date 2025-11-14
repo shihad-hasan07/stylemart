@@ -80,7 +80,7 @@ const MidNavbar = () => {
             </div>
             <div className="hidden xl:flex gap-8 mb-2 mt-2 text-[16px] font-[450] container mx-auto px-20 ">
                 <Link href='/'><p>Home</p></Link>
-                <Link href='/'><p>Shop</p></Link>
+                <Link href='/shop'><p>Shop</p></Link>
                 <Link href='/'><p>Women</p></Link>
                 <Link href='/'><p>Men</p></Link>
                 <Link href='/'><p>Outwear</p></Link>
@@ -89,7 +89,7 @@ const MidNavbar = () => {
             </div>
 
             {/* for small device */}
-            <div className="xl:hidden flex justify-between items-center container  mx-auto px-5 py-2 sm:py-3">
+            <div className="xl:hidden flex justify-between items-center container  mx-auto px-5 pt-2 sm:pt-3">
                 <RxHamburgerMenu onClick={handleModal} className="cursor-pointer" size={26} />
                 <div><img src="/smallogo.png" className="h-10 sm:h-14 " alt="" /></div>
                 <div className="relative mr-1 cursor-pointer">
@@ -177,6 +177,7 @@ const MidNavbar = () => {
             {/* Overlay to handle closeModal */}
             {isOpen && (<div className={`fixed inset-0 bg-black z-40 transition-all duration-150 opacity-30`} onClick={() => setisOpen(false)}></div>)}
 
+            <hr className="opacity-10" />
         </div>
     );
 };
