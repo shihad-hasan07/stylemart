@@ -35,18 +35,7 @@ const slice_addtoCart = createSlice({
                 existingItem.quantity += quantity;
             } else {
                 // Add new item to cart
-                state.cartProducts.push({
-                    _id,
-                    name,
-                    slug,
-                    price,
-                    sale,
-                    image,
-                    selectedColor,
-                    selectedSize,
-                    quantity,
-                    stock
-                });
+                state.cartProducts.push({ _id, name, slug, price, sale, image, selectedColor, selectedSize, quantity, stock });
             }
 
             // Update total_items and total_Price
@@ -59,8 +48,6 @@ const slice_addtoCart = createSlice({
 
         removeFromCart: (state, action) => {
             const { _id, selectedColor, selectedSize } = action.payload;
-
-            // BUG FIX: selectedColo chilo, selectedSize hobe
             state.cartProducts = state.cartProducts.filter(
                 item => !(item._id === _id &&
                     item.selectedColor === selectedColor &&
@@ -71,7 +58,6 @@ const slice_addtoCart = createSlice({
             state.totalItems = state.cartProducts.reduce((sum, item) => sum + item.quantity, 0);
             state.totalPrice = state.cartProducts.reduce((sum, item) => {
                 const itemPrice = item.sale?.active ? item.sale.price : item.price;
-                // BUG FIX: totalItems chilo, item.quantity hobe
                 return sum + (itemPrice * item.quantity);
             }, 0);
         },
