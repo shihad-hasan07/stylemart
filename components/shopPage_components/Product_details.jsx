@@ -11,7 +11,7 @@ import Promises_And_additional_info from "../ProductDetails_components/Promises_
 import Select_by_variations from "../ProductDetails_components/Select_by_variations";
 import Descrip_info_reviews from "../ProductDetails_components/Descrip_info_reviews";
 import Related_Prducts from "../ProductDetails_components/Related_Prducts";
- 
+
 const Product_details = ({ product }) => {
     const { _id, sku, name, slug, brand, description, price, sale, images, categories, sortDescription, tags, rating, stock, variations, cartCount, wishlistCount, createdAt, updatedAt } = product;
 
@@ -57,7 +57,7 @@ const Product_details = ({ product }) => {
                 <p className="bg-[#ebe0dff1] mt-6 w-fit font-medium px-3 rounded-xs py-1 text-red-600 text-sm tracking-wide">{stock?.inStock ? 'In Stock' : 'Out of stock'}</p>
 
                 {/* cart - wishlist */}
-                <AddTo_Cart selectedColor={selectedColor} selectedSize={selectedSize} />
+                <AddTo_Cart info={{ selectedColor, selectedSize, _id, name, slug, price, sale, images, stock }} />
                 <AddTo_Wishlist wishlistCount={wishlistCount} />
 
                 <hr className="opacity-15 my-6" />

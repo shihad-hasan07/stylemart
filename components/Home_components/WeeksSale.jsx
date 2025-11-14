@@ -58,7 +58,7 @@ const WeeksSale = () => {
                         }
                     </div>
                 </div>
-                <Link href={'/contact'} className='flex items-center gap-2 font-[500] hover:text-red-600'> <p className='hidden sm:flex'>View All</p><IoIosArrowForward className='sm:hidden bg-gray-100 rounded-full w-[25] h-[25] p-1' /> <FaArrowRightLong className='hidden sm:flex' /> </Link>
+                <Link href={'/shop'} className='flex items-center gap-2 font-[500] hover:text-red-600'> <p className='hidden sm:flex'>View All</p><IoIosArrowForward className='sm:hidden bg-gray-100 rounded-full w-[25] h-[25] p-1' /> <FaArrowRightLong className='hidden sm:flex' /> </Link>
             </div>
 
             {/* error and loading based content */}
@@ -99,7 +99,7 @@ const WeeksSale = () => {
                 className="mySwiper"
             >
                 {
-                    filteredData?.map((product, idx) => <SwiperSlide> <Product_card key={idx} product={product}></Product_card></SwiperSlide>)
+                    filteredData?.map((product, idx) => <SwiperSlide> <Product_card home={true} key={idx} product={product}></Product_card></SwiperSlide>)
                 }
             </Swiper>
 
