@@ -16,8 +16,9 @@ const MainImage = ({ images, sale, price }) => {
     };
     return (
         <div className="">
+            {/* image zoom on hover */}
             <div ref={imageRef}
-                className="relative h-[700px] overflow-hidden cursor-crosshair"
+                className="relative h-[500px] sm:h-[550px] md:h-[600px] lg:h-[700px] overflow-hidden cursor-crosshair"
                 onMouseMove={handleMouseMove} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
             >
                 <Image placeholder="blur" loading="lazy"
@@ -39,11 +40,13 @@ const MainImage = ({ images, sale, price }) => {
                         : ''
                 }
             </div>
+
+            {/* main image */}
             <div className="py-3 flex flex-wrap gap-1.5">
                 {
                     images?.map((image, idx) => (
                         <div key={idx} className={`cursor-pointer p-1.5 border ${idx == selectedImage ? 'border-black' : ' border-[#ecdfdf] '}`}>
-                            <div className={`relative w-[78px] h-[78px]`}>
+                            <div className={`relative w-[65px] h-[65px] md:w-[78px] md:h-[78px]`}>
                                 <Image placeholder="blur" loading="lazy" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
                                     src={image} alt={name} fill
                                     className='object-cover bg-[#e8e8e8]'
