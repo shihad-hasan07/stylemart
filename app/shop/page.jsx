@@ -79,9 +79,9 @@ const shop_page = () => {
             <hr className="opacity-10" />
 
             <div className='my-4 flex'>
-                <div className='w-[280px] h-full border-r border-gray-200 p-5'>Filter by color</div>
+                <div className='hidden xl:flex w-[280px] h-full border-r border-gray-200 p-5'>Filter by color</div>
 
-                <div className='grid grid-cols-2 lg:grid-cols-4 flex-grow pl-6 gap-4'>
+                <div className='grid min-[500px]:grid-cols-2 min-[800px]:grid-cols-3 2xl:grid-cols-4  grow pl-0 xl:pl-6 gap-4'>
                     {
                         filteredProducts?.map((product, idx) => <Product_card key={idx} product={product} shopPage={true}></Product_card>)
                     }

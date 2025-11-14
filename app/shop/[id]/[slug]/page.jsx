@@ -1,4 +1,5 @@
 'use client'
+import Product_Details_loading from '@/components/loading_components/Product_Details_loading';
 import Product_details from '@/components/shopPage_components/Product_details';
 import { useGetSingleProductQuery } from '@/redux/features/All_Products/_allProduct_api';
 import Link from 'next/link';
@@ -22,9 +23,8 @@ const page = () => {
             </div>
             {
                 isLoading
-                    ? <div className='text-4xl my-4 font-semibold'>Loading....</div>
-                    :
-                    <Product_details product={product}></Product_details>
+                    ? <Product_Details_loading />
+                    : <Product_details product={product}></Product_details>
             }
 
         </div>

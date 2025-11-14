@@ -11,7 +11,7 @@ import Promises_And_additional_info from "../ProductDetails_components/Promises_
 import Select_by_variations from "../ProductDetails_components/Select_by_variations";
 import Descrip_info_reviews from "../ProductDetails_components/Descrip_info_reviews";
 import Related_Prducts from "../ProductDetails_components/Related_Prducts";
-
+ 
 const Product_details = ({ product }) => {
     const { _id, sku, name, slug, brand, description, price, sale, images, categories, sortDescription, tags, rating, stock, variations, cartCount, wishlistCount, createdAt, updatedAt } = product;
 
@@ -73,7 +73,7 @@ const Product_details = ({ product }) => {
 
             {/* Show  max 4 related to the products */}
             <div className="md:col-span-2">
-                <Related_Prducts />
+                <Related_Prducts info={{ _id, categories, tags }} />
             </div>
         </div >
     );
