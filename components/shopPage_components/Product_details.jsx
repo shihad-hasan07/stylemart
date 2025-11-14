@@ -27,7 +27,7 @@ const Product_details = ({ product }) => {
 
 
     return (
-        <div className="grid md:grid-cols-2 gap-10 my-6">
+        <div className="grid md:grid-cols-2 gap-x-10 gap-y-2 my-6">
             <MainImage images={images} sale={sale} price={price}></MainImage>
 
             {/*  text part */}
@@ -67,12 +67,12 @@ const Product_details = ({ product }) => {
             </div>
 
             {/* Decription - AdditionalInfo - Review */}
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 mt-7 md:mt-5">
                 <Descrip_info_reviews Info={{ _id, description, variations, colorVariation }} />
             </div>
 
             {/* Show  max 4 related to the products */}
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 mt-2.5">
                 <Related_Prducts info={{ _id, categories, tags }} />
             </div>
         </div >

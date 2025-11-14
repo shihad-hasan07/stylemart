@@ -18,7 +18,7 @@ const MainImage = ({ images, sale, price }) => {
         <div className="">
             {/* image zoom on hover */}
             <div ref={imageRef}
-                className="relative h-[500px] sm:h-[550px] md:h-[600px] lg:h-[700px] overflow-hidden cursor-crosshair"
+                className="relative h-[480px] sm:h-[540px] md:h-[590px] lg:h-[630px] xl:h-[700px] overflow-hidden cursor-crosshair"
                 onMouseMove={handleMouseMove} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
             >
                 <Image placeholder="blur" loading="lazy"

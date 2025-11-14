@@ -22,7 +22,7 @@ const Descrip_info_reviews = ({ Info }) => {
                 }
             </div>
             <hr className='opacity-15 mt-1.5 mb-2.5' />
-            <div className='pt-2'>
+            <div className='pt-0.5'>
                 {
                     isActive === 'description' &&
                     <div>
