@@ -6,20 +6,12 @@ import { User, Mail, Calendar, Shield, Heart, ShoppingCart, Package, Edit, LogOu
 const UserProfile_page = () => {
     const { user, loading } = useContext(allContext);
 
-    // Example data - Replace with your actual data
+    // Example data -
     const userStats = {
         wishlistCount: 12,
         cartCount: 3,
         orderCount: 8
     };
-
-    if (loading) {
-        return (
-            <div className="min-h-screen  flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-            </div>
-        );
-    }
 
     if (!user) {
         return (
@@ -52,7 +44,7 @@ const UserProfile_page = () => {
                                             className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white shadow-lg object-cover"
                                         />
                                     ) : (
-                                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white shadow-lg bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
                                             <User className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
                                         </div>
                                     )}
