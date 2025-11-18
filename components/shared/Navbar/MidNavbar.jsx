@@ -1,15 +1,16 @@
 'use client'
 import { Heart, ShoppingCart, UserRound } from "lucide-react";
-import { useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoCloseSharp } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import Link from "next/link";
 import { FaPaperPlane } from "react-icons/fa";
+import { allContext } from "@/Auth/Authprovider";
 
 const MidNavbar = () => {
     const [isOpen, setisOpen] = useState(false)
-
+    const { user, loading, logOut } = useContext(allContext)
     const handleModal = () => {
         setTimeout(() => {
             setisOpen(!isOpen)
@@ -27,7 +28,6 @@ const MidNavbar = () => {
             document.body.style.overflow = 'unset';
         };
     }, [isOpen]);
-
     return (
         <div>
 
@@ -46,17 +46,43 @@ const MidNavbar = () => {
                     </div>
                 </div>
                 <div className="w-full ml-4">
-                    <input type="text" name="" className="p-3 w-full bg-[#eceef0]" placeholder="Serch for products..." />
+                    <input type="text" name="" className="p-3 w-full bg-[#eceef0]" placeholder="Search for products..." />
                 </div>
                 <div className="flex items-center gap-2">
 
                     {/* user */}
-                    <div className="flex items-center ml-6 gap-1.5">
-                        <UserRound size={28} strokeWidth={2} />
-                        <div>
-                            <p className="text-xs">Sign in</p>
-                            <p className="text-sm font-semibold">Account</p>
-                        </div>
+                    <div className=" ml-6">
+                        {
+                            loading ?
+                                <div className="flex flex-row gap-2">
+                                    <div className="animate-pulse bg-gray-300 w-9 h-9 rounded-full"></div>
+                                    <div className="flex flex-col gap-2.5">
+                                        <div className="animate-pulse bg-gray-300 w-18 h-3.5 rounded-full"></div>
+                                        <div className="animate-pulse bg-gray-300 w-26 h-3.5 rounded-full"></div>
+                                    </div>
+                                </div>
+                                :
+                                <div className="flex items-center gap-1.5">
+                                    <UserRound size={28} strokeWidth={2} />
+                                    <div>
+                                        <Link href={`${user ? '/my-account' : '/login'}`}><p className="text-sm font-semibold">Account</p></Link>
+                                        {
+                                            user == (undefined || null) ?
+                                                <div className="flex text-sm gap-1 font-medium">
+                                                    <Link href='/register'><p className="hover:text-red-600">Register</p></Link>
+                                                    or
+                                                    <Link href='/login'><p className="hover:text-red-600">Login</p></Link>
+                                                </div>
+                                                : <div className="flex text-sm gap-1 font-medium">
+                                                    <Link href='/my-account'><p className="hover:text-red-600">Profile</p></Link>
+                                                    or
+                                                    <p onClick={() => logOut()} className="cursor-pointer hover:text-red-600">Logout</p>
+                                                </div>
+
+                                        }
+                                    </div>
+                                </div>
+                        }
                     </div>
 
                     {/* wishlist */}
@@ -178,7 +204,7 @@ const MidNavbar = () => {
             {isOpen && (<div className={`fixed inset-0 bg-black z-40 transition-all duration-150 opacity-30`} onClick={() => setisOpen(false)}></div>)}
 
             <hr className="opacity-10" />
-        </div>
+        </div >
     );
 };
 

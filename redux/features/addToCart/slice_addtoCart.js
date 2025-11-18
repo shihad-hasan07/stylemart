@@ -130,7 +130,7 @@ const slice_addtoCart = createSlice({
             state.totalItems = 0;
             state.totalPrice = 0;
         }
-    }
+    } 
 });
 
 export const {

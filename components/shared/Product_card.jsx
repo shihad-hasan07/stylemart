@@ -12,7 +12,7 @@ const Product_card = ({ product, shopPage, home }) => {
             {/* image */}
             <Link href={`/shop/${_id}/${slug}`}>
                 <div className={`relative ${shopPage ? 'h-[400px] sm:h-[360px] lg:h-[370px]' : 'h-[400px] sm:h-[360px] lg:h-[400px]'}  bg-[#faf7fa]`}>
-                    <Image placeholder="blur" loading="lazy" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
+                    <Image placeholder="blur" priority={home == true ? true : false} blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
                         src={images[0]} fill alt={name}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 25vw, 25vw"
                         className='rounded-xs object-cover'

@@ -4,6 +4,7 @@ import TopNavbar from '@/components/shared/Navbar/TopNavbar';
 import MidNavbar from '@/components/shared/Navbar/MidNavbar';
 import Footer from '@/components/shared/Footer';
 import ReduxProvider from '@/redux/ReduxProvider';
+import Authprovider from '@/Auth/Authprovider';
 
 const jost = Jost({
   subsets: ['latin'],
@@ -20,17 +21,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={jost.variable}>
-
-        <ReduxProvider>
-
-          <TopNavbar /><MidNavbar />
-          <div className='min-h-[305px]'>
-            {children}
-          </div>
-          <Footer />
-
-        </ReduxProvider>
-
+        <Authprovider>
+          <ReduxProvider>
+            <TopNavbar /><MidNavbar />
+            <div className='min-h-[305px]'>
+              {children}
+            </div>
+            <Footer />
+          </ReduxProvider>
+        </Authprovider>
       </body>
     </html>
   );
