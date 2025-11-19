@@ -20,10 +20,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={jost.variable}>
+      <body className={` ${jost.variable}`}>
         <Authprovider>
           <ReduxProvider>
-            <TopNavbar /><MidNavbar />
+            <TopNavbar />
+            <MidNavbar />
             <div className='min-h-[305px]'>
               {children}
             </div>
