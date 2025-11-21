@@ -52,15 +52,15 @@ const Login_page = () => {
     }
 
     return (
-        <div className='container mx-auto px-5 xl:px-20 mt-2'>
+        <div className='container mx-auto px-0 xl:px-20 mt-2'>
             {/* navigation */}
-            <div className='flex items-center gap-1 text-[14px] max-w-3/4'>
+            <div className='flex items-center px-5 xl:px-0 gap-1 text-[14px] max-w-3/4'>
                 <Link href='/'><p>Home</p></Link>
                 <IoIosArrowForward />
                 <Link href='/login' className='text-gray-400'><p>Login</p></Link>
             </div>
 
-            <div className="container mx-auto px-10 lg:px-96 py-5">
+            <div className="container mx-auto px-12 sm:px-20 md:px-24 lg:px-72 xl:px-96 py-5">
 
                 <h2 className='text-center font-semibold text-2xl my-4'>Account Login</h2>
                 <form onSubmit={handleSubmit}>
@@ -101,11 +101,11 @@ const Login_page = () => {
                 </div>
                 <div className='flex gap-5'>
                     <div onClick={handleGoogleLogin} className='cursor-pointer bg-[#4285f4] w-full py-3 gap-2.5 flex items-center justify-center'>
-                        <ImGoogle2 fill='white' size={25} />
+                        <ImGoogle2 fill='white' size={22} />
                         <p className='text-white text-xl font-medium'>Google</p>
                     </div>
                     <div className='bg-[#3b5998] w-full py-3 flex gap-2.5 items-center justify-center'>
-                        <FaFacebookSquare fill='white' size={25} />
+                        <FaFacebookSquare fill='white' size={22} />
                         <p className='text-white text-xl font-medium'>Facebook</p>
                     </div>
                 </div>

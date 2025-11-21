@@ -68,7 +68,7 @@ const MidNavbar = () => {
                                                     {user?.displayName?.slice(0, 15)}
                                                     {user?.displayName.length > 14 && '...'}
                                                 </span>
-                                                    : 'accuont'
+                                                    : 'Account'
                                             }
                                             {/* <span>acocunt </span> */}
                                         </p></Link>
