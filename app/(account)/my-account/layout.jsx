@@ -5,14 +5,13 @@ import { useContext, useState } from "react";
 import { VscAccount } from "react-icons/vsc";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { FiLogOut, FiShoppingBag } from "react-icons/fi";
-import { usePathname } from "next/navigation";
+import { RxCross1, RxHamburgerMenu } from "react-icons/rx";
 
-export default function accountLayout({ children }) {
-    const { user, logOut } = useContext(allContext)
+export default function Layout({ children }) {
+    const { user, loading, logOut } = useContext(allContext)
     const [isactive, setIsactive] = useState('')
-
-    const pathname = usePathname();
-    console.log(pathname);
+    
+    const [menu, setMenu] = useState(true)
 
     return (
         <div className='container mx-auto px-5 xl:px-20'>
@@ -20,21 +19,34 @@ export default function accountLayout({ children }) {
 
             <div className="flex flex-col lg:flex-row my-5 gap-0">
                 <div className="w-full lg:w-[250px]">
+
                     {/* user info */}
-                    <Link href='/my-account' onClick={()=>setIsactive('')}>
-                        <div className='flex gap-4 items-center'>
-                            <div className='w-[50px] h-[50px]  rounded-full flex items-center justify-center'>
-                                <img src={`${user ? user?.photoURL : '/userNull.jpg'}`} className='w-full h-full object-cover rounded-full ' alt="profile" />
+                    <div className="flex gap-1.5 justify-between items-center">
+                        <Link href='/my-account' onClick={() => setIsactive('')}>
+                            <div className='flex gap-4 items-center'>
+                                <div className='w-[50px] h-[50px]  rounded-full flex items-center justify-center'>
+                                    <img src={`${user ? user?.photoURL : '/userNull.jpg'}`} className='w-full h-full object-cover rounded-full ' alt="profile" />
+                                </div>
+                                <div>
+                                    <p className='text-[13px] text-gray-400'>Welcome back,</p>
+                                    <p className='text-[18px] font-medium'>{user?.displayName}</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className='text-[13px] text-gray-400'>Welcome back,</p>
-                                <p className='text-[18px] font-medium'>{user?.displayName}</p>
-                            </div>
+                        </Link>
+                        <div className="flex lg:hidden" onClick={() => setMenu(!menu)} >
+                            {
+                                menu ?
+                                    <RxCross1 size={26} />
+                                    :
+                                    <RxHamburgerMenu size={26} />
+                            }
                         </div>
-                    </Link>
+                    </div>
+
 
                     {/* navigation sidebar */}
-                    <div className="flex flex-col mt-4">
+                    <div className={` transition-all duration-300 overflow-hidden
+                        ${menu ? "opacity-100 max-h-96 translate-y-3" : "opacity-0 max-h-0 -translate-y-1"}`}>
 
                         {/* update profile */}
                         <Link onClick={() => setIsactive('/my-account/update-profile')} href='/my-account/update-profile'>
@@ -48,12 +60,12 @@ export default function accountLayout({ children }) {
                         {/* wishlist */}
                         <Link onClick={() => setIsactive('/my-account/wishlist')} href='/my-account/wishlist'>
                             <div className={`${isactive == '/my-account/wishlist' && 'bg-gray-100'} flex items-center gap-2 py-3 pl-4`}>
-                                <IoIosHeartEmpty size={23}  className="font-bold"/>
+                                <IoIosHeartEmpty size={23} className="font-bold" />
                                 <p className="text-[16px] font-medium">Wishlist</p>
                             </div>
                         </Link>
                         <hr className="opacity-10" />
-                        
+
                         {/* order */}
                         <Link onClick={() => setIsactive('/my-account/orders')} href='/my-account/orders'>
                             <div className={`${isactive == '/my-account/orders' && 'bg-gray-100'} flex items-center gap-2 py-3 pl-4`}>
@@ -75,5 +87,6 @@ export default function accountLayout({ children }) {
                 {/* dynamically rendered routes */}
                 <div>{children}</div>
             </div>
-        </div>)
+        </div >
+    )
 }

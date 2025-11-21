@@ -6,9 +6,13 @@ import Link from "next/link";
 import { allContext } from "@/Auth/Authprovider";
 import LeftSide_modal from "../LeftSide_modal";
 import BottomNavbar from "./BottomNavbar";
+import { useSelector } from "react-redux";
 
 const MidNavbar = () => {
     const { user, loading, logOut } = useContext(allContext)
+    const { cartProducts, totalItems, totalPrice } = useSelector(state => state.cart)
+    const { wishlistProducts } = useSelector(state => state.wishlist)
+
     const [isOpen, setisOpen] = useState(false)
     const handleModal = () => {
         setTimeout(() => {
@@ -77,18 +81,18 @@ const MidNavbar = () => {
                     <div className="relative mx-4  cursor-pointer">
                         <Heart size={30} strokeWidth={2} />
                         <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
-                            9</p>
+                            {wishlistProducts.length}</p>
                     </div>
 
                     {/* cart */}
                     <div className="relative mr-1 cursor-pointer">
                         <ShoppingCart size={30} strokeWidth={2} />
                         <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
-                            9</p>
+                            {totalItems}</p>
                     </div>
                     <div className="flex flex-col cursor-pointer">
                         <p className="text-xs">Total</p>
-                        <p className="text-sm font-semibold">৳100</p>
+                        <p className="text-sm font-semibold">৳{totalPrice}</p>
                     </div>
                 </div>
             </div>

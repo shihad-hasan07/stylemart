@@ -1,10 +1,26 @@
 'use client'
 import { allContext } from '@/Auth/Authprovider';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { User, Mail, Calendar, Shield, Heart, ShoppingCart, Package, Edit, LogOut, Phone, MapPin } from 'lucide-react';
+import PrivateRoute_user from '@/Routes_controller/PrivateRoute_user';
+import { useRouter } from 'next/navigation';
+
 
 const UserProfile_page = () => {
+    const router = useRouter();
     const { user, loading } = useContext(allContext);
+
+    useEffect(() => {
+        if (!loading && !user) {
+            router.replace(`/login?from=/my-account`);
+        }
+    }, [loading, user]);
+
+    // user loading hole...
+    if (loading) {
+        return <p className="text-2xl">user Loading...</p>;
+    }
+
 
     // Example data -
     const userStats = {
@@ -24,6 +40,7 @@ const UserProfile_page = () => {
     }
 
     return (
+        // <PrivateRoute_user>
         <div className="min-h-screen  py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
@@ -208,6 +225,7 @@ const UserProfile_page = () => {
                 </div>
             </div>
         </div>
+        // </PrivateRoute_user>
     );
 };
 

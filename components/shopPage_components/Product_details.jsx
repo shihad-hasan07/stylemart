@@ -58,7 +58,7 @@ const Product_details = ({ product }) => {
 
                 {/* cart - wishlist */}
                 <AddTo_Cart info={{ selectedColor, selectedSize, _id, name, slug, price, sale, images, stock }} />
-                <AddTo_Wishlist wishlistCount={wishlistCount} />
+                <AddTo_Wishlist wishlistCount={wishlistCount} info={{ _id, name, price, sale, image: images[0], stock }} />
 
                 <hr className="opacity-15 my-6" />
 

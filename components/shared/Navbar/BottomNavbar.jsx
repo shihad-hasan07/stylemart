@@ -10,11 +10,12 @@ import { allContext } from '@/Auth/Authprovider';
 import { usePathname } from 'next/navigation';
 import { LiaHomeSolid } from "react-icons/lia";
 import { FiFilter } from "react-icons/fi";
+import { IoIosLogIn } from 'react-icons/io';
 
 const BottomNavbar = ({ handleModal }) => {
     const { user } = useContext(allContext)
     const pathname = usePathname()
-    console.log(pathname);
+
 
     return (
         <div className="fixed lg:hidden flex px-3.5 sm:px-10 pt-3.5 pb-2 justify-between  bottom-0 w-full text-[13px] shadow-2xs drop-shadow-2xl bg-gray-100 rounded-t-3xl z-40">
@@ -58,12 +59,23 @@ const BottomNavbar = ({ handleModal }) => {
                 <span>Wishlist</span>
             </p>
 
-            <Link href={`${user ? '/my-account' : '/login'}`}>
-                <p className='flex flex-col items-center justify-between gap-0.5 text-gray-700'>
-                    <VscAccount size={23} />
-                    <span>Account</span>
-                </p>
-            </Link>
+            {/* user account */}
+
+            {
+                user ?
+                    <Link href='/my-account'>
+                        <p className='flex flex-col items-center justify-between gap-0.5 text-gray-700'>
+                            <VscAccount size={23} />
+                            <span>Account</span>
+                        </p>
+                    </Link>
+                    : <Link href='/login'>
+                        <p className='flex flex-col items-center justify-between gap-0.5 text-gray-700'>
+                            <IoIosLogIn size={24} />
+                            <span>Login</span>
+                        </p>
+                    </Link>
+            }
 
             {
                 pathname !== '/shop' &&

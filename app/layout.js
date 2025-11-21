@@ -5,6 +5,9 @@ import MidNavbar from '@/components/shared/Navbar/MidNavbar';
 import Footer from '@/components/shared/Footer';
 import ReduxProvider from '@/redux/ReduxProvider';
 import Authprovider from '@/Auth/Authprovider';
+import 'react-toastify/dist/ReactToastify.css';
+import ToastProvider from '@/components/shared/ToastProvider';
+
 
 const jost = Jost({
   subsets: ['latin'],
@@ -23,12 +26,14 @@ export default function RootLayout({ children }) {
       <body className={` ${jost.variable}`}>
         <Authprovider>
           <ReduxProvider>
+            <ToastProvider />
             <TopNavbar />
             <MidNavbar />
             <div className='min-h-[305px]'>
               {children}
             </div>
             <Footer />
+
           </ReduxProvider>
         </Authprovider>
       </body>

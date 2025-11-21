@@ -2,13 +2,39 @@
 import React from 'react';
 import Star_Rating from './_Rating/Star_Rating';
 import Image from 'next/image';
-import { IoIosHeartEmpty } from "react-icons/io";
+import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToWishlist } from '@/redux/features/addToWishlist/slice_addtoWishlist';
 
 const Product_card = ({ product, shopPage, home }) => {
     const { _id, name, images, rating, price, sale, stock, slug } = product;
+
+
+
+
+    const dispatch = useDispatch()
+
+    const { wishlistProducts } = useSelector(state => state.wishlist)
+    const isExist_in_wishlist = wishlistProducts?.find(data => data._id == _id)
+
+    const handle_addtoWishlist = (e) => {
+        e.stopPropagation();   
+        e.preventDefault();
+        dispatch(addToWishlist({
+            _id: _id,
+            name: name,
+            image: images[0],
+            originalPrice: price,
+            salePrice: sale?.active ? sale.price : null,
+            inStock: stock.inStock
+        }));
+
+    }
+
     return (
         <div className={`${home ? 'pb-10' : 'pb-1'} group overflow-hidden`}>
+
             {/* image */}
             <Link href={`/shop/${_id}/${slug}`}>
                 <div className={`relative ${shopPage ? 'h-[400px] sm:h-[360px] lg:h-[370px]' : 'h-[400px] sm:h-[360px] lg:h-[400px]'}  bg-[#faf7fa]`}>
@@ -22,7 +48,12 @@ const Product_card = ({ product, shopPage, home }) => {
                     {/* absolute things in the top right of the iamges */}
                     {/* wishlist */}
                     <div className='absolute -right-12 top-3 flex items-center justify-center bg-white w-[30px] h-[30px] rounded-full shadow-lg transition-all duration-300 group-hover:right-3'>
-                        <IoIosHeartEmpty size={22} />
+                        {
+                            isExist_in_wishlist ?
+                                <IoIosHeart size={23} fill="black" />
+                                :
+                                <IoIosHeartEmpty size={22} onClick={handle_addtoWishlist} />
+                        }
                     </div>
 
                     {/* show discount */}

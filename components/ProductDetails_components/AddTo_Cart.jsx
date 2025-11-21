@@ -11,14 +11,14 @@ const AddTo_Cart = ({ info }) => {
     
     const [quantity, setQuantity] = useState(1);
 
-    // ✅ Check if item already exists in cart
+    //  Check if item already exists in cart
     const existingCartItem = cartProducts?.find(
         item => item._id === _id && 
                item.selectedColor === selectedColor && 
                item.selectedSize === selectedSize
     );
 
-    // ✅ Reset quantity when color/size changes
+    //  Reset quantity when color/size changes
     useEffect(() => {
         setQuantity(1);
     }, [selectedColor, selectedSize]);
@@ -34,7 +34,7 @@ const AddTo_Cart = ({ info }) => {
             return alert('Product is out of stock.');
         }
 
-        // ✅ Cart e already ache kina check koro
+        // Cart e already ache kina check koro
         if (existingCartItem) {
             // Already cart e ache, shudhu quantity update koro
             const newQuantity = existingCartItem.quantity + quantity;
@@ -88,7 +88,7 @@ const AddTo_Cart = ({ info }) => {
         }
     };
 
-    // ✅ Available stock calculate koro (cart e already je quantity ache tar baire)
+    //  Available stock calculate koro (cart e already je quantity ache tar baire)
     const availableStock = existingCartItem 
         ? stock.quantity - existingCartItem.quantity 
         : stock.quantity;
@@ -122,7 +122,7 @@ const AddTo_Cart = ({ info }) => {
                             quantity <= 1 ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
                     />
-                    <p className="min-w-[20px] text-center">{quantity}</p>
+                    <p className="min-w-[18px] text-center">{quantity}</p>
                     <FiPlus 
                         onClick={handle_increase_quantity} 
                         size={22} 

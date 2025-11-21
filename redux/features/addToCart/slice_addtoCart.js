@@ -1,13 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const calcTotals = (state) => {
+    state.totalItems = state.cartProducts.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+    );
+
+    state.totalPrice = parseFloat(
+        state.cartProducts
+            .reduce((sum, item) => {
+                const itemPrice = item.sale?.active ? item.sale.price : item.price;
+                return sum + itemPrice * item.quantity;
+            }, 0)
+            .toFixed(2)
+    );
+};
+
 const slice_addtoCart = createSlice({
-    name: 'cart',
+    name: "cart",
     initialState: {
         cartProducts: [],
         totalItems: 0,
-        totalPrice: 0
+        totalPrice: 0,
     },
+
     reducers: {
+        replaceState: (state, action) => {
+            return action.payload;
+        },
+
         addToCart: (state, action) => {
             const {
                 _id,
@@ -19,67 +40,64 @@ const slice_addtoCart = createSlice({
                 selectedColor,
                 selectedSize,
                 quantity,
-                stock
+                stock,
             } = action.payload;
 
-            console.log('cartProduct', action.payload);
-
             const existingItem = state.cartProducts.find(
-                item => item._id === _id &&
+                (item) =>
+                    item._id === _id &&
                     item.selectedColor === selectedColor &&
                     item.selectedSize === selectedSize
             );
 
             if (existingItem) {
-                // Increase the quantity if the item already exists
                 existingItem.quantity += quantity;
             } else {
-                // Add new item to cart
-                state.cartProducts.push({ _id, name, slug, price, sale, image, selectedColor, selectedSize, quantity, stock });
+                state.cartProducts.push({
+                    _id,
+                    name,
+                    slug,
+                    price,
+                    sale,
+                    image,
+                    selectedColor,
+                    selectedSize,
+                    quantity,
+                    stock,
+                });
             }
 
-            // Update total_items and total_Price
-            state.totalItems = state.cartProducts.reduce((sum, item) => sum + item.quantity, 0);
-            state.totalPrice = state.cartProducts.reduce((sum, item) => {
-                const itemPrice = item.sale?.active ? item.sale.price : item.price;
-                return sum + (itemPrice * item.quantity);
-            }, 0);
+            calcTotals(state);
         },
 
         removeFromCart: (state, action) => {
             const { _id, selectedColor, selectedSize } = action.payload;
+
             state.cartProducts = state.cartProducts.filter(
-                item => !(item._id === _id &&
-                    item.selectedColor === selectedColor &&
-                    item.selectedSize === selectedSize)
+                (item) =>
+                    !(
+                        item._id === _id &&
+                        item.selectedColor === selectedColor &&
+                        item.selectedSize === selectedSize
+                    )
             );
 
-            // Update totals after removing item
-            state.totalItems = state.cartProducts.reduce((sum, item) => sum + item.quantity, 0);
-            state.totalPrice = state.cartProducts.reduce((sum, item) => {
-                const itemPrice = item.sale?.active ? item.sale.price : item.price;
-                return sum + (itemPrice * item.quantity);
-            }, 0);
+            calcTotals(state);
         },
 
         updateQuantity: (state, action) => {
             const { _id, selectedColor, selectedSize, quantity } = action.payload;
 
             const item = state.cartProducts.find(
-                item => item._id === _id &&
-                    item.selectedColor === selectedColor &&
-                    item.selectedSize === selectedSize
+                (i) =>
+                    i._id === _id &&
+                    i.selectedColor === selectedColor &&
+                    i.selectedSize === selectedSize
             );
 
             if (item) {
                 item.quantity = quantity;
-
-                // Update totals
-                state.totalItems = state.cartProducts.reduce((sum, item) => sum + item.quantity, 0);
-                state.totalPrice = state.cartProducts.reduce((sum, item) => {
-                    const itemPrice = item.sale?.active ? item.sale.price : item.price;
-                    return sum + (itemPrice * item.quantity);
-                }, 0);
+                calcTotals(state);
             }
         },
 
@@ -87,20 +105,15 @@ const slice_addtoCart = createSlice({
             const { _id, selectedColor, selectedSize } = action.payload;
 
             const product = state.cartProducts.find(
-                res => res._id === _id &&
-                    res.selectedColor === selectedColor &&
-                    res.selectedSize === selectedSize
+                (i) =>
+                    i._id === _id &&
+                    i.selectedColor === selectedColor &&
+                    i.selectedSize === selectedSize
             );
 
             if (product && product.quantity < product.stock.quantity) {
                 product.quantity += 1;
-
-                // Update totals
-                state.totalItems = state.cartProducts.reduce((sum, item) => sum + item.quantity, 0);
-                state.totalPrice = state.cartProducts.reduce((sum, item) => {
-                    const itemPrice = item.sale?.active ? item.sale.price : item.price;
-                    return sum + (itemPrice * item.quantity);
-                }, 0);
+                calcTotals(state);
             }
         },
 
@@ -108,20 +121,15 @@ const slice_addtoCart = createSlice({
             const { _id, selectedColor, selectedSize } = action.payload;
 
             const product = state.cartProducts.find(
-                res => res._id === _id &&
-                    res.selectedColor === selectedColor &&
-                    res.selectedSize === selectedSize
+                (i) =>
+                    i._id === _id &&
+                    i.selectedColor === selectedColor &&
+                    i.selectedSize === selectedSize
             );
 
             if (product && product.quantity > 1) {
                 product.quantity -= 1;
-
-                // Update totals
-                state.totalItems = state.cartProducts.reduce((sum, item) => sum + item.quantity, 0);
-                state.totalPrice = state.cartProducts.reduce((sum, item) => {
-                    const itemPrice = item.sale?.active ? item.sale.price : item.price;
-                    return sum + (itemPrice * item.quantity);
-                }, 0);
+                calcTotals(state);
             }
         },
 
@@ -129,17 +137,18 @@ const slice_addtoCart = createSlice({
             state.cartProducts = [];
             state.totalItems = 0;
             state.totalPrice = 0;
-        }
-    } 
+        },
+    },
 });
 
 export const {
+    replaceState,
     addToCart,
     removeFromCart,
     updateQuantity,
     increaseQuantity,
     decreaseQuantity,
-    clearCart
+    clearCart,
 } = slice_addtoCart.actions;
 
 export default slice_addtoCart.reducer;

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useContext, use } from 'react';
 import { allContext } from '@/Auth/Authprovider';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { ImGoogle2 } from "react-icons/im";
 import Link from 'next/link';
@@ -10,6 +10,9 @@ import { IoIosArrowForward } from 'react-icons/io';
 const Login_page = () => {
     const { login, user, googleLogin } = useContext(allContext);
     const router = useRouter();
+    const params = useSearchParams();
+    const from = params.get("from") || "/";
+
 
     const [formData, setFormData] = useState({
         email: '',
@@ -37,11 +40,16 @@ const Login_page = () => {
         setLoading(false);
 
         if (result.success) {
-            router.push('/');
+            router.push(from);
         } else {
             setError(result.error);
         }
     };
+
+    const handleGoogleLogin = async () => {
+        const result = await googleLogin()
+        result?.success == true && router.push(from)
+    }
 
     return (
         <div className='container mx-auto px-5 xl:px-20 mt-2'>
@@ -92,7 +100,7 @@ const Login_page = () => {
                     <p className='border w-full opacity-15'></p>
                 </div>
                 <div className='flex gap-5'>
-                    <div onClick={() => googleLogin()} className='cursor-pointer bg-[#4285f4] w-full py-3 gap-2.5 flex items-center justify-center'>
+                    <div onClick={handleGoogleLogin} className='cursor-pointer bg-[#4285f4] w-full py-3 gap-2.5 flex items-center justify-center'>
                         <ImGoogle2 fill='white' size={25} />
                         <p className='text-white text-xl font-medium'>Google</p>
                     </div>
