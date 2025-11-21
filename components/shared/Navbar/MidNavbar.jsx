@@ -19,7 +19,6 @@ const MidNavbar = () => {
             setisOpen(!isOpen)
         }, 100)
     }
-
     return (
         <div>
 
@@ -55,9 +54,24 @@ const MidNavbar = () => {
                                 </div>
                                 :
                                 <div className="flex items-center gap-1.5">
-                                    <UserRound size={28} strokeWidth={2} />
+                                    {
+                                        user ?
+                                            <div className="w-[45px] h-[45px] rounded-full">
+                                                <img src={`${user.photoURL ? user.photoURL : '/userNull.jpg'}`} className="w-full h-full object-cover rounded-full" alt="nmae" />
+                                            </div>
+                                            : <UserRound size={28} strokeWidth={2} />
+                                    }
                                     <div>
-                                        <Link href={`${user ? '/my-account' : '/login'}`}><p className="text-sm font-semibold">Account</p></Link>
+                                        <Link href={`${user ? '/my-account' : '/login'}`}><p className="text-sm font-semibold">
+                                            {
+                                                user ? <span>
+                                                    {user?.displayName?.slice(0, 15)}
+                                                    {user?.displayName.length > 14 && '...'}
+                                                </span>
+                                                    : 'accuont'
+                                            }
+                                            {/* <span>acocunt </span> */}
+                                        </p></Link>
                                         {
                                             user == (undefined || null) ?
                                                 <div className="flex text-sm gap-1 font-medium">

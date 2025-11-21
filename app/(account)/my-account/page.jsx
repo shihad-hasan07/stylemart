@@ -4,6 +4,7 @@ import { useContext, useEffect } from 'react';
 import { User, Mail, Calendar, Shield, Heart, ShoppingCart, Package, Edit, LogOut, Phone, MapPin } from 'lucide-react';
 import PrivateRoute_user from '@/Routes_controller/PrivateRoute_user';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 
 const UserProfile_page = () => {
@@ -31,11 +32,7 @@ const UserProfile_page = () => {
 
     if (!user) {
         return (
-            <div className="min-h-screen  flex items-center justify-center p-4">
-                <div className="bg-white p-8 rounded-lg shadow-lg">
-                    <p className="text-gray-600">Please login to continue</p>
-                </div>
-            </div>
+            <div className="text-center text-3xl pt-7 pl-5"><Link href='/login'>Please login to continue...</Link></div>
         );
     }
 
