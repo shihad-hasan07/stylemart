@@ -1,7 +1,7 @@
 'use client'
 import { allContext } from "@/Auth/Authprovider";
 import Link from "next/link";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { VscAccount } from "react-icons/vsc";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { FiLogOut, FiShoppingBag } from "react-icons/fi";
@@ -10,9 +10,24 @@ import { RxCross1, RxHamburgerMenu } from "react-icons/rx";
 export default function Layout({ children }) {
     const { user, loading, logOut } = useContext(allContext)
     const [isactive, setIsactive] = useState('')
-    
-    const [menu, setMenu] = useState(true)
+    const [menu, setMenu] = useState(false)
 
+    console.log(user?.photoURL);
+
+    useEffect(() => {
+        const checkScreen = () => {
+            if (window.innerWidth >= 1024) {
+                setMenu(false);
+            } else {
+                setMenu(true)
+            }
+        };
+
+        checkScreen();
+        window.addEventListener("resize", checkScreen);
+
+        return () => window.removeEventListener("resize", checkScreen);
+    }, []);
     return (
         <div className='container mx-auto px-5 xl:px-20'>
             <h2 className="text-4xl mt-7">My Account</h2>
@@ -24,8 +39,12 @@ export default function Layout({ children }) {
                     <div className="flex gap-1.5 justify-between items-center">
                         <Link href='/my-account' onClick={() => setIsactive('')}>
                             <div className='flex gap-4 items-center'>
-                                <div className='w-[50px] h-[50px]  rounded-full flex items-center justify-center'>
-                                    <img src={`${user ? user?.photoURL : '/userNull.jpg'}`} className='w-full h-full object-cover rounded-full ' alt="profile" />
+                                <div className='w-[50px] h-[50px] rounded-full flex items-center justify-center'>
+                                    <img
+                                        src={`${user?.photoURL ? user.photoURL : '/userNull.jpg'}`}
+                                        className='w-full h-full object-cover rounded-full'
+                                        alt="profile"
+                                    />
                                 </div>
                                 <div>
                                     <p className='text-[13px] text-gray-400'>Welcome back,</p>
@@ -33,9 +52,10 @@ export default function Layout({ children }) {
                                 </div>
                             </div>
                         </Link>
-                        <div className="flex lg:hidden" onClick={() => setMenu(!menu)} >
+
+                        <div className="flex lg:hidden" onClick={() => setMenu(!menu)}>
                             {
-                                menu ?
+                                !menu ?
                                     <RxCross1 size={26} />
                                     :
                                     <RxHamburgerMenu size={26} />
@@ -43,10 +63,9 @@ export default function Layout({ children }) {
                         </div>
                     </div>
 
-
                     {/* navigation sidebar */}
-                    <div className={` transition-all duration-300 overflow-hidden
-                        ${menu ? "opacity-100 max-h-96 translate-y-3" : "opacity-0 max-h-0 -translate-y-1"}`}>
+                    <div className={`transition-all duration-300 overflow-hidden
+                        ${!menu ? "opacity-100 max-h-96 translate-y-3" : "opacity-0 max-h-0 -translate-y-1"}`}>
 
                         {/* update profile */}
                         <Link onClick={() => setIsactive('/my-account/update-profile')} href='/my-account/update-profile'>
@@ -76,7 +95,7 @@ export default function Layout({ children }) {
                         <hr className="opacity-10" />
 
                         {/* logOut */}
-                        <div onClick={() => logOut()} className="cursor-pointer flex  items-center gap-2 py-3 pl-4">
+                        <div onClick={() => logOut()} className="cursor-pointer flex items-center gap-2 py-3 pl-4">
                             <FiLogOut size={20} />
                             <p className="text-[16px] font-medium">Log out</p>
                         </div>
@@ -87,6 +106,6 @@ export default function Layout({ children }) {
                 {/* dynamically rendered routes */}
                 <div>{children}</div>
             </div>
-        </div >
+        </div>
     )
 }

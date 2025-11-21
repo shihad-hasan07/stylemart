@@ -31,12 +31,12 @@ const Login_page = () => {
         e.preventDefault();
         setError('');
         // Validation
-        if (formData.password.length < 6) {
+        if (formData?.password?.length < 6) {
             setError('Password must be at least 6 characters!');
             return;
         }
         setLoading(true);
-        const result = await login(formData.email, formData.password);
+        const result = await login(formData?.email, formData?.password);
         setLoading(false);
 
         if (result.success) {
@@ -89,7 +89,7 @@ const Login_page = () => {
                     )}
 
                     <button type="submit" disabled={loading}
-                        className='bg-[#f05350] w-full font-medium text-xl text-white py-3 mt-7 disabled:opacity-50 disabled:cursor-not-allowed'
+                        className='cursor-pointer bg-[#f05350] w-full font-medium text-xl text-white py-3 mt-7 disabled:opacity-50 disabled:cursor-not-allowed'
                     >
                         {loading ? 'Logging' : 'Login'}
                     </button>
@@ -104,7 +104,7 @@ const Login_page = () => {
                         <ImGoogle2 fill='white' size={22} />
                         <p className='text-white text-xl font-medium'>Google</p>
                     </div>
-                    <div className='bg-[#3b5998] w-full py-3 flex gap-2.5 items-center justify-center'>
+                    <div className='cursor-pointer bg-[#3b5998] w-full py-3 flex gap-2.5 items-center justify-center'>
                         <FaFacebookSquare fill='white' size={22} />
                         <p className='text-white text-xl font-medium'>Facebook</p>
                     </div>

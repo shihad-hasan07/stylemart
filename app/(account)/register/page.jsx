@@ -102,7 +102,7 @@ const SignUp_page = () => {
                     )}
 
                     <button type="submit" disabled={loading}
-                        className='bg-[#f05350] w-full font-medium text-xl text-white py-3 mt-7 disabled:opacity-50 disabled:cursor-not-allowed'
+                        className='cursor-pointer bg-[#f05350] w-full font-medium text-xl text-white py-3 mt-7 disabled:opacity-50 disabled:cursor-not-allowed'
                     >
                         {loading ? 'Creating Account...' : 'Continue'}
                     </button>
@@ -119,7 +119,7 @@ const SignUp_page = () => {
                     </div>
                     <div className='bg-[#3b5998] w-full py-3 flex gap-2.5 items-center justify-center'>
                         <FaFacebookSquare fill='white' size={22} />
-                        <p className='text-white text-xl font-medium'>Facebook</p>
+                        <p className='cursor-pointer text-white text-xl font-medium'>Facebook</p>
                     </div>
                 </div>
                 <div className='flex items-center mt-4 mb-2.5'>

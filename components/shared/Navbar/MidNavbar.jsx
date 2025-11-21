@@ -56,22 +56,25 @@ const MidNavbar = () => {
                                 <div className="flex items-center gap-1.5">
                                     {
                                         user ?
-                                            <div className="w-[45px] h-[45px] rounded-full">
-                                                <img src={`${user.photoURL ? user.photoURL : '/userNull.jpg'}`} className="w-full h-full object-cover rounded-full" alt="nmae" />
-                                            </div>
+                                            <Link href={`${user ? '/my-account' : '/login'}`} >
+                                                <div className="w-[45px] h-[45px] rounded-full">
+                                                    <img src={`${user.photoURL ? user.photoURL : '/userNull.jpg'}`} className="w-full h-full object-cover rounded-full" alt="nmae" />
+                                                </div>
+                                            </Link>
                                             : <UserRound size={28} strokeWidth={2} />
                                     }
                                     <div>
-                                        <Link href={`${user ? '/my-account' : '/login'}`}><p className="text-sm font-semibold">
-                                            {
-                                                user ? <span>
-                                                    {user?.displayName?.slice(0, 15)}
-                                                    {user?.displayName.length > 14 && '...'}
-                                                </span>
-                                                    : 'Account'
-                                            }
-                                            {/* <span>acocunt </span> */}
-                                        </p></Link>
+                                        <Link href={`${user ? '/my-account' : '/login'}`}>
+                                            <p className="text-sm font-semibold">
+                                                {
+                                                    user ? <span>
+                                                        {user?.displayName?.slice(0, 15)}
+                                                        {user?.displayName?.length > 14 && '...'}
+                                                    </span>
+                                                        : 'Account'
+                                                }
+                                            </p>
+                                        </Link>
                                         {
                                             user == (undefined || null) ?
                                                 <div className="flex text-sm gap-1 font-medium">
@@ -95,7 +98,7 @@ const MidNavbar = () => {
                     <div className="relative mx-4  cursor-pointer">
                         <Heart size={30} strokeWidth={2} />
                         <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
-                            {wishlistProducts.length}</p>
+                            {wishlistProducts?.length}</p>
                     </div>
 
                     {/* cart */}

@@ -24,7 +24,7 @@ const shop_page = () => {
     }
 
     const filteredProducts = useMemo(() => {
-        if (selectedCategory.length === 0) {
+        if (selectedCategory?.length === 0) {
             return products
         } else {
             const filteredDAta = products.filter(product => product.categories.some(cat => selectedCategory.includes(cat)))

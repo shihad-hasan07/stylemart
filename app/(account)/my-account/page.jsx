@@ -51,7 +51,7 @@ const UserProfile_page = () => {
                             <div className="relative px-4 sm:px-6 pb-6">
                                 {/* Avatar */}
                                 <div className="flex justify-center -mt-10 sm:-mt-12 mb-4">
-                                    {user.photoURL ? (
+                                    {user?.photoURL ? (
                                         <img
                                             src={user.photoURL}
                                             alt={user.displayName || 'User'}
@@ -59,7 +59,8 @@ const UserProfile_page = () => {
                                         />
                                     ) : (
                                         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-                                            <User className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
+                        
+                                            <img src='/userNull.jpg' className='w-full h-full object-cover rounded-full' alt="" />
                                         </div>
                                     )}
                                 </div>

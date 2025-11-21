@@ -4,14 +4,14 @@ import { ToastContainer } from "react-toastify";
 export default function () {
   return (
     <ToastContainer
-      position="top-right"
-      autoClose={3000}
+      position="top-center"
+      autoClose={1200}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick
       pauseOnFocusLoss
-      draggable
-      pauseOnHover
+      draggable={false}
+      pauseOnHover={false}
       theme="light"
     />
   );

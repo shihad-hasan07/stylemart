@@ -37,7 +37,7 @@ const Navigation = ({
 
             {pathSegments.map((segment, index) => {
                 const href = '/' + pathSegments.slice(0, index + 1).join('/');
-                const isLast = index === pathSegments.length - 1;
+                const isLast = index === pathSegments?.length - 1;
 
                 // Get label from routeNames or format segment
                 let label = routeNames[segment] || segment

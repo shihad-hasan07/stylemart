@@ -36,7 +36,7 @@ const Descrip_info_reviews = ({ Info }) => {
                         <div>
 
                             {
-                                variations.length > 0 && <div className='mt-3 border text-[15px] border-gray-200 divide-y divide-gray-300'>
+                                variations?.length > 0 && <div className='mt-3 border text-[15px] border-gray-200 divide-y divide-gray-300'>
                                     {
                                         variations.map((e, idx) =>
                                             <div key={idx} >

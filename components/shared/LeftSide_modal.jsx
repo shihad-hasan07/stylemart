@@ -52,7 +52,7 @@ const LeftSide_modal = ({ isOpen, setisOpen, handleModal }) => {
                     <div onClick={handleModal} className="text-[15px] pl-1.5 mt-3 flex flex-col font-[450] gap-4.5 tracking-wide">
                         <Link href='/' className="flex items-center gap-2"><span><Heart size={18} /></span>Wishlist</Link>
                         <Link href='/' className="flex items-center gap-2"><ShoppingCart size={18} />Shopping Cart</Link>
-                        <Link href='/' className="flex items-center gap-2"><UserRound size={18} />My Account</Link>
+                        <Link href='/my-account' className="flex items-center gap-2"><UserRound size={18} />My Account</Link>
                         <Link href='/' className="flex items-center gap-2"><MdCall size={18} />Contact</Link>
                     </div>
 

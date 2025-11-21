@@ -7,7 +7,7 @@ const Select_by_variations = ({ Allinfo }) => {
     return (
         <div>
             {/* select by color */}
-            {availableColors.length > 0 && (
+            {availableColors?.length > 0 && (
                 <div className="flex gap-3.5 items-center mt-4">
                     <label className="font-semibold text-gray-800">
                         Color: <span className="text-sm font-semibold text-gray-700 transition ease-in-out duration-700">{selectedColor}</span>
@@ -32,7 +32,7 @@ const Select_by_variations = ({ Allinfo }) => {
             {(availableColors && availableSizes) && <hr className="my-3 opacity-15" />}
 
             {/* select by size */}
-            {availableSizes.length > 0 && (
+            {availableSizes?.length > 0 && (
                 <div className="flex gap-3.5 items-center mt-4">
                     <label className="font-semibold text-gray-800">
                         Size: <span className="text-sm font-semibold text-gray-700">{selectedSize}</span>

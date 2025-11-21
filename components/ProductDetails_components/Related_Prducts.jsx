@@ -24,7 +24,7 @@ const Related_Prducts = ({ info }) => {
                 <Related_Products_loading />
             }
             {
-                relatedProducts.length > 0 && <h2 className='text-[20px] font-medium mb-4'>Related Products...</h2>
+                relatedProducts?.length > 0 && <h2 className='text-[20px] font-medium mb-4'>Related Products...</h2>
             }
             <div className='grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8'>
                 {

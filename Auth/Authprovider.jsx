@@ -11,6 +11,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "./firebase.init";
+import { toast } from "react-toastify";
 
 export const allContext = createContext(null);
 
@@ -26,25 +27,26 @@ const Authprovider = ({ children }) => {
   const signup = async (email, password, name) => {
     setLoading(true);
     setError('');
-    
     try {
       // Create user
       const result = await createUserWithEmailAndPassword(auth, email, password);
-      
+
       // Update profile with name
       await updateProfile(result.user, {
         displayName: name
       });
-      
+
       setLoading(false);
+      toast.success('Account created successfully')
       return {
         success: true,
         user: result.user,
         message: 'Account created successfully!'
       };
-      
+
     } catch (err) {
       setLoading(false);
+      toast.error('Failed to created a account')
       let errorMessage = 'Signup failed. Please try again.';
 
       if (err.code === 'auth/email-already-in-use') {
@@ -68,10 +70,12 @@ const Authprovider = ({ children }) => {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       setLoading(false);
+      toast.success('Login successfull')
       return { success: true, user: result.user };
-      
+
     } catch (err) {
       setLoading(false);
+      toast.error('Login failed')
       let errorMessage = 'Login failed. Please try again.';
 
       if (err.code === 'auth/user-not-found') {
@@ -92,15 +96,17 @@ const Authprovider = ({ children }) => {
   const googleLogin = async () => {
     setLoading(true);
     setError('');
-    
+
     try {
       const result = await signInWithPopup(auth, googleProvider);
       setLoading(false);
+      toast.success('Login successfull')
       return { success: true, user: result.user };
     } catch (err) {
       setLoading(false);
       const errorMessage = 'Google login failed. Please try again.';
       setError(errorMessage);
+      toast.error('Login with google failed')
       return { success: false, error: errorMessage };
     }
   };
@@ -137,6 +143,7 @@ const Authprovider = ({ children }) => {
     try {
       await signOut(auth);
       setLoading(false);
+      toast.success('Successfully logout')
       return { success: true };
     } catch (err) {
       setLoading(false);
