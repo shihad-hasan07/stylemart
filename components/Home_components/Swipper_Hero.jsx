@@ -6,25 +6,30 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { FaRegWindowRestore } from 'react-icons/fa';
 import { GoIssueTrackedBy } from "react-icons/go";
 import { SlLike } from "react-icons/sl";
+import Image from 'next/image';
+
+import img1 from "@/public/img1.jpg";
+import img2 from "@/public/img2.jpg";
+import img3 from "@/public/img3.jpg";
 
 const herodata = [
     {
         'text1': 'Exclusive offer for this week',
         "text2": "For the Stylish and fashion savvy",
         "text3": "Our collection is vast with clothes and accessories, browse our website and you'll be impressed by the selection and price we offer",
-        "image": '/img1.jpg'
+        "image": img1
     },
     {
         'text1': 'Exclusive offer for this week',
         "text2": "Get the best outfit of your life",
         "text3": "Our collection is vast with clothes and accessories, browse our website and you'll be impressed by the selection and price we offer",
-        'image': '/img2.jpg'
+        'image': img2
     },
     {
         'text1': 'Exclusive offer for this week',
         "text2": "The best fashion store can deliver",
         "text3": "Our collection is vast with clothes and accessories, browse our website and you'll be impressed by the selection and price we offer",
-        'image': '/img3.jpg'
+        'image': img3
     }
 ];
 
@@ -88,7 +93,8 @@ const Swipper_Hero = () => {
                     style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
                     {herodata.map((slide, idx) => (
                         <div key={idx} className="min-w-full h-full relative" >
-                            <img src={slide.image} alt={slide.text2} className="h-full w-full object-cover" />
+                            <Image src={slide.image} alt={slide.text2} fill priority placeholder="blur" className="object-cover" />
+
                             <div className="absolute inset-0 bg-black/40"></div>
                             <div className="absolute inset-0 z-10 text-white px-6 sm:px-10 md:px-16 lg:px-20 flex flex-col justify-center max-w-full sm:max-w-xl md:max-w-2xl">
                                 <p className="text-xs sm:text-sm mb-3 sm:mb-4 hero-fade-in">{slide.text1}</p>
