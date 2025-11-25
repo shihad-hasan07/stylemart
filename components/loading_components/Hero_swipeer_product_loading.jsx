@@ -4,7 +4,7 @@ export default function Hero_swipeer_product_loading() {
 
             {/*  skeleton  1 */}
             <div className="">
-                <div className='relative h-[280px] sm:h-[320px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
+                <div className='relative h-[280px] sm:h-[325px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
                     <div className='absolute right-3 top-3 bg-gray-300 w-[30px] h-[30px] rounded-full'></div>
                 </div>
 
@@ -29,7 +29,7 @@ export default function Hero_swipeer_product_loading() {
 
             {/*  skeleton  1 */}
             <div className="hidden sm:grid md:hidden">
-                <div className='relative h-[280px] sm:h-[320px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
+                <div className='relative h-[280px] sm:h-[325px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
                     <div className='absolute right-3 top-3 bg-gray-300 w-[30px] h-[30px] rounded-full'></div>
                 </div>
 
@@ -54,7 +54,7 @@ export default function Hero_swipeer_product_loading() {
 
             {/* skeleton 2 */}
             <div className="hidden md:grid">
-                <div className='relative h-[280px] sm:h-[320px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
+                <div className='relative h-[280px] sm:h-[325px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
                     <div className='absolute right-3 top-3 bg-gray-300 w-[30px] h-[30px] rounded-full'></div>
                 </div>
 
@@ -79,7 +79,7 @@ export default function Hero_swipeer_product_loading() {
 
             {/* skeleton 3 */}
             <div className="hidden lg:grid">
-                <div className='relative h-[280px] sm:h-[320px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
+                <div className='relative h-[280px] sm:h-[325px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
                     <div className='absolute right-3 top-3 bg-gray-300 w-[30px] h-[30px] rounded-full'></div>
                 </div>
 
@@ -104,7 +104,7 @@ export default function Hero_swipeer_product_loading() {
 
             {/* skeleton 4 */}
             <div className="hidden xl:grid">
-                <div className='relative h-[280px] sm:h-[320px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
+                <div className='relative h-[280px] sm:h-[325px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
                     <div className='absolute right-3 top-3 bg-gray-300 w-[30px] h-[30px] rounded-full'></div>
                 </div>
 

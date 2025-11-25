@@ -4,7 +4,7 @@ const Shop_page_loading = () => {
     return (
         <div className='pb-10  overflow-hidden animate-pulse  gap-10'>
             <div className="">
-                <div className='relative h-[280px] sm:h-[320px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
+                <div className='relative h-[280px] sm:h-[325px] md:h-[340px] lg:h-[360px] xl:h-[380px] bg-gray-200 rounded-xs'>
                     <div className='absolute right-3 top-3 bg-gray-300 w-[30px] h-[30px] rounded-full'></div>
                 </div>
 

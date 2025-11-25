@@ -90,7 +90,7 @@ const shop_page = () => {
                         filteredProducts?.map((product, idx) => <Product_card home={false} key={idx} product={product} shopPage={true}></Product_card>)
                     }
                 </div>
-            </div>
+            </div> 
         </div>
     );
 };
