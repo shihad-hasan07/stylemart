@@ -67,10 +67,11 @@ const MidNavbar = () => {
                                         <Link href={`${user ? '/my-account' : '/login'}`}>
                                             <p className="text-sm font-semibold">
                                                 {
-                                                    user ? <span>
-                                                        {user?.displayName?.slice(0, 15)}
-                                                        {user?.displayName?.length > 14 && '...'}
-                                                    </span>
+                                                    user ?
+                                                        <span>
+                                                            {user.displayName ? user.displayName.slice(0, 15):'Account'}
+                                                            {user?.displayName?.length > 14 && '...'}
+                                                        </span>
                                                         : 'Account'
                                                 }
                                             </p>

@@ -1,4 +1,5 @@
 'use client'
+import Shop_page_loading from '@/components/loading_components/Shop_page_loading';
 import Product_card from '@/components/shared/Product_card';
 import { useGetAllProductsQuery } from '@/redux/features/All_Products/_allProduct_api';
 import Link from 'next/link';
@@ -31,6 +32,7 @@ const shop_page = () => {
             return filteredDAta
         }
     }, [products, selectedCategory])
+
 
     return (
         <div className='container mx-auto px-5 xl:px-20  mt-2'>
@@ -71,17 +73,19 @@ const shop_page = () => {
                             <option value="">Select by latest</option>
                             <option value="">Select by price: low to high</option>
                             <option value="">Select by price: high to low</option>
-
                         </select>
                     </div>
                 </div>
             </div>
             <hr className="opacity-10" />
-
             <div className='my-4 flex'>
                 <div className='hidden xl:flex w-[280px] h-full border-r border-gray-200 p-5'>Filter by color</div>
 
                 <div className='grid min-[500px]:grid-cols-2 min-[800px]:grid-cols-3 2xl:grid-cols-4  grow pl-0 xl:pl-6 gap-4'>
+                    {
+                        isLoading &&
+                        [...Array(4)].map((_, idx) => <Shop_page_loading key={idx} />)
+                    }
                     {
                         filteredProducts?.map((product, idx) => <Product_card home={false} key={idx} product={product} shopPage={true}></Product_card>)
                     }

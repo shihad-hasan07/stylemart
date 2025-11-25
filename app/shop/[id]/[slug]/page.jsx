@@ -7,7 +7,7 @@ import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 
-const page = () => {
+const Product_details_page = () => {
     const { id, slug } = useParams()
     const { data: product = {}, isLoading, error } = useGetSingleProductQuery(id)
 
@@ -31,4 +31,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Product_details_page;

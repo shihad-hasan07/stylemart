@@ -2,26 +2,17 @@
 import { allContext } from '@/Auth/Authprovider';
 import { useContext, useEffect } from 'react';
 import { User, Mail, Calendar, Shield, Heart, ShoppingCart, Package, Edit, LogOut, Phone, MapPin } from 'lucide-react';
-import PrivateRoute_user from '@/Routes_controller/PrivateRoute_user';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 
 const UserProfile_page = () => {
-    const router = useRouter();
     const { user, loading } = useContext(allContext);
-
-    useEffect(() => {
-        if (!loading && !user) {
-            router.replace(`/login?from=/my-account`);
-        }
-    }, [loading, user]);
-
-    // user loading hole...
+    
+    // user loading  thakle...
     if (loading) {
         return <p className="text-2xl">user Loading...</p>;
     }
-
 
     // Example data -
     const userStats = {
@@ -37,7 +28,6 @@ const UserProfile_page = () => {
     }
 
     return (
-        // <PrivateRoute_user>
         <div className="min-h-screen  py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
@@ -59,7 +49,7 @@ const UserProfile_page = () => {
                                         />
                                     ) : (
                                         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-                        
+
                                             <img src='/userNull.jpg' className='w-full h-full object-cover rounded-full' alt="" />
                                         </div>
                                     )}
@@ -223,7 +213,6 @@ const UserProfile_page = () => {
                 </div>
             </div>
         </div>
-        // </PrivateRoute_user>
     );
 };
 
