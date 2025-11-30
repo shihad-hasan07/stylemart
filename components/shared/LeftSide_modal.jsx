@@ -25,7 +25,11 @@ const LeftSide_modal = ({ isOpen, setisOpen, handleModal }) => {
     return (
         <div>
             {/* left side modal */}
-            <div className={`overflow-y-auto scrollbar-thin fixed top-0 left-0 h-full w-[320px] sm:w-[350px] bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <div className={`overflow-y-auto scrollbar-thin fixed top-0 left-0 h-full w-[320px] sm:w-[350px]
+             bg-white shadow-2xl  transform transition-transform duration-300 ease-in-out z-50
+                  ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+            >
+
                 <div className="p-5 flex  justify-between items-center">
                     <img src="/logo.png" className="h-14" alt="" />
                     <IoCloseSharp onClick={handleModal} className="cursor-pointer" size={34} />

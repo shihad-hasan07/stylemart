@@ -34,6 +34,7 @@ export default function UploadPage() {
             const data = await res.json();
             if (res.ok) {
                 setUrl(data.url);
+
                 console.log("✅ Upload success:", data.url);
             } else {
 
@@ -46,6 +47,16 @@ export default function UploadPage() {
             // alert("Something went wrong. Check console.");
         } finally {
             setLoading(false);
+        }
+    };
+
+
+    const copyToClipboard = async () => {
+        try {
+            await navigator.clipboard.writeText(url);
+            console.log("Copied:", url);
+        } catch (err) {
+            console.error("Copy failed:", err);
         }
     };
 
@@ -70,6 +81,16 @@ export default function UploadPage() {
                 >
                     {loading ? "Uploading..." : "Upload"}
                 </button>
+
+                <div className="w-fit flex items-center gap-2">
+                    <p className="w-fit">{url && url}</p>
+                    <button
+                        onClick={copyToClipboard}
+                        className="px-3 py-1 bg-blue-600 text-white rounded"
+                    >
+                        Copy
+                    </button>
+                </div>
 
                 {url && (
                     <div className="mt-5">

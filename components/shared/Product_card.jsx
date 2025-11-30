@@ -11,8 +11,6 @@ const Product_card = ({ product, shopPage, home }) => {
     const { _id, name, images, rating, price, sale, stock, slug } = product;
 
 
-console.log('hi');
-
     const dispatch = useDispatch()
 
     const { wishlistProducts } = useSelector(state => state.wishlist)

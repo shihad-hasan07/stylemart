@@ -136,6 +136,7 @@ const MidNavbar = () => {
             </div>
 
             <LeftSide_modal isOpen={isOpen} setisOpen={setisOpen} handleModal={handleModal} />
+            
             <hr className="opacity-10" />
 
             <BottomNavbar handleModal={handleModal} />

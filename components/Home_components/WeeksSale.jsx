@@ -13,7 +13,9 @@ import { IoIosArrowForward } from "react-icons/io";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 const WeeksSale = () => {
-    const { data: allProducts = [], error, isLoading } = useGetAllProductsQuery()
+    const { data, error, isLoading } = useGetAllProductsQuery()
+    const allProducts = data?.products || [];
+
     const [active, setisActive] = useState("men")
     const buttons = [
         { id: "men", buttonName: "Men" },
@@ -73,7 +75,7 @@ const WeeksSale = () => {
 
                 {isLoading && <Hero_swipeer_product_loading></Hero_swipeer_product_loading>}
             </div>
-            
+
             <Swiper
                 spaceBetween={30}
                 freeMode={true}

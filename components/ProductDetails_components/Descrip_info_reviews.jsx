@@ -38,17 +38,21 @@ const Descrip_info_reviews = ({ Info }) => {
                             {
                                 variations?.length > 0 && <div className='mt-3 border text-[15px] border-gray-200 divide-y divide-gray-300'>
                                     {
-                                        variations.map((e, idx) =>
-                                            <div key={idx} >
-                                                {
-                                                    e.attribute ? <div className={`flex ${idx === 0 && 'bg-[#e8eae9]'}`}>
+                                        variations.map((e, idx) => {
+                                            if (!e.options || e.options.length === 0) return null; // <- empty হলে skip
+
+                                            return (
+                                                <div key={idx}>
+                                                    <div className={`flex ${idx === 0 && 'bg-[#e8eae9]'}`}>
                                                         <p className='pl-6 py-2.5 w-[100px]'>{e.attribute}</p>
-                                                        <p className=' border opacity-5 mr-4'></p>
-                                                        <p className='py-2.5'>{e.options.map((d, idx) => idx === 0 ? d : `, ${d}`)}</p>
+                                                        <p className='border opacity-5 mr-4'></p>
+                                                        <p className='py-2.5'>
+                                                            {e.options.map((d, idx) => (idx === 0 ? d : `, ${d}`))}
+                                                        </p>
                                                     </div>
-                                                        : ''
-                                                }
-                                            </div>)
+                                                </div>
+                                            );
+                                        })
                                     }
                                 </div>
                             }

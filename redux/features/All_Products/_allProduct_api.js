@@ -9,7 +9,10 @@ const allProduct_api = createApi({
     tagTypes: ['allProducts'],
     endpoints: (builder) => ({
         getAllProducts: builder.query({
-            query: () => '/products',
+            query: (params) => ({
+                url: '/products',
+                // params: params
+            }),
             providesTags: ['allProducts']
         }),
         getSingleProduct: builder.query({

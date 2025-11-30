@@ -72,7 +72,7 @@ const Product_details = ({ product }) => {
             </div>
 
             {/* Show  max 4 related to the products */}
-            <div className="md:col-span-2 mt-2.5">
+            <div className="md:col-span-2 mt-10">
                 <Related_Prducts info={{ _id, categories, tags }} />
             </div>
         </div >
