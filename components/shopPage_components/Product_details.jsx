@@ -28,6 +28,7 @@ const Product_details = ({ product }) => {
 
     return (
         <div className="grid md:grid-cols-2 gap-x-10 gap-y-2 my-6">
+            {/* text part */}
             <MainImage images={images} sale={sale} price={price}></MainImage>
 
             {/*  text part */}

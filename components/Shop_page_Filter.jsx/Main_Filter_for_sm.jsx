@@ -43,7 +43,7 @@ const Main_Filter_for_sm = ({ props, isOpen, setisOpen, handleModal }) => {
     useEffect(() => {
         const handler = () => {
             if (window.innerWidth >= 1280) {
-                setisOpen(false); 
+                setisOpen(false);
             }
         };
 

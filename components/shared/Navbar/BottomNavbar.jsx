@@ -7,15 +7,24 @@ import { PiListBullets } from "react-icons/pi";
 import Link from 'next/link';
 import { useContext } from 'react';
 import { allContext } from '@/Auth/Authprovider';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { LiaHomeSolid } from "react-icons/lia";
 import { FiFilter } from "react-icons/fi";
 import { IoIosLogIn } from 'react-icons/io';
 
 const BottomNavbar = ({ handleModal }) => {
     const { user } = useContext(allContext)
-    const pathname = usePathname()
 
+    const router = useRouter();
+    const pathname = usePathname();
+    const params = useSearchParams();
+
+    const openFilter = () => {
+        const newParams = new URLSearchParams(params.toString());
+        newParams.set("isFilterOpen", "true");
+
+        router.replace(`${pathname}?${newParams.toString()}`, { scroll: false });
+    };
 
     return (
         <div className="fixed lg:hidden flex px-3.5 sm:px-10 pt-3.5 pb-2 justify-between  bottom-0 w-full text-[13px] shadow-2xs drop-shadow-2xl bg-gray-100 rounded-t-3xl z-40">
@@ -41,7 +50,7 @@ const BottomNavbar = ({ handleModal }) => {
             {/* filter  */}
             {
                 pathname == '/shop' &&
-                <p className='cursor-pointer flex flex-col items-center justify-between gap-0.5 text-gray-700'>
+                <p onClick={openFilter} className='cursor-pointer flex flex-col items-center justify-between gap-0.5 text-gray-700'>
                     <FiFilter size={24} />
                     <span>Filter</span>
                 </p>

@@ -7,6 +7,7 @@ const MainImage = ({ images, sale, price }) => {
     const [position, setPosition] = useState({ x: 50, y: 50 });
     const [isHovering, setIsHovering] = useState(false);
     const imageRef = useRef(null);
+
     const handleMouseMove = (e) => {
         if (!imageRef.current) return;
         const rect = imageRef.current.getBoundingClientRect();
@@ -14,6 +15,7 @@ const MainImage = ({ images, sale, price }) => {
         const y = ((e.clientY - rect.top) / rect.height) * 100;
         setPosition({ x, y });
     };
+    
     return (
         <div className="">
             {/* image zoom on hover */}

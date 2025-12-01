@@ -26,7 +26,9 @@ const MidNavbar = () => {
             <div className="hidden xl:flex container mx-auto px-20 pt-5 pb-4 justify-between items-center  w-full">
                 <div className="flex items-center gap-6">
                     <div>
-                        <img src="/logo.png" className='w-80' alt="" />
+                        <Link href='/'>
+                            <img src="/logo.png" className='w-80' alt="" />
+                        </Link>
                     </div>
 
                     {/* hamburger */}
@@ -69,7 +71,7 @@ const MidNavbar = () => {
                                                 {
                                                     user ?
                                                         <span>
-                                                            {user.displayName ? user.displayName.slice(0, 15):'Account'}
+                                                            {user.displayName ? user.displayName.slice(0, 15) : 'Account'}
                                                             {user?.displayName?.length > 14 && '...'}
                                                         </span>
                                                         : 'Account'
@@ -136,7 +138,7 @@ const MidNavbar = () => {
             </div>
 
             <LeftSide_modal isOpen={isOpen} setisOpen={setisOpen} handleModal={handleModal} />
-            
+
             <hr className="opacity-10" />
 
             <BottomNavbar handleModal={handleModal} />

@@ -5,10 +5,15 @@ import { IoCloseSharp } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import Link from "next/link";
 import { FaPaperPlane } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 
 const LeftSide_modal = ({ isOpen, setisOpen, handleModal }) => {
+    const router = useRouter()
 
+    const queryhandler = (query) => {
+        router.push(`/shop?category=${query}`)
+    }
 
     //  body er scroll bar ta handle krar jonno
     useEffect(() => {
@@ -42,9 +47,9 @@ const LeftSide_modal = ({ isOpen, setisOpen, handleModal }) => {
                     <div onClick={handleModal} className="text-[15px] pl-1.5 mt-3 flex flex-col font-[450] gap-4.5 tracking-wide">
                         <Link href='/'>Home</Link>
                         <Link href='/shop'>Shop</Link>
-                        <Link href='/faq'>Women</Link>
-                        <Link href='/'>Men</Link>
-                        <Link href='/about-us'>Outerwear</Link>
+                        <span onClick={() => queryhandler('Men')} className="cursor-pointer">Men</span>
+                        <span onClick={() => queryhandler('Women')} className="cursor-pointer">Women</span>
+                        <span onClick={() => queryhandler('Outerwear')} className="cursor-pointer">Outerwear</span>
                         <Link href='/'>Blog</Link>
                     </div>
                 </div>
@@ -63,18 +68,18 @@ const LeftSide_modal = ({ isOpen, setisOpen, handleModal }) => {
                     {/* categories */}
                     <p className="text-xs mt-5 tracking-wider text-[#b9c5e1] font-normal">BROWSE CATEGORIES</p>
                     <div onClick={handleModal} className="text-[15px] pl-1.5 mt-3 flex flex-col font-[450] gap-4.5 tracking-wide">
-                        <Link href='/'>Women</Link>
-                        <Link href='/about-us'>Men</Link>
-                        <Link href='/faq'>Kids</Link>
-                        <Link href='/'>Outerwear</Link>
-                        <Link href='/about-us'> Baby</Link>
-                        <Link href='/'>Accessories</Link>
-                        <Link href='/'>Bags</Link>
-                        <Link href='/'>Belts</Link>
-                        <Link href='/'>Watches</Link>
-                        <Link href='/'>Wallets</Link>
-                        <Link href='/'>Shoes</Link>
-                        <Link href='/'>Cargo Trousers</Link>
+                        <span onClick={() => queryhandler('Men')} className="cursor-pointer">Men</span>
+                        <span onClick={() => queryhandler('Women')} className="cursor-pointer">Women</span>
+                        <span onClick={() => queryhandler('Kids')} className="cursor-pointer">Kids</span>
+                        <span onClick={() => queryhandler('Outerwear')} className="cursor-pointer">Outerwear</span>
+                        <span onClick={() => queryhandler('Baby')} className="cursor-pointer">Baby</span>
+                        <span onClick={() => queryhandler('Accessories')} className="cursor-pointer">Accessories</span>
+                        <span onClick={() => queryhandler('Bags')} className="cursor-pointer">Bags</span>
+                        <span onClick={() => queryhandler('Belts')} className="cursor-pointer">Belts</span>
+                        <span onClick={() => queryhandler('Watches')} className="cursor-pointer">Watches</span>
+                        <span onClick={() => queryhandler('Wallets')} className="cursor-pointer">Wallets</span>
+                        <span onClick={() => queryhandler('Shoes')} className="cursor-pointer">Shoes</span>
+                        <span onClick={() => queryhandler('Cargo Trousers')} className="cursor-pointer">Cargo Trousers</span>
                     </div>
                     <hr className="opacity-15 my-5" />
 
