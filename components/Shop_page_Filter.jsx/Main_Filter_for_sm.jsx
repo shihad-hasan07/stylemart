@@ -12,7 +12,9 @@ const Main_Filter_for_sm = ({ props, isOpen, handleModal }) => {
         minPrice,
         maxPrice,
         priceRange,
-        setPriceRange
+        setPriceRange,
+        instock_clicked, onsale_clicked,
+        setInstock_clicked, setOnsale_clicked
     } = props;
 
     const [localMin, setLocalMin] = useState(priceRange[0]);
@@ -235,7 +237,7 @@ const Main_Filter_for_sm = ({ props, isOpen, handleModal }) => {
 
                         <button
                             onClick={() => { handleModal(); handleApplyFilter() }}
-                            className="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 text-sm font-medium rounded transition-colors"
+                            className="cursor-pointer px-4 py-1.5 bg-gray-100 hover:bg-gray-200 text-sm font-medium rounded transition-colors"
                         >
                             FILTER
                         </button>
@@ -277,7 +279,30 @@ const Main_Filter_for_sm = ({ props, isOpen, handleModal }) => {
                         );
                     })}
                 </div>
-                {/* {isOpen && (<div className={`fixed inset-0 bg-black z-40 transition-all duration-150 opacity-30`} onClick={() => setisOpen(false)}></div>)} */}
+
+                <div className='space-y-3'>
+                    <h3 className="text-md font-semibold text-gray-700">Products status</h3>
+
+                    {/* in stock button  */}
+                    <div onClick={() => { setInstock_clicked(!instock_clicked); handleModal(); }} className="cursor-pointer flex items-center gap-3">
+                        <div className="relative w-4 h-4 rounded-sm bg-gray-200 flex items-center justify-center">
+                            {instock_clicked && (
+                                <button className="text-white bg-red-600 w-4 h-4 rounded-sm justify-center items-center text-[12px] font-bold">✔</button>
+                            )}
+                        </div>
+                        <span className="text-sm">In Stock</span>
+                    </div>
+
+                    {/* on sale button  */}
+                    <div onClick={() => { setOnsale_clicked(!onsale_clicked); handleModal(); }} className="cursor-pointer flex items-center gap-3">
+                        <div className="relative w-4 h-4 rounded-sm bg-gray-200 flex items-center justify-center">
+                            {onsale_clicked && (
+                                <button className="text-white bg-red-600 w-4 h-4 rounded-sm justify-center items-center text-[12px] font-bold">✔</button>
+                            )}
+                        </div>
+                        <span className="text-sm">On Sale</span>
+                    </div>
+                </div>
             </div>
 
         </div>

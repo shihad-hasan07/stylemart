@@ -3,7 +3,8 @@ import { RxCross2 } from 'react-icons/rx';
 import { FiMinus } from "react-icons/fi";
 
 const Clear_filter = ({ props }) => {
-    const { minPrice, maxPrice, priceRange, setPriceRange, selected_filter_color, setSelected_filter_color, selected_filter_size, setSelected_filter_size } = props;
+    const { instock_clicked, onsale_clicked,
+        setInstock_clicked, setOnsale_clicked, minPrice, maxPrice, priceRange, setPriceRange, selected_filter_color, setSelected_filter_color, selected_filter_size, setSelected_filter_size } = props;
 
     // clear price filter's from Clear filter's compnonent
     const clear_min_price = () => {
@@ -32,8 +33,10 @@ const Clear_filter = ({ props }) => {
         setSelected_filter_color([]);
         setSelected_filter_size([]);
         setPriceRange([minPrice, maxPrice]);
+        setInstock_clicked(false);
+        setOnsale_clicked(false);
     }
-    
+
     return (
         <div className='flex gap-2 font-medium text-sm flex-wrap pl-0 xl:pl-6 mb-4'>
             {
@@ -73,6 +76,7 @@ const Clear_filter = ({ props }) => {
                 </p>
             }
 
+
             {
                 selected_filter_color?.map(color =>
                     <p onClick={() => clearColorFilter(color)} key={color} className="cursor-pointer group flex items-center gap-1 relative">
@@ -95,6 +99,26 @@ const Clear_filter = ({ props }) => {
                         <span className='pl-5'>{size}</span>
                     </p>
                 )
+            }
+
+            {/* in stock */}
+            {
+                instock_clicked &&
+                <p onClick={() => setInstock_clicked(false)} className="cursor-pointer flex items-center gap-0.5 group relative">
+                    <RxCross2 size={18} className="absolute opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 transition-all duration-200" />
+                    <FiMinus size={17} className="absolute opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-200" />
+                    <span className="pl-5">In stocks</span>
+                </p>
+            }
+
+            {/* On sale*/}
+            {
+                onsale_clicked &&
+                <p onClick={() => setOnsale_clicked(false)} className="cursor-pointer flex items-center gap-0.5 group relative">
+                    <RxCross2 size={18} className="absolute opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-50 transition-all duration-200" />
+                    <FiMinus size={17} className="absolute opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-200" />
+                    <span className="pl-5">On sale</span>
+                </p>
             }
 
         </div >

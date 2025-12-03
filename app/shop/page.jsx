@@ -45,7 +45,6 @@ const shop_page = () => {
 
     const products = data?.products || [];
 
-
     // demo start
     const STANDARD_COLORS = [
         { name: "Black", hex: "#000000" },
@@ -134,6 +133,10 @@ const shop_page = () => {
     const [maxPrice, setMaxPrice] = useState(1000);
     const [priceRange, setPriceRange] = useState([0, 1000]);
 
+    // in stock and onsale products
+    const [instock_clicked, setInstock_clicked] = useState(false);
+    const [onsale_clicked, setOnsale_clicked] = useState(false);
+
 
     // Calculate min and max prices from products
     useEffect(() => {
@@ -212,15 +215,37 @@ const shop_page = () => {
         return result;
     }, [filteredByCategory, selected_filter_color, selected_filter_size]);
 
-    // PRICE FILTER (Final filtering step)
-    const AllfilteredProducts = useMemo(() => {
+
+    // PRICE FILTER
+    const price_filtered_products = useMemo(() => {
         return color_size_filterd_products.filter(product => {
             const price = product.price || 0;
             return price >= priceRange[0] && price <= priceRange[1];
         });
     }, [color_size_filterd_products, priceRange]);
 
+    // INSTOCK & ONSALE FILTER (Final filtering step)
+    const AllfilteredProducts = useMemo(() => {
+        let result = price_filtered_products;
 
+        // Filter by In Stock
+        if (instock_clicked) {
+            result = result.filter(product =>
+                product.stock?.inStock === true
+            );
+        }
+
+        // Filter by On Sale
+        if (onsale_clicked) {
+            result = result.filter(product =>
+                product.sale?.active === true
+            );
+        }
+
+        return result;
+    }, [price_filtered_products, instock_clicked, onsale_clicked]);
+
+    // dynamic filters generator for color and sizes
     useEffect(() => {
         const newFilters = generateFilters(AllfilteredProducts);
 
@@ -315,12 +340,14 @@ const shop_page = () => {
                         maxPrice,
                         setMaxPrice,
                         priceRange,
-                        setPriceRange
+                        setPriceRange,
+                        instock_clicked, onsale_clicked,
+                        setInstock_clicked, setOnsale_clicked
                     }}
                 />
 
                 {/* Large screen filter */}
-                <div className="pb-2 hidden xl:block sticky top-2 self-start h-fit">
+                <div className="pb-2 hidden xl:block sticky top-0 self-start h-fit">
                     <Main_Filter_lg
                         props={{
                             filters,
@@ -333,7 +360,9 @@ const shop_page = () => {
                             maxPrice,
                             setMaxPrice,
                             priceRange,
-                            setPriceRange
+                            setPriceRange,
+                            instock_clicked, onsale_clicked,
+                            setInstock_clicked, setOnsale_clicked
                         }}
                     />
                 </div>
@@ -345,7 +374,8 @@ const shop_page = () => {
                     {(
                         selected_filter_color.length > 0 || selected_filter_size.length > 0 ||
                         priceRange[0] !== 0 ||
-                        priceRange[1] !== maxPrice
+                        priceRange[1] !== maxPrice ||
+                        instock_clicked == true || onsale_clicked == true
                     ) &&
                         <Clear_filter
                             props={{
@@ -353,7 +383,9 @@ const shop_page = () => {
                                 setSelected_filter_color,
                                 selected_filter_size,
                                 setSelected_filter_size,
-                                minPrice, maxPrice, priceRange, setPriceRange
+                                minPrice, maxPrice, priceRange, setPriceRange,
+                                instock_clicked, onsale_clicked,
+                                setInstock_clicked, setOnsale_clicked
                             }}
                         />
                     }

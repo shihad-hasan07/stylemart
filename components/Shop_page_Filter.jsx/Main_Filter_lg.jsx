@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 const Main_Filter_lg = ({ props }) => {
     const {
@@ -10,11 +10,15 @@ const Main_Filter_lg = ({ props }) => {
         minPrice,
         maxPrice,
         priceRange,
-        setPriceRange
+        setPriceRange,
+        instock_clicked, onsale_clicked,
+        setInstock_clicked, setOnsale_clicked
     } = props;
 
-    const [localMin, setLocalMin] = React.useState(priceRange[0]);
-    const [localMax, setLocalMax] = React.useState(priceRange[1]);
+
+
+    const [localMin, setLocalMin] = useState(priceRange[0]);
+    const [localMax, setLocalMax] = useState(priceRange[1]);
 
     const toggleColor = (colorName) => {
         setSelected_filter_color(prev => {
@@ -77,7 +81,7 @@ const Main_Filter_lg = ({ props }) => {
         setPriceRange([localMin, localMax]);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         setLocalMin(priceRange[0]);
         setLocalMax(priceRange[1]);
     }, [priceRange]);
@@ -90,7 +94,6 @@ const Main_Filter_lg = ({ props }) => {
     return (
         <div className='hidden xl:flex w-[280px] h-full border-gray-200 pl-2 pr-5'>
             <div className='space-y-6 w-full'>
-
 
                 {/* ================= COLOR FILTER ================= */}
                 <div className='space-y-3'>
@@ -206,7 +209,7 @@ const Main_Filter_lg = ({ props }) => {
 
                         <button
                             onClick={handleApplyFilter}
-                            className="px-4 py-1.5 bg-gray-100 hover:bg-gray-200 text-sm font-medium rounded transition-colors"
+                            className="cursor-pointer px-4 py-1.5 bg-gray-100 hover:bg-gray-200 text-sm font-medium rounded transition-colors"
                         >
                             FILTER
                         </button>
@@ -233,9 +236,9 @@ const Main_Filter_lg = ({ props }) => {
                                 className="pl-1 flex items-center justify-between gap-5 cursor-pointer hover:opacity-70"
                             >
                                 <div className="flex items-center gap-3">
-                                    <div className="relative w-5 h-5 rounded-full bg-gray-300 flex items-center justify-center">
+                                    <div className="relative w-4 h-4 rounded-sm bg-gray-200 flex items-center justify-center">
                                         {isSelected && (
-                                            <span className="text-black text-[13px] font-bold">✔</span>
+                                            <button className="text-white bg-red-600 w-4 h-4 rounded-sm justify-center items-center text-[12px] font-bold">✔</button>
                                         )}
                                     </div>
 
@@ -247,6 +250,30 @@ const Main_Filter_lg = ({ props }) => {
                     })}
                 </div>
 
+                {/* products status */}
+                <div className='space-y-3'>
+                    <h3 className="text-md font-semibold text-gray-700">Products status</h3>
+
+                    {/* in stock button  */}
+                    <div onClick={() => setInstock_clicked(!instock_clicked)} className="cursor-pointer flex items-center gap-3">
+                        <div className="relative w-4 h-4 rounded-sm bg-gray-200 flex items-center justify-center">
+                            {instock_clicked && (
+                                <button className="text-white bg-red-600 w-4 h-4 rounded-sm justify-center items-center text-[12px] font-bold">✔</button>
+                            )}
+                        </div>
+                        <span className="text-sm">In Stock</span>
+                    </div>
+
+                    {/* on sale button  */}
+                    <div onClick={() => setOnsale_clicked(!onsale_clicked)} className="cursor-pointer flex items-center gap-3">
+                        <div className="relative w-4 h-4 rounded-sm bg-gray-200 flex items-center justify-center">
+                            {onsale_clicked && (
+                                <button className="text-white bg-red-600 w-4 h-4 rounded-sm justify-center items-center text-[12px] font-bold">✔</button>
+                            )}
+                        </div>
+                        <span className="text-sm">On Sale</span>
+                    </div>
+                </div>
             </div>
         </div>
     );
