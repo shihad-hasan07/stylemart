@@ -44,7 +44,82 @@ const shop_page = () => {
     });
 
     const products = data?.products || [];
-    const filters = data?.filters || {};
+
+
+    // demo start
+    const STANDARD_COLORS = [
+        { name: "Black", hex: "#000000" },
+        { name: "White", hex: "#e5e7eb" },
+        { name: "Gray", hex: "#808080" },
+        { name: "Navy Blue", hex: "#0b1d63" },
+        { name: "Blue", hex: "#1e73ff" },
+        { name: "Red", hex: "#ff2e2e" },
+        { name: "Maroon", hex: "#7b1b1b" },
+        { name: "Green", hex: "#1c7c3c" },
+        { name: "Olive", hex: "#808000" },
+        { name: "Beige", hex: "#f5e1b8" },
+        { name: "Brown", hex: "#6b3b1f" },
+        { name: "Pink", hex: "#f3a6b3" },
+    ];
+
+    const STANDARD_SIZES = [
+        "XS", "S", "M", "L", "XL", "XXL",
+        "24", "26", "28", "30", "32", "34"
+    ];
+
+    function generateFilters(products) {
+
+        const colorCount = {};
+        const sizeCount = {};
+
+        // init 0
+        STANDARD_COLORS.forEach(c => (colorCount[c.name] = 0));
+        STANDARD_SIZES.forEach(s => (sizeCount[s] = 0));
+
+        products.forEach(product => {
+
+            // ==== COLOR ====
+            const colorVar = product.variations?.find(v => v.attribute === "Color");
+            if (colorVar) {
+                [...new Set(colorVar.options)].forEach(col => {
+                    if (colorCount[col] !== undefined) colorCount[col]++;
+                });
+            }
+
+            // ==== SIZE ====
+            const sizeVar = product.variations?.find(v => v.attribute === "Size");
+            if (sizeVar) {
+                [...new Set(sizeVar.options)].forEach(sz => {
+                    if (sizeCount[sz] !== undefined) sizeCount[sz]++;
+                });
+            }
+        });
+
+        // Final Color Array (with HEX)
+        const colors = STANDARD_COLORS
+            .filter(c => colorCount[c.name] > 0)
+            .map(c => ({
+                color: c.name,
+                hex: c.hex,
+                total: colorCount[c.name]
+            }));
+
+        // Final Size Array
+        const sizes = STANDARD_SIZES
+            .filter(s => sizeCount[s] > 0)
+            .map(size => ({
+                size,
+                total: sizeCount[size]
+            }));
+
+        return { colors, sizes };
+    }
+    //  demo end
+
+
+    // const filters = data?.filters || {};
+    const [filters, setFilters] = useState({});
+
     const allCategories = [...new Set(products.flatMap(res => res.categories))];
 
     // ==== CATEGORY FILTER STATE ====
@@ -53,6 +128,25 @@ const shop_page = () => {
     // ==== COLOR + SIZE STATE ====
     const [selected_filter_color, setSelected_filter_color] = useState([]);
     const [selected_filter_size, setSelected_filter_size] = useState([]);
+
+    // Price filter state
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(1000);
+    const [priceRange, setPriceRange] = useState([0, 1000]);
+
+
+    // Calculate min and max prices from products
+    useEffect(() => {
+        if (products.length > 0) {
+            const prices = products.map(p => p.price || 0);
+            // const min = Math.min(...prices);
+            const max = Math.max(...prices);
+
+            // setMinPrice(min);
+            setMaxPrice(max);
+            setPriceRange([0, max]);
+        }
+    }, [products]);
 
     // read query param category → set selected category
     useEffect(() => {
@@ -88,7 +182,7 @@ const shop_page = () => {
     }, [products, selectedCategory]);
 
     // COLOR + SIZE FILTER
-    const AllfilteredProducts = useMemo(() => {
+    const color_size_filterd_products = useMemo(() => {
         let result = filteredByCategory;
 
         // COLOR
@@ -118,8 +212,30 @@ const shop_page = () => {
         return result;
     }, [filteredByCategory, selected_filter_color, selected_filter_size]);
 
+    // PRICE FILTER (Final filtering step)
+    const AllfilteredProducts = useMemo(() => {
+        return color_size_filterd_products.filter(product => {
+            const price = product.price || 0;
+            return price >= priceRange[0] && price <= priceRange[1];
+        });
+    }, [color_size_filterd_products, priceRange]);
+
+
+    useEffect(() => {
+        const newFilters = generateFilters(AllfilteredProducts);
+
+        setFilters(prev => {
+            const isSame =
+                JSON.stringify(prev) === JSON.stringify(newFilters);
+
+            return isSame ? prev : newFilters;
+        });
+    }, [AllfilteredProducts]);
+
+
     return (
         <div className='container mx-auto px-5 xl:px-20 mt-2'>
+
             {/* navigation */}
             <div className='flex items-center gap-1 text-[14px]'>
                 <Link href='/'><p>Home</p></Link>
@@ -188,12 +304,18 @@ const shop_page = () => {
                         isFilterOpen ? closeFilter() : openFilter()
                     )}
                     props={{
-                        closeFilter,
+                        // closeFilter,
                         filters,
                         selected_filter_color,
                         setSelected_filter_color,
                         selected_filter_size,
-                        setSelected_filter_size
+                        setSelected_filter_size,
+                        minPrice,
+                        setMinPrice,
+                        maxPrice,
+                        setMaxPrice,
+                        priceRange,
+                        setPriceRange
                     }}
                 />
 
@@ -205,7 +327,13 @@ const shop_page = () => {
                             selected_filter_color,
                             setSelected_filter_color,
                             selected_filter_size,
-                            setSelected_filter_size
+                            setSelected_filter_size,
+                            minPrice,
+                            setMinPrice,
+                            maxPrice,
+                            setMaxPrice,
+                            priceRange,
+                            setPriceRange
                         }}
                     />
                 </div>
@@ -214,13 +342,18 @@ const shop_page = () => {
 
                 <div className='w-full pb-5'>
 
-                    {(selected_filter_color.length > 0 || selected_filter_size.length > 0) &&
+                    {(
+                        selected_filter_color.length > 0 || selected_filter_size.length > 0 ||
+                        priceRange[0] !== 0 ||
+                        priceRange[1] !== maxPrice
+                    ) &&
                         <Clear_filter
                             props={{
                                 selected_filter_color,
                                 setSelected_filter_color,
                                 selected_filter_size,
-                                setSelected_filter_size
+                                setSelected_filter_size,
+                                minPrice, maxPrice, priceRange, setPriceRange
                             }}
                         />
                     }
