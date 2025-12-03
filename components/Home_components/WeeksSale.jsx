@@ -37,7 +37,8 @@ const WeeksSale = () => {
 
     return (
         <div>
-            <hr className="opacity-15 my-4 md:my-6" />
+            {/* <hr className="opacity-15 my-4 md:my-6" /> */}
+            <hr className="opacity-15 mb-4 md:mb-5" />
 
             {/* text part */}
             <div className='mb-4 md:mb-7 flex justify-between items-start'>

@@ -127,13 +127,30 @@ const Swipper_Hero = () => {
                 </div>
 
             </div>
-            <div className='flex overflow-auto xl:justify-center gap-10 text-[15px]  pt-4'>
-                <div className='flex items-center gap-1'> <CiBadgeDollar size={22} color='red' /><p className='w-[170]'>Installments Without Card</p></div>
-                <div className='flex items-center gap-1.5'><FaRegWindowRestore size={17} color='red' /><p className='w-[140]'>Free pickup in stores</p></div>
-                <div className='flex items-center gap-1.5'><TbTruckDelivery size={21} color='red' /><p className='w-[120] '>Delivery form $20</p></div>
-                <div className='flex items-center gap-1.5'><GoIssueTrackedBy size={20} color='red' /><p className='w-[110]'>Track your order</p></div>
-                <div className='flex items-center gap-1.5'><SlLike size={18} color='red' /><p className='w-[230]'>100% Cusmoter satisfaction rate</p></div>
-            </div >
+            <div className='relative '>
+                <div className='flex overflow-x-auto xl:justify-center gap-10 text-[15px] pt-4 pb-4 lg:pb-5 custom-scrollbar'>
+                    <div className='flex items-center gap-1'>
+                        <CiBadgeDollar size={22} color='red' />
+                        <p className='w-[170]'>Installments Without Card</p>
+                    </div>
+                    <div className='flex items-center gap-1.5'>
+                        <FaRegWindowRestore size={17} color='red' />
+                        <p className='w-[140]'>Free pickup in stores</p>
+                    </div>
+                    <div className='flex items-center gap-1.5'>
+                        <TbTruckDelivery size={21} color='red' />
+                        <p className='w-[120]'>Delivery from $20</p>
+                    </div>
+                    <div className='flex items-center gap-1.5'>
+                        <GoIssueTrackedBy size={20} color='red' />
+                        <p className='w-[110]'>Track your order</p>
+                    </div>
+                    <div className='flex items-center gap-1.5'>
+                        <SlLike size={18} color='red' />
+                        <p className='w-[230]'>100% Customer satisfaction rate</p>
+                    </div>
+                </div>
+            </div>
         </>
     );
 };
