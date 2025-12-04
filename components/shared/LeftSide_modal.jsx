@@ -59,8 +59,8 @@ const LeftSide_modal = ({ isOpen, setisOpen, handleModal }) => {
                     {/* stylemart helps */}
                     <p className="text-xs mt-5 tracking-wider text-[#b9c5e1] font-normal">STYLEMART HELPS</p>
                     <div onClick={handleModal} className="text-[15px] pl-1.5 mt-3 flex flex-col font-[450] gap-4.5 tracking-wide">
-                        <Link href='/' className="flex items-center gap-2"><span><Heart size={18} /></span>Wishlist</Link>
-                        <Link href='/' className="flex items-center gap-2"><ShoppingCart size={18} />Shopping Cart</Link>
+                        <Link href='/wishlist' className="flex items-center gap-2"><span><Heart size={18} /></span>Wishlist</Link>
+                        <Link href='/cart' className="flex items-center gap-2"><ShoppingCart size={18} />Shopping Cart</Link>
                         <Link href='/my-account' className="flex items-center gap-2"><UserRound size={18} />My Account</Link>
                         <Link href='/' className="flex items-center gap-2"><MdCall size={18} />Contact</Link>
                     </div>

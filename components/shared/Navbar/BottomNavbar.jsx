@@ -63,10 +63,12 @@ const BottomNavbar = ({ handleModal }) => {
             </p>
 
             {/* wishlist */}
-            <p className='cursor-pointer flex flex-col items-center justify-between gap-0.5 text-gray-700'>
-                <Heart size={24} className='opacity-80' />
-                <span>Wishlist</span>
-            </p>
+            <Link href='/wishlist'>
+                <p className='cursor-pointer flex flex-col items-center justify-between gap-0.5 text-gray-700'>
+                    <Heart size={24} className='opacity-80' />
+                    <span>Wishlist</span>
+                </p>
+            </Link>
 
             {/* user account */}
 
