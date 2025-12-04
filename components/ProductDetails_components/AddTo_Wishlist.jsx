@@ -6,7 +6,7 @@ import { FiHeart } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 
 const AddTo_Wishlist = ({ wishlistCount, info }) => {
-    const { _id, name, price, sale, image, stock } = info
+    const { _id, slug, name, price, sale, image, stock } = info
     const dispatch = useDispatch()
 
     const { wishlistProducts } = useSelector(state => state.wishlist)
@@ -14,6 +14,7 @@ const AddTo_Wishlist = ({ wishlistCount, info }) => {
     const handle_addtoWishlist = () => {
         dispatch(addToWishlist({
             _id: _id,
+            slug: slug,
             name: name,
             image: image,
             originalPrice: price,

@@ -98,22 +98,26 @@ const MidNavbar = () => {
                     </div>
 
                     {/* wishlist */}
-                    <div className="relative mx-4  cursor-pointer">
-                        <Heart size={30} strokeWidth={2} />
-                        <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
-                            {wishlistProducts?.length}</p>
+                    <div className="relative mx-4 cursor-pointer">
+                        <Link href='/wishlist'>
+                            <Heart size={30} strokeWidth={2} />
+                            <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
+                                {wishlistProducts?.length}</p>
+                        </Link>
                     </div>
 
                     {/* cart */}
-                    <div className="relative mr-1 cursor-pointer">
-                        <ShoppingCart size={30} strokeWidth={2} />
-                        <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
-                            {totalItems}</p>
-                    </div>
-                    <div className="flex flex-col cursor-pointer">
-                        <p className="text-xs">Total</p>
-                        <p className="text-sm font-semibold">৳{totalPrice}</p>
-                    </div>
+                    <Link href='/cart' className="flex items-center gap-1.5">
+                        <div className="relative mr-1 cursor-pointer">
+                            <ShoppingCart size={30} strokeWidth={2} />
+                            <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
+                                {totalItems}</p>
+                        </div>
+                        <div className="flex flex-col cursor-pointer">
+                            <p className="text-sm font-medium">Total</p>
+                            <p className="text-sm font-semibold">৳{totalPrice}</p>
+                        </div>
+                    </Link>
                 </div>
             </div>
             <div className="hidden xl:flex gap-8 mb-2 mt-2 text-[16px] font-[450] container mx-auto px-20 ">
@@ -130,11 +134,13 @@ const MidNavbar = () => {
             <div className="xl:hidden flex justify-between items-center container  mx-auto px-5 pt-2 sm:pt-3">
                 <RxHamburgerMenu onClick={handleModal} className="cursor-pointer" size={26} />
                 <div><img src="/smallogo.png" className="h-10 sm:h-14 " alt="" /></div>
-                <div className="relative mr-1 cursor-pointer">
-                    <ShoppingCart size={30} strokeWidth={2} />
-                    <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
-                        9</p>
-                </div>
+                <Link href='/cart'>
+                    <div className="relative mr-1 cursor-pointer">
+                        <ShoppingCart size={30} strokeWidth={2} />
+                        <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
+                        {totalItems}</p>
+                    </div>
+                </Link>
             </div>
 
             <LeftSide_modal isOpen={isOpen} setisOpen={setisOpen} handleModal={handleModal} />

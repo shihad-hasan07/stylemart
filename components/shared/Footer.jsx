@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-black text-white">
       {/* Newsletter Section */}
-      <div className="border-b border-gray-800">
+      <div className="border-t border-t-gray-300 bg-white text-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
             <div>
@@ -19,10 +19,10 @@ export default function Footer() {
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full pl-12 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-white transition-colors"
+                  className="w-full pl-12 pr-4 py-3 bg-gray-100  rounded-lg focus:outline-none transition-colors"
                 />
               </div>
-              <button className="px-6 py-3 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors">
+              <button className="px-6 py-3 bg-red-500 text-white text-md cursor-pointer font-semibold rounded-lg hover:bg-red-600 ">
                 Subscribe
               </button>
             </div>

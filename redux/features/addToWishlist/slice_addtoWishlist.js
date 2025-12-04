@@ -10,12 +10,13 @@ const wishlistSlice = createSlice({
     reducers: {
         // Load from localStorage
         replaceState: (state, action) => {
-            return action.payload; 
+            return action.payload;
         },
 
         addToWishlist: (state, action) => {
             const {
                 _id,
+                slug,
                 name,
                 image,
                 originalPrice,
@@ -30,6 +31,7 @@ const wishlistSlice = createSlice({
             if (!exists) {
                 state.wishlistProducts.push({
                     _id,
+                    slug,
                     name,
                     image,
                     originalPrice,

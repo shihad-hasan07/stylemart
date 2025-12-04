@@ -21,6 +21,7 @@ const Product_card = ({ product, shopPage, home }) => {
         e.preventDefault();
         dispatch(addToWishlist({
             _id: _id,
+            slug: slug,
             name: name,
             image: images[0],
             originalPrice: price,
