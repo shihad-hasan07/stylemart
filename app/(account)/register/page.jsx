@@ -6,10 +6,13 @@ import { FaFacebookSquare } from 'react-icons/fa';
 import { ImGoogle2 } from "react-icons/im";
 import Link from 'next/link';
 import { IoIosArrowForward } from 'react-icons/io';
+import useAxios from '@/hooks/useAxios';
+import { toast } from 'react-toastify';
 
 const SignUp_page = () => {
-    const { signup, user,googleLogin } = useContext(allContext);
+    const { signup, user, googleLogin } = useContext(allContext);
     const router = useRouter();
+    const axiosPublic = useAxios()
 
     const [formData, setFormData] = useState({
         name: '',
@@ -40,13 +43,33 @@ const SignUp_page = () => {
         }
         setLoading(true);
         const result = await signup(formData.email, formData.password, formData.name);
+
+
         setLoading(false);
 
         if (result.success) {
-            router.push('/');
+
+            // save user to database
+            const userData = {
+                name: result.user.displayName || formData.name,
+                email: result.user.email,
+                photoURL: result.user.photoURL || '',
+                role: "user",
+                phone: "",
+                address: {},
+            };
+            try {
+                await axiosPublic.post('/users/create-user', userData);
+                router.push('/');
+                toast.success('Account created successfully')
+            }
+            catch (err) {
+                await result.user.delete();
+                toast.error('Failed to create account')
+                setError('Failed to save user please try again');
+            }
         } else {
             setError(result.error);
-            console.log('error is', error);
         }
     };
 

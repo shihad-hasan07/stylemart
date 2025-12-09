@@ -37,7 +37,7 @@ const Authprovider = ({ children }) => {
       });
 
       setLoading(false);
-      toast.success('Account created successfully')
+      
       return {
         success: true,
         user: result.user,
@@ -46,11 +46,11 @@ const Authprovider = ({ children }) => {
 
     } catch (err) {
       setLoading(false);
-      toast.error('Failed to created a account')
+      toast.error('Failed to create account')
       let errorMessage = 'Signup failed. Please try again.';
 
       if (err.code === 'auth/email-already-in-use') {
-        errorMessage = 'This email is already registered.';
+        errorMessage = 'User already registered.';
       } else if (err.code === 'auth/weak-password') {
         errorMessage = 'Password should be at least 6 characters.';
       } else if (err.code === 'auth/invalid-email') {
