@@ -12,6 +12,7 @@ import {
 } from "firebase/auth";
 import { auth } from "./firebase.init";
 import { toast } from "react-toastify";
+import useAxios from "@/hooks/useAxios";
 
 export const allContext = createContext(null);
 
@@ -19,6 +20,7 @@ const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
 const Authprovider = ({ children }) => {
+  const axiosPublic = useAxios();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -37,7 +39,7 @@ const Authprovider = ({ children }) => {
       });
 
       setLoading(false);
-      
+
       return {
         success: true,
         user: result.user,
@@ -69,6 +71,23 @@ const Authprovider = ({ children }) => {
 
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
+      const firebaseUser = result.user;
+
+      // USER DATA FOR DB
+      const userData = {
+        name: firebaseUser.displayName || "",
+        email: firebaseUser.email,
+        photoURL: firebaseUser.photoURL || "",
+        role: "user",
+        phone: "",
+        address: {},
+      };
+      try {
+        axiosPublic.post('/users/create-user', userData);
+      } catch {
+
+      }
+
       setLoading(false);
       toast.success('Login successfull')
       return { success: true, user: result.user };
@@ -99,8 +118,25 @@ const Authprovider = ({ children }) => {
 
     try {
       const result = await signInWithPopup(auth, googleProvider);
+      const firebaseUser = result.user;
+
+      // USER DATA FOR DB
+      const userData = {
+        name: firebaseUser.displayName || "",
+        email: firebaseUser.email,
+        photoURL: firebaseUser.photoURL || "",
+        role: "user",
+        phone: "",
+        address: {},
+      };
+      try {
+        await axiosPublic.post('/users/create-user', userData);
+        toast.success('Login successfull')
+      } catch (err) {
+        await result.user.delete();
+        toast.error('Login failed')
+      }
       setLoading(false);
-      toast.success('Login successfull')
       return { success: true, user: result.user };
     } catch (err) {
       setLoading(false);
