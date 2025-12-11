@@ -27,10 +27,16 @@ const Authprovider = ({ children }) => {
 
   // get the use from db 
   const [userfromDB, setUserfromDB] = useState(null);
+  const [latestUpdate, setLatestUpdate] = useState(0);
   useEffect(() => {
-    axiosPublic.get(`/users/single?gmail=${user?.email}`)
+    if (!user?.email) return;
+
+    axiosPublic
+      .get(`/users/single?gmail=${user.email}`)
       .then(res => setUserfromDB(res.data.data))
-  }, [user]);
+      .catch(console.error);
+  }, [user?.email, latestUpdate]);
+
 
   // Simple signup without email verification
   const signup = async (email, password, name) => {
@@ -44,7 +50,7 @@ const Authprovider = ({ children }) => {
       await updateProfile(result.user, {
         displayName: name
       });
-
+      setLatestUpdate(prev => prev + 1)
       setLoading(false);
 
       return {
@@ -91,6 +97,7 @@ const Authprovider = ({ children }) => {
       };
       try {
         axiosPublic.post('/users/create-user', userData);
+        setLatestUpdate(prev => prev + 1)
       } catch {
 
       }
@@ -138,6 +145,7 @@ const Authprovider = ({ children }) => {
       };
       try {
         await axiosPublic.post('/users/create-user', userData);
+        setLatestUpdate(prev => prev + 1)
         toast.success('Login successfull')
       } catch (err) {
         await result.user.delete();
@@ -213,7 +221,7 @@ const Authprovider = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      user, userfromDB, setUserfromDB,
+      user, userfromDB, setUserfromDB, setLatestUpdate,
       loading,
       error,
       signup,

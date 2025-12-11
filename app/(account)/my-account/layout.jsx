@@ -41,10 +41,11 @@ export default function Layout({ children }) {
                                 <div className='flex gap-4 items-center'>
                                     <div className='w-[50px] h-[50px] rounded-full flex items-center justify-center'>
                                         <img
-                                            src={`${user?.photoURL ? user.photoURL : '/userNull.jpg'}`}
+                                            src={`${!(user?.photoURL == (null || "" || "null" || undefined)) ? user?.photoURL : '/userNull.jpg'}`}
                                             className='w-full h-full object-cover rounded-full'
                                             alt="profile"
                                         />
+                                        {console.log('img', user?.photoURL)}
                                     </div>
                                     <div>
                                         <p className='text-[13px] text-gray-400'>Welcome back,</p>

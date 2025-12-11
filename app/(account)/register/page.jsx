@@ -10,7 +10,7 @@ import useAxios from '@/hooks/useAxios';
 import { toast } from 'react-toastify';
 
 const SignUp_page = () => {
-    const { signup, user, googleLogin } = useContext(allContext);
+    const { signup, user, googleLogin ,setLatestUpdate} = useContext(allContext);
     const router = useRouter();
     const axiosPublic = useAxios()
 
@@ -60,6 +60,7 @@ const SignUp_page = () => {
             };
             try {
                 await axiosPublic.post('/users/create-user', userData);
+                setLatestUpdate(prev=>prev+1)
                 router.push('/');
                 toast.success('Account created successfully')
             }

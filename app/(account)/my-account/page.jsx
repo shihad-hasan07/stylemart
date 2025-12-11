@@ -45,7 +45,7 @@ const UserProfile_page = () => {
                                 <div className="flex justify-center -mt-10 sm:-mt-12 mb-4">
                                     {user?.photoURL ? (
                                         <img
-                                            src={user.photoURL}
+                                            src={`${!(user?.photoURL == (null || "" || "null" || undefined)) ? user?.photoURL : '/userNull.jpg'}`}
                                             alt={user.displayName || 'User'}
                                             className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white shadow-lg object-cover"
                                         />

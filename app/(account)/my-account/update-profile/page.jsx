@@ -6,7 +6,7 @@ import useAxios from '@/hooks/useAxios';
 import { useRouter } from 'next/navigation';
 
 export default function ProfileUpdatePage() {
-    const { user, userfromDB, setUserfromDB, updateProfileFn } = useContext(allContext)
+    const { user, userfromDB, setUserfromDB, setLatestUpdate, updateProfileFn } = useContext(allContext)
     const useAxiosPublic = useAxios()
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
@@ -20,11 +20,11 @@ export default function ProfileUpdatePage() {
     // Initial data from database
     const [formData, setFormData] = useState({
         name: user?.displayName || "",
-        email: user?.email || "",
+        email: user?.email,
         phone: userfromDB?.phone || "",
-        division: userfromDB?.address?.division,
-        city: userfromDB?.address?.city,
-        address: userfromDB?.address?.address
+        division: userfromDB?.address?.division || "",
+        city: userfromDB?.address?.city || "",
+        address: userfromDB?.address?.address || ""
     });
 
     const divisions = [
@@ -108,6 +108,7 @@ export default function ProfileUpdatePage() {
 
             if (res.data.success) {
                 await updateProfileFn(res.data.data.name, res.data.data.photoURL)
+                setLatestUpdate(prev => prev + 1)
                 setLoading(false)
                 router.push('/my-account')
             }
@@ -215,7 +216,7 @@ export default function ProfileUpdatePage() {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Division <span className="text-red-500">*</span>
                                     </label>
-                                    <select name="division" value={formData.division} onChange={handleChange} 
+                                    <select name="division" value={formData.division} onChange={handleChange}
                                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-0 cursor-pointer"
                                     >
                                         {divisions.map(div => (
@@ -228,7 +229,7 @@ export default function ProfileUpdatePage() {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         City <span className="text-red-500">*</span>
                                     </label>
-                                    <input type="text" name="city" value={formData.city} onChange={handleChange} 
+                                    <input type="text" name="city" value={formData.city} onChange={handleChange}
                                         className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-0z' placeholder="City name" />
                                 </div>
                             </div>
@@ -237,7 +238,7 @@ export default function ProfileUpdatePage() {
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Detailed Address <span className="text-red-500">*</span>
                                 </label>
-                                <textarea name="address" value={formData.address} onChange={handleChange} rows="2" 
+                                <textarea name="address" value={formData.address} onChange={handleChange} rows="2"
                                     className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-0'
                                     placeholder="Road, Ward number, etc."
                                 />
