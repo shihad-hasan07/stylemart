@@ -1,6 +1,7 @@
 "use client";
 
 import Shop_page_loading from '@/components/loading_components/Shop_page_loading';
+import FilterProductNotfound from '@/components/shared/FilterProductNotfound';
 import Product_card from '@/components/shared/Product_card';
 import Clear_filter from '@/components/Shop_page_Filter.jsx/Clear_filter';
 import Main_Filter_for_sm from '@/components/Shop_page_Filter.jsx/Main_Filter_for_sm';
@@ -43,7 +44,7 @@ const shop_page = () => {
         refetchOnReconnect: true,
     });
 
-    const products = data?.products || [];
+    const products = data?.data || [];
 
     // demo start
     const STANDARD_COLORS = [
@@ -257,7 +258,15 @@ const shop_page = () => {
         });
     }, [AllfilteredProducts]);
 
-
+    const clearAllFilters = () => {
+        setSelected_filter_color([]);
+        setSelected_filter_size([]);
+        setPriceRange([minPrice, maxPrice]);
+        setInstock_clicked(false);
+        setOnsale_clicked(false);
+        setSelectedCategory([])
+    }
+    
     return (
         <div className='container mx-auto px-5 xl:px-20 mt-2'>
 
@@ -390,10 +399,10 @@ const shop_page = () => {
                         />
                     }
 
-                    {AllfilteredProducts.length === 0 &&
-                        <p className='text-center text-gray-500 mt-10'>
-                            No products found matching the selected filters.
-                        </p>
+                    {AllfilteredProducts.length === 0 && !isLoading &&
+                        <>
+                            <FilterProductNotfound clearAllFilters={clearAllFilters} />
+                        </>
                     }
 
                     <div className='grid min-[500px]:grid-cols-2 min-[800px]:grid-cols-3 2xl:grid-cols-4 gap-4 pl-0 xl:pl-6'>

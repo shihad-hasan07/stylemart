@@ -3,8 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const allProduct_api = createApi({
     reducerPath: 'allProductApi',
     baseQuery: fetchBaseQuery({
-        // baseUrl: 'http://localhost:5000'
-        baseUrl: 'http://localhost:5000/api/v1/products'
+        baseUrl: 'http://localhost:5000/api/v1'
         // baseUrl: 'https://stylemart-server.vercel.app'
     }),
     tagTypes: ['allProducts'],
@@ -17,7 +16,7 @@ const allProduct_api = createApi({
             providesTags: ['allProducts']
         }),
         getSingleProduct: builder.query({
-            query: (id) => `/product/${id}`
+            query: (id) => `/products/single/${id}`
         })
     })
 })

@@ -14,7 +14,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 const WeeksSale = () => {
     const { data, error, isLoading } = useGetAllProductsQuery()
-    const allProducts = data?.products || [];
+    const allProducts = data?.data || [];
 
     const [active, setisActive] = useState("men")
     const buttons = [

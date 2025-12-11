@@ -9,7 +9,9 @@ import { IoIosArrowForward } from 'react-icons/io';
 
 const Product_details_page = () => {
     const { id, slug } = useParams()
-    const { data: product = {}, isLoading, error } = useGetSingleProductQuery(id)
+    const { data: { data: product } = {}, isLoading, error } = useGetSingleProductQuery(id)
+
+    console.log('single product', product);
 
     return (
         <div className='container mx-auto px-5 xl:px-20  mt-2'>
