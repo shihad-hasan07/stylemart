@@ -25,6 +25,13 @@ const Authprovider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // get the use from db 
+  const [userfromDB, setUserfromDB] = useState(null);
+  useEffect(() => {
+    axiosPublic.get(`/users/single?gmail=${user?.email}`)
+      .then(res => setUserfromDB(res.data.data))
+  }, [user]);
+
   // Simple signup without email verification
   const signup = async (email, password, name) => {
     setLoading(true);
@@ -164,15 +171,23 @@ const Authprovider = ({ children }) => {
 
   const updateProfileFn = async (name, image) => {
     try {
-      await updateProfile(auth.currentUser, {
-        displayName: name,
-        photoURL: image,
-      });
+      const updateData = {};
+
+      if (name) updateData.displayName = name;
+      if (image) updateData.photoURL = image;
+
+      await updateProfile(auth.currentUser, updateData);
+
+      await auth.currentUser.reload();
+
+      setUser({ ...auth.currentUser });
       return { success: true };
+
     } catch (err) {
-      return { success: false, error: 'Profile update failed.' };
+      return { success: false, error: "Profile update failed." };
     }
   };
+
 
   const logOut = async () => {
     setLoading(true);
@@ -198,7 +213,7 @@ const Authprovider = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      user,
+      user, userfromDB, setUserfromDB,
       loading,
       error,
       signup,
@@ -208,7 +223,7 @@ const Authprovider = ({ children }) => {
       updateProfileFn,
       logOut,
     }),
-    [user, loading, error]
+    [user, loading, error, userfromDB]
   );
 
   return (

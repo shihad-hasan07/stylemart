@@ -1,14 +1,16 @@
 'use client'
 import { allContext } from '@/Auth/Authprovider';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { User, Mail, Calendar, Shield, Heart, ShoppingCart, Package, Edit, LogOut, Phone, MapPin } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
 
 const UserProfile_page = () => {
-    const { user, loading } = useContext(allContext);
-    
+    const { user, userfromDB, loading, logOut } = useContext(allContext);
+    const { totalItems } = useSelector(state => state.cart)
+    const { wishlistProducts } = useSelector(state => state.wishlist)
+
     // user loading  thakle...
     if (loading) {
         return <p className="text-2xl">user Loading...</p>;
@@ -32,7 +34,7 @@ const UserProfile_page = () => {
             <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
                     {/* Left Sidebar - Profile Card */}
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-2 lg:sticky top-0 self-start">
                         <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl overflow-hidden">
                             {/* Header */}
                             <div className="bg-[#073f74]  h-20 sm:h-24"></div>
@@ -72,12 +74,12 @@ const UserProfile_page = () => {
                                 <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
                                     <div className="text-center p-2 sm:p-3 bg-red-50 rounded-lg hover:bg-red-100 transition cursor-pointer">
                                         <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-red-500 mx-auto mb-1" />
-                                        <p className="text-lg sm:text-2xl font-bold text-gray-800">{userStats.wishlistCount}</p>
+                                        <p className="text-lg sm:text-2xl font-bold text-gray-800">{wishlistProducts?.length}</p>
                                         <p className="text-xs text-gray-600">Wishlist</p>
                                     </div>
                                     <div className="text-center p-2 sm:p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition cursor-pointer">
                                         <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mx-auto mb-1" />
-                                        <p className="text-lg sm:text-2xl font-bold text-gray-800">{userStats.cartCount}</p>
+                                        <p className="text-lg sm:text-2xl font-bold text-gray-800">{totalItems}</p>
                                         <p className="text-xs text-gray-600">Cart</p>
                                     </div>
                                     <div className="text-center p-2 sm:p-3 bg-green-50 rounded-lg hover:bg-green-100 transition cursor-pointer">
@@ -89,11 +91,15 @@ const UserProfile_page = () => {
 
                                 {/* Action Buttons */}
                                 <div className="space-y-2">
-                                    <button className="w-full flex items-center justify-center gap-3 px-4 py-2.5 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition font-medium">
-                                        <Edit className="w-4 h-4 sm:w-5 sm:h-5" />
-                                        <span className="text-sm sm:text-base">Update Profile</span>
-                                    </button>
-                                    <button className="w-full flex items-center justify-center gap-3 px-4 py-2.5 sm:py-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition font-medium">
+
+                                    <Link href={'/my-account/update-profile'}>
+                                        <button className="cursor-pointer w-full flex items-center justify-center gap-3 px-4 py-2.5 sm:py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition font-medium">
+                                            <Edit className="w-4 h-4 sm:w-5 sm:h-5" />
+                                            <span className="text-sm sm:text-base">Update Profile</span>
+                                        </button>
+                                    </Link>
+                                    <button onClick={logOut}
+                                        className="cursor-pointer w-full flex items-center justify-center gap-3 px-4 py-2.5 sm:py-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition font-medium">
                                         <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
                                         <span className="text-sm sm:text-base">Logout</span>
                                     </button>
@@ -126,7 +132,7 @@ const UserProfile_page = () => {
                                         <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 mt-1 " />
                                         <div className="min-w-0 flex-1">
                                             <p className="text-xs sm:text-sm text-gray-500 mb-1">Phone Number</p>
-                                            <p className="text-sm sm:text-base text-gray-800 font-medium">{user.phoneNumber || 'Add phone'}</p>
+                                            <p className="text-sm sm:text-base text-gray-800 font-medium">{userfromDB?.phone || 'Add phone number'}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +142,18 @@ const UserProfile_page = () => {
                                         <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 mt-1 " />
                                         <div className="min-w-0 flex-1">
                                             <p className="text-xs sm:text-sm text-gray-500 mb-1">Address</p>
-                                            <p className="text-sm sm:text-base text-gray-800 font-medium">Dhaka, Bangladesh</p>
+                                            <p className="text-sm sm:text-base text-gray-800 font-medium wrap-break-word">
+                                                {
+                                                    [
+                                                        userfromDB?.address?.division,
+                                                        userfromDB?.address?.city,
+                                                        userfromDB?.address?.address
+                                                    ]
+                                                        .filter(Boolean)
+                                                        .join(", ")
+                                                    || "Add your address"
+                                                }
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -193,13 +210,13 @@ const UserProfile_page = () => {
                                 <button className="p-4 sm:p-5  from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 rounded-lg transition text-left">
                                     <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-red-500 mb-2" />
                                     <p className="font-bold text-gray-800 text-sm sm:text-base">Wishlist</p>
-                                    <p className="text-xs sm:text-sm text-gray-600">{userStats.wishlistCount} items</p>
+                                    <p className="text-xs sm:text-sm text-gray-600">{wishlistProducts?.length} items</p>
                                 </button>
 
                                 <button className="p-4 sm:p-5  from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 rounded-lg transition text-left">
                                     <ShoppingCart className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 mb-2" />
                                     <p className="font-bold text-gray-800 text-sm sm:text-base">Cart</p>
-                                    <p className="text-xs sm:text-sm text-gray-600">{userStats.cartCount} items</p>
+                                    <p className="text-xs sm:text-sm text-gray-600">{totalItems} items</p>
                                 </button>
 
                                 <button className="p-4 sm:p-5  from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 rounded-lg transition text-left sm:col-span-2 lg:col-span-1">

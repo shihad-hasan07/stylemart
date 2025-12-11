@@ -1,6 +1,6 @@
 "use client";
 import { useSelector, useDispatch } from "react-redux";
-import { X, Heart, ShoppingCart } from "lucide-react";
+import { X, Heart, ShoppingCart, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { removeFromWishlist, clearWishlist } from "@/redux/features/addToWishlist/slice_addtoWishlist";
 import { useRouter } from "next/navigation";
@@ -35,7 +35,7 @@ export default function WishlistPage() {
     };
 
     return (
-        <div className="py-8 container mx-auto px-5">
+        <div className="py-8 lg:py-0 container mx-auto px-5">
             {wishlistProducts.length === 0 ? (
                 <div className="text-center pb-8 sm:p-12">
                     <div className="mx-auto w-64  flex items-center justify-center  rounded-lg mb-6">
@@ -158,7 +158,7 @@ export default function WishlistPage() {
                                                 className="py-2 px-3 cursor-pointer bg-red-500 flex gap-2 items-center text-white rounded hover:bg-red-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
                                                 title="Add to cart"
                                             >
-                                                <span className="w-20 hidden lg:flex">Add to cart</span><ShoppingCart className="w-5 h-5" />
+                                                <span className="w-20 hidden 2xl:flex">Add to cart</span><ShoppingCart className="w-5 h-5" />
                                             </button>
                                         </div>
                                         <div className=" col-span-1 flex items-center justify-center gap-2">
@@ -167,6 +167,7 @@ export default function WishlistPage() {
                                                 className="p-2 cursor-pointer text-red-500 hover:bg-red-50 rounded transition-colors"
                                                 title="Remove from wishlist"
                                             >
+                                                {/* <Trash2 className="w-5 h-5" /> */}
                                                 <X className="w-7 h-7" />
                                             </button>
                                         </div>

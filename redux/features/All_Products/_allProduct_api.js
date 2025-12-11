@@ -4,7 +4,8 @@ const allProduct_api = createApi({
     reducerPath: 'allProductApi',
     baseQuery: fetchBaseQuery({
         // baseUrl: 'http://localhost:5000'
-        baseUrl: 'https://stylemart-server.vercel.app'
+        baseUrl: 'http://localhost:5000/api/v1/products'
+        // baseUrl: 'https://stylemart-server.vercel.app'
     }),
     tagTypes: ['allProducts'],
     endpoints: (builder) => ({

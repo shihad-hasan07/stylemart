@@ -28,12 +28,12 @@ export default function Layout({ children }) {
 
     return (
         <PrivateRoute_user>
-            
+
             <div className='container mx-auto px-5 xl:px-20'>
                 <h2 className="text-4xl mt-7">My Account</h2>
 
                 <div className="flex flex-col lg:flex-row my-5 gap-0">
-                    <div className="w-full lg:w-[250px]">
+                    <div className="w-full  rounded-md p-2 lg:sticky lg:h-full lg:top-5 lg:w-[250px]">
 
                         {/* user info */}
                         <div className="flex gap-1.5 justify-between items-center">
@@ -48,7 +48,7 @@ export default function Layout({ children }) {
                                     </div>
                                     <div>
                                         <p className='text-[13px] text-gray-400'>Welcome back,</p>
-                                        <p className='text-[18px] font-medium'>{user?.displayName}</p>
+                                        <p className='text-[17px] lg:w-[180px] font-medium wrap-break-word'>{user?.displayName || 'User'}</p>
                                     </div>
                                 </div>
                             </Link>
@@ -104,7 +104,7 @@ export default function Layout({ children }) {
                     </div>
 
                     {/* dynamically rendered routes */}
-                    <div>{children}</div>
+                    <div className="w-full">{children}</div>
                 </div>
             </div>
         </PrivateRoute_user>
