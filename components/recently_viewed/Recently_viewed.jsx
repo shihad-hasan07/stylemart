@@ -7,18 +7,28 @@ import useAxios from "@/hooks/useAxios";
 export default function Recently_viewed() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const axiosPublic = useAxios()
+    const axiosPublic = useAxios();
 
     useEffect(() => {
-        const storedIds = JSON.parse(
-            localStorage.getItem("recentlyViewed") || "[]"
+        const TTL = 48 * 60 * 60 * 1000;
+        const now = Date.now();
+
+        const stored = JSON.parse(
+            localStorage.getItem("recentlyViewed") || "{}"
         );
 
-        if (!storedIds.length) {
+        if (!stored.items || !stored.items.length) {
             setLoading(false);
             return;
         }
 
+        if (!stored.lastUpdated || now - stored.lastUpdated > TTL) {
+            localStorage.removeItem("recentlyViewed");
+            setLoading(false);
+            return;
+        }
+
+        const storedIds = stored.items;
         const idsQuery = storedIds.join(",");
 
         axiosPublic
@@ -26,7 +36,6 @@ export default function Recently_viewed() {
             .then(res => {
                 const fetched = res.data?.data || [];
 
-                // keep localStorage order (latest first)
                 const ordered = storedIds
                     .map(id => fetched.find(p => p._id === id))
                     .filter(Boolean);
@@ -37,7 +46,7 @@ export default function Recently_viewed() {
                 console.error("Recently viewed fetch error:", err);
             })
             .finally(() => setLoading(false));
-    }, []);
+    }, [axiosPublic]);
 
     if (loading) return null;
     if (!products.length) return null;

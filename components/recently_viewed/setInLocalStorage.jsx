@@ -3,21 +3,32 @@ export function setInLocalStorage(id) {
     if (typeof window === "undefined") return;
 
     const key = "recentlyViewed";
+    const TTL = 48 * 60 * 60 * 1000;
+    const now = Date.now();
 
-    let items = JSON.parse(
-        localStorage.getItem(key) || "[]"
+    const stored = JSON.parse(
+        localStorage.getItem(key) || "{}"
     );
 
-    // remove duplicate
+    if (stored.lastUpdated && now - stored.lastUpdated > TTL) {
+        localStorage.removeItem(key);
+    }
+
+    let items = stored.items || [];
+
     items = items.filter(storedId => storedId !== id);
 
-    // if already 4 items, remove the oldest (last one)
     if (items.length === 4) {
         items.pop();
     }
 
-    // add new id as latest
     items.unshift(id);
 
-    localStorage.setItem(key, JSON.stringify(items));
+    localStorage.setItem(
+        key,
+        JSON.stringify({
+            lastUpdated: now,
+            items,
+        })
+    );
 }
