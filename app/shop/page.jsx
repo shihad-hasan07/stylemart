@@ -1,6 +1,7 @@
 "use client";
 
 import Shop_page_loading from '@/components/loading_components/Shop_page_loading';
+import Recently_viewed from '@/components/recently_viewed/Recently_viewed';
 import FilterProductNotfound from '@/components/shared/FilterProductNotfound';
 import Product_card from '@/components/shared/Product_card';
 import Clear_filter from '@/components/Shop_page_Filter.jsx/Clear_filter';
@@ -266,7 +267,7 @@ const shop_page = () => {
         setOnsale_clicked(false);
         setSelectedCategory([])
     }
-    
+
     return (
         <div className='container mx-auto px-5 xl:px-20 mt-2'>
 
@@ -421,6 +422,7 @@ const shop_page = () => {
                     </div>
                 </div>
             </div>
+            <Recently_viewed></Recently_viewed>
         </div>
     );
 };

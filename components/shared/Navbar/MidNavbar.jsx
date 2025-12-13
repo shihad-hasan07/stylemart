@@ -7,12 +7,17 @@ import { allContext } from "@/Auth/Authprovider";
 import LeftSide_modal from "../LeftSide_modal";
 import BottomNavbar from "./BottomNavbar";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const MidNavbar = () => {
     const { user, loading, logOut } = useContext(allContext)
     const { cartProducts, totalItems, totalPrice } = useSelector(state => state.cart)
     const { wishlistProducts } = useSelector(state => state.wishlist)
+    const router = useRouter()
 
+    const queryhandler = (query) => {
+        router.push(`/shop?category=${query}`)
+    }
     const [isOpen, setisOpen] = useState(false)
     const handleModal = () => {
         setTimeout(() => {
@@ -123,9 +128,9 @@ const MidNavbar = () => {
             <div className="hidden xl:flex gap-8 mb-2 mt-2 text-[16px] font-[450] container mx-auto px-20 ">
                 <Link href='/'><p>Home</p></Link>
                 <Link href='/shop'><p>Shop</p></Link>
-                <Link href='/'><p>Women</p></Link>
-                <Link href='/'><p>Men</p></Link>
-                <Link href='/'><p>Outwear</p></Link>
+                <button onClick={() => queryhandler('Women')} className="cursor-pointer"><p>Women</p></button>
+                <button onClick={() => queryhandler('Men')} className="cursor-pointer" ><p>Men</p></button>
+                <button onClick={() => queryhandler('Outerwear')} className="cursor-pointer"><p>Outerwear</p></button>
                 <Link href='/'><p>Blog</p></Link>
                 <Link href='/'><p>Best Discount</p></Link>
             </div>
@@ -138,7 +143,7 @@ const MidNavbar = () => {
                     <div className="relative mr-1 cursor-pointer">
                         <ShoppingCart size={30} strokeWidth={2} />
                         <p className="absolute -top-1 -right-1.5 w-[17px] h-[17px] text-[12px] bg-[#ee403d] text-white flex items-center justify-center rounded-full">
-                        {totalItems}</p>
+                            {totalItems}</p>
                     </div>
                 </Link>
             </div>

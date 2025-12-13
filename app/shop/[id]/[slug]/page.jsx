@@ -1,5 +1,7 @@
 'use client'
 import Product_Details_loading from '@/components/loading_components/Product_Details_loading';
+import Recently_viewed from '@/components/recently_viewed/Recently_viewed';
+import { setInLocalStorage } from '@/components/recently_viewed/setInLocalStorage';
 import Product_details from '@/components/shopPage_components/Product_details';
 import { useGetSingleProductQuery } from '@/redux/features/All_Products/_allProduct_api';
 import Link from 'next/link';
@@ -11,7 +13,11 @@ const Product_details_page = () => {
     const { id, slug } = useParams()
     const { data: { data: product } = {}, isLoading, error } = useGetSingleProductQuery(id)
 
-    console.log('single product', product);
+    useEffect(() => {
+        if (!product?._id) return;
+
+        setInLocalStorage(product._id);
+    }, [product?._id]);
 
     return (
         <div className='container mx-auto px-5 xl:px-20  mt-2'>
@@ -28,6 +34,7 @@ const Product_details_page = () => {
                     ? <Product_Details_loading />
                     : <Product_details product={product}></Product_details>
             }
+            <Recently_viewed></Recently_viewed>
 
         </div>
     );

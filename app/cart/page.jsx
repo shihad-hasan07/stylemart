@@ -1,12 +1,14 @@
 "use client";
 import { useSelector, useDispatch } from "react-redux";
 import { Trash2, Plus, Minus, Tag } from "lucide-react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { removeFromCart, increaseQuantity, decreaseQuantity, clearCart } from "@/redux/features/addToCart/slice_addtoCart";
 import Link from "next/link";
 import Image from "next/image";
+import { allContext } from "@/Auth/Authprovider";
 
 export default function CartPage() {
+    const { userfromDB } = useContext(allContext)
     const dispatch = useDispatch();
     const { cartProducts, totalItems, totalPrice } = useSelector(
         (state) => state.cart
@@ -15,15 +17,32 @@ export default function CartPage() {
     const [shippingMethod, setShippingMethod] = useState("free");
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [address, setAddress] = useState({
-        district: "Dhaka",
-        city: "dhaka",
-        postcode: ""
+        division: userfromDB?.address?.division || "",
+        city: userfromDB?.address?.city || "",
+        detailedAddress: userfromDB?.address?.address || ""
     });
     const [tempAddress, setTempAddress] = useState({
-        district: "Dhaka",
-        city: "dhaka",
-        postcode: ""
+        division: userfromDB?.address?.division || "",
+        city: userfromDB?.address?.city || "",
+        detailedAddress: userfromDB?.address?.address || ""
     });
+
+    useEffect(() => {
+    if (userfromDB?.address) {
+        setAddress({
+            division: userfromDB.address.division || "",
+            city: userfromDB.address.city || "",
+            detailedAddress: userfromDB.address.address || ""
+        });
+
+        setTempAddress({
+            division: userfromDB.address.division || "",
+            city: userfromDB.address.city || "",
+            detailedAddress: userfromDB.address.address || ""
+        });
+    }
+}, [userfromDB]);
+
 
     const handleRemove = (item) => {
         dispatch(
@@ -413,7 +432,7 @@ export default function CartPage() {
                                                     <span className="text-gray-600">Shipping</span>
                                                     <div className="text-right text-sm">
                                                         <span className="text-gray-500">Shipping to</span>{" "}
-                                                        <span className="font-semibold">{address.district}, {address.city}, Bangladesh</span>
+                                                        <span className="font-semibold">{address.division}, {address.city},{address.detailedAddress}</span>
                                                     </div>
                                                 </div>
 
@@ -458,13 +477,14 @@ export default function CartPage() {
                                                     <div className="p-4 bg-gray-50 rounded-lg space-y-4 border border-gray-200">
                                                         <div>
                                                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                                District <span className="text-red-500">*</span>
+                                                                Division <span className="text-red-500">*</span>
                                                             </label>
                                                             <select
-                                                                value={tempAddress.district}
-                                                                onChange={(e) => handleAddressChange('district', e.target.value)}
+                                                                value={tempAddress.division}
+                                                                onChange={(e) => handleAddressChange('division', e.target.value)}
                                                                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                                                             >
+                                                                <option value="">Select a Division</option>
                                                                 <option value="Dhaka">Dhaka</option>
                                                                 <option value="Chittagong">Chittagong</option>
                                                                 <option value="Sylhet">Sylhet</option>
@@ -490,12 +510,12 @@ export default function CartPage() {
 
                                                         <div>
                                                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                                Postcode / ZIP (optional)
+                                                                Detailed Address
                                                             </label>
                                                             <input
                                                                 type="text"
-                                                                value={tempAddress.postcode}
-                                                                onChange={(e) => handleAddressChange('postcode', e.target.value)}
+                                                                value={tempAddress.detailedAddress}
+                                                                onChange={(e) => handleAddressChange('detailedAddress', e.target.value)}
                                                                 placeholder=""
                                                                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                                                             />

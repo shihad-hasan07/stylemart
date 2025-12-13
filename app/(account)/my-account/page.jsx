@@ -72,16 +72,20 @@ const UserProfile_page = () => {
 
                                 {/* Stats */}
                                 <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4">
-                                    <div className="text-center p-2 sm:p-3 bg-red-50 rounded-lg hover:bg-red-100 transition cursor-pointer">
-                                        <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-red-500 mx-auto mb-1" />
-                                        <p className="text-lg sm:text-2xl font-bold text-gray-800">{wishlistProducts?.length}</p>
-                                        <p className="text-xs text-gray-600">Wishlist</p>
-                                    </div>
-                                    <div className="text-center p-2 sm:p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition cursor-pointer">
-                                        <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mx-auto mb-1" />
-                                        <p className="text-lg sm:text-2xl font-bold text-gray-800">{totalItems}</p>
-                                        <p className="text-xs text-gray-600">Cart</p>
-                                    </div>
+                                    <Link href='/wishlist'>
+                                        <div className="text-center p-2 sm:p-3 bg-red-50 rounded-lg hover:bg-red-100 transition cursor-pointer">
+                                            <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-red-500 mx-auto mb-1" />
+                                            <p className="text-lg sm:text-2xl font-bold text-gray-800">{wishlistProducts?.length}</p>
+                                            <p className="text-xs text-gray-600">Wishlist</p>
+                                        </div>
+                                    </Link>
+                                    <Link href='/cart'>
+                                        <div className="text-center p-2 sm:p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition cursor-pointer">
+                                            <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mx-auto mb-1" />
+                                            <p className="text-lg sm:text-2xl font-bold text-gray-800">{totalItems}</p>
+                                            <p className="text-xs text-gray-600">Cart</p>
+                                        </div>
+                                    </Link>
                                     <div className="text-center p-2 sm:p-3 bg-green-50 rounded-lg hover:bg-green-100 transition cursor-pointer">
                                         <Package className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mx-auto mb-1" />
                                         <p className="text-lg sm:text-2xl font-bold text-gray-800">{userStats.orderCount}</p>
@@ -207,19 +211,23 @@ const UserProfile_page = () => {
                         <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6">
                             <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-4">Quick Access</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                                <button className="p-4 sm:p-5  from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 rounded-lg transition text-left">
-                                    <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-red-500 mb-2" />
-                                    <p className="font-bold text-gray-800 text-sm sm:text-base">Wishlist</p>
-                                    <p className="text-xs sm:text-sm text-gray-600">{wishlistProducts?.length} items</p>
-                                </button>
+                                <Link href='/wishlist'>
+                                    <button className="cursor-pointer p-4 sm:p-5  from-red-50 to-pink-50 hover:from-red-100 hover:to-pink-100 rounded-lg transition text-left">
+                                        <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-red-500 mb-2" />
+                                        <p className="font-bold text-gray-800 text-sm sm:text-base">Wishlist</p>
+                                        <p className="text-xs sm:text-sm text-gray-600">{wishlistProducts?.length} items</p>
+                                    </button>
+                                </Link>
 
-                                <button className="p-4 sm:p-5  from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 rounded-lg transition text-left">
-                                    <ShoppingCart className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 mb-2" />
-                                    <p className="font-bold text-gray-800 text-sm sm:text-base">Cart</p>
-                                    <p className="text-xs sm:text-sm text-gray-600">{totalItems} items</p>
-                                </button>
+                                <Link href='/cart'>
+                                    <button className="cursor-pointer p-4 sm:p-5  from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 rounded-lg transition text-left">
+                                        <ShoppingCart className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 mb-2" />
+                                        <p className="font-bold text-gray-800 text-sm sm:text-base">Cart</p>
+                                        <p className="text-xs sm:text-sm text-gray-600">{totalItems} items</p>
+                                    </button>
+                                </Link>
 
-                                <button className="p-4 sm:p-5  from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 rounded-lg transition text-left sm:col-span-2 lg:col-span-1">
+                                <button className="cursor-pointer p-4 sm:p-5  from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 rounded-lg transition text-left sm:col-span-2 lg:col-span-1">
                                     <Package className="w-6 h-6 sm:w-8 sm:h-8 text-green-500 mb-2" />
                                     <p className="font-bold text-gray-800 text-sm sm:text-base">Orders</p>
                                     <p className="text-xs sm:text-sm text-gray-600">{userStats.orderCount} orders</p>

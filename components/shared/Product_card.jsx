@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist } from '@/redux/features/addToWishlist/slice_addtoWishlist';
 
-const Product_card = ({ product, shopPage, home }) => {
+const Product_card = ({ product, shopPage,lowheigtinSmallDevice, home }) => {
     const { _id, name, images, rating, price, sale, stock, slug } = product;
 
 
@@ -31,12 +31,14 @@ const Product_card = ({ product, shopPage, home }) => {
 
     }
 
+
     return (
         <div className={`${home ? 'pb-10' : 'pb-1'} group overflow-hidden`}>
 
             {/* image */}
             <Link href={`/shop/${_id}/${slug}`}>
-                <div className={`relative ${shopPage ? 'h-[400px] sm:h-[360px] lg:h-[370px]' : 'h-[400px] sm:h-[360px] lg:h-[400px]'}  bg-[#faf7fa]`}>
+                {/* <div className={`relative ${shopPage ? 'h-[400px] sm:h-[360px] lg:h-[370px]' : }  bg-[#faf7fa]`}> */}
+                <div className={`relative ${shopPage ? 'h-[400px] sm:h-[360px] lg:h-[370px]' : `${home?'h-[550px] sm:h-[380px] lg:h-[400px]':'h-[250px] sm:h-[280px] md:h-[270px] lg:h-[350px] xl:h-[400px] 2xl:h-[450px]'}` }  bg-[#faf7fa]`}>
                     <Image placeholder="blur" priority={home == true ? true : false} blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
                         src={images[0]} fill alt={name}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 25vw, 25vw"

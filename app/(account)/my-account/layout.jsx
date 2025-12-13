@@ -40,12 +40,18 @@ export default function Layout({ children }) {
                             <Link href='/my-account' onClick={() => setIsactive('')}>
                                 <div className='flex gap-4 items-center'>
                                     <div className='w-[50px] h-[50px] rounded-full flex items-center justify-center'>
-                                        <img
-                                            src={`${!(user?.photoURL == (null || "" || "null" || undefined)) ? user?.photoURL : '/userNull.jpg'}`}
-                                            className='w-full h-full object-cover rounded-full'
-                                            alt="profile"
-                                        />
-                                        {console.log('img', user?.photoURL)}
+                                        {
+                                            user?.photoURL ? (
+                                                <img
+                                                    src={`${!(user?.photoURL == (null || "" || "null" || undefined)) ? user?.photoURL : '/userNull.jpg'}`}
+                                                    className='w-full h-full object-cover rounded-full'
+                                                    alt="profile"
+                                                />)
+                                                : (
+                                                <img src='/userNull.jpg' className='w-full h-full object-cover rounded-full' alt="" />
+                                            )
+                                        }
+                                        {console.log('img from layout', user?.photoURL)}
                                     </div>
                                     <div>
                                         <p className='text-[13px] text-gray-400'>Welcome back,</p>
