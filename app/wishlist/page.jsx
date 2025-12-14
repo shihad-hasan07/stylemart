@@ -39,7 +39,9 @@ export default function WishlistPage() {
             {wishlistProducts.length === 0 ? (
                 <div className="text-center pb-8 sm:p-12">
                     <div className="mx-auto w-64  flex items-center justify-center  rounded-lg mb-6">
-                        <Heart className="w-24 h-24 text-gray-300" />
+                        {/* <Heart className="w-24 h-24 text-gray-300" /> */}
+                        <img src="/emptCArt.svg" alt="" className=" w-32 h-32 opacity-80" />
+
                     </div>
                     <p className="text-[24px] text-center font-semibold text-gray-700 mb-2">
                         Your wishlist is empty

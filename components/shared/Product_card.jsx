@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist } from '@/redux/features/addToWishlist/slice_addtoWishlist';
 
-const Product_card = ({ product, shopPage,lowheigtinSmallDevice, home }) => {
+const Product_card = ({ product, shopPage, home }) => {
     const { _id, name, images, rating, price, sale, stock, slug } = product;
 
 
@@ -17,7 +17,7 @@ const Product_card = ({ product, shopPage,lowheigtinSmallDevice, home }) => {
     const isExist_in_wishlist = wishlistProducts?.find(data => data._id == _id)
 
     const handle_addtoWishlist = (e) => {
-        e.stopPropagation();   
+        e.stopPropagation();
         e.preventDefault();
         dispatch(addToWishlist({
             _id: _id,
@@ -37,13 +37,15 @@ const Product_card = ({ product, shopPage,lowheigtinSmallDevice, home }) => {
 
             {/* image */}
             <Link href={`/shop/${_id}/${slug}`}>
-                {/* <div className={`relative ${shopPage ? 'h-[400px] sm:h-[360px] lg:h-[370px]' : }  bg-[#faf7fa]`}> */}
-                <div className={`relative ${shopPage ? 'h-[400px] sm:h-[360px] lg:h-[370px]' : `${home?'h-[550px] sm:h-[380px] lg:h-[400px]':'h-[250px] sm:h-[280px] md:h-[270px] lg:h-[350px] xl:h-[400px] 2xl:h-[450px]'}` }  bg-[#faf7fa]`}>
+                <div className={`relative ${shopPage
+                    ? 'h-[300px] min-[530]:h-[350px] min-[620]:h-[370px] min-[715]:h-[400px] md:h-[370px]'
+                    : `${home
+                        ? 'h-[550px] sm:h-[380px] lg:h-[400px] 2xl:h-[450px]'
+                        : 'h-[250px] sm:h-[280px] md:h-[270px] lg:h-[350px] xl:h-[400px] 2xl:h-[450px]'}`}  bg-[#faf7fa]`}
+                >
                     <Image placeholder="blur" priority={home == true ? true : false} blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
                         src={images[0]} fill alt={name}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 25vw, 25vw"
-                        className='rounded-xs object-cover'
-                    >
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 25vw, 25vw" className='rounded-xs object-cover'>
                     </Image>
 
                     {/* absolute things in the top right of the iamges */}
@@ -67,11 +69,14 @@ const Product_card = ({ product, shopPage,lowheigtinSmallDevice, home }) => {
                     }
                 </div>
             </Link>
-            <div className='flex gap-2 mt-3 items-center'>
-                <Star_Rating rating={rating.average}></Star_Rating>
-                <span className='text-xs font-semibold'>({rating.count})</span>
-            </div>
-            <Link href={`/shop/${_id}/${slug}`}><h2 className='my-0.5 hover:underline text-left font-[450] text-[15px]'>{name}</h2></Link>
+            {
+                !rating?.average == 0 &&
+                <div className='flex gap-2 mt-3 items-center'>
+                    <Star_Rating rating={rating.average}></Star_Rating>
+                    <span className='text-xs font-semibold'>({rating.count})</span>
+                </div>
+            }
+            <Link href={`/shop/${_id}/${slug}`}><h2 className={`${!rating?.average ? 'mt-3' : 'mt-0.5'} mb-0.5 hover:underline text-left font-[450] text-[15px]`}>{name}</h2></Link>
             <div className='text-left'>
                 {
                     sale?.active

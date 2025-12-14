@@ -69,7 +69,7 @@ const Product_details = ({ product }) => {
 
             {/* Decription - AdditionalInfo - Review */}
             <div className="md:col-span-2 mt-7 md:mt-5">
-                <Descrip_info_reviews Info={{ _id, description, variations, colorVariation }} />
+                <Descrip_info_reviews Info={{ _id, name, description, variations,rating, colorVariation }} />
             </div>
 
             {/* Show  max 4 related to the products */}

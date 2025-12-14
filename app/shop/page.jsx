@@ -406,7 +406,7 @@ const shop_page = () => {
                         </>
                     }
 
-                    <div className='grid min-[500px]:grid-cols-2 min-[800px]:grid-cols-3 2xl:grid-cols-4 gap-4 pl-0 xl:pl-6'>
+                    <div className='grid grid-cols-2 min-[800px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 2xl:grid-cols-4 gap-4 pl-0 xl:pl-6'>
                         {isLoading &&
                             [...Array(4)].map((_, idx) => <Shop_page_loading key={idx} />)
                         }

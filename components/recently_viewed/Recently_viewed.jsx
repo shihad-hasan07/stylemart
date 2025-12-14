@@ -52,7 +52,7 @@ export default function Recently_viewed() {
     if (!products.length) return null;
 
     return (
-        <section className="mt-12">
+        <section className="mt-12 mb-10">
             <h2 className="text-xl font-semibold mb-6">
                 Recently Viewed
             </h2>

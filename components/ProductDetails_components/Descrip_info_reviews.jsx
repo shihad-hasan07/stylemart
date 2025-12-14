@@ -1,15 +1,25 @@
 ''
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Reviews from './Reviews';
+import useAxios from '@/hooks/useAxios';
 
-const buttons = [
-    { name: 'Description', value: 'description' },
-    { name: 'Additional Info', value: 'additionalInfo' },
-    { name: 'Reviews', value: 'reviews' }
-]
 
 const Descrip_info_reviews = ({ Info }) => {
-    const { _id, description, variations, colorVariation } = Info;
+    const { _id, name, description, variations, colorVariation, rating } = Info;
     const [isActive, setIsActive] = useState("description")
+    const [buttons, setButtons] = useState([
+        { name: 'Description', value: 'description' },
+        { name: 'Additional Info', value: 'additionalInfo' },
+        { name: `Reviews (${rating?.count})`, value: 'reviews' }
+    ])
+    const [reviews, setReviews] = useState([])
+    const axiosPublic = useAxios()
+    // setButtons(prev=>[...prev,prev[2].name=`Reviews (${rating.average})`])
+
+    useEffect(() => {
+        axiosPublic.get(`/reviews/${_id}`)
+            .then(data => setReviews(data?.data?.data?.reviews))
+    }, [_id])
 
     return (
         <>
@@ -23,12 +33,16 @@ const Descrip_info_reviews = ({ Info }) => {
             </div>
             <hr className='opacity-15 mt-1.5 mb-2.5' />
             <div className='pt-0.5'>
+
+                {/* description */}
                 {
                     isActive === 'description' &&
                     <div>
                         {description}
                     </div>
                 }
+
+                {/* additional info */}
                 {
                     isActive === 'additionalInfo' &&
                     <div>
@@ -59,11 +73,13 @@ const Descrip_info_reviews = ({ Info }) => {
                         </div>
                     </div>
                 }
+
+                {/* review */}
                 {
-                    isActive === 'reviews' &&
-                    <div className='text-3xl'>
-                        Review section is under Development...
-                    </div>
+                    isActive === 'reviews' && (!rating?.count == 0
+                        ? <Reviews infoFromProducts={{ _id,  name,rating }} infoForReviews={{ reviews }} />
+                        : 'No review available'
+                    )
                 }
             </div >
         </>

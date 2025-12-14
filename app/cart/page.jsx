@@ -28,20 +28,20 @@ export default function CartPage() {
     });
 
     useEffect(() => {
-    if (userfromDB?.address) {
-        setAddress({
-            division: userfromDB.address.division || "",
-            city: userfromDB.address.city || "",
-            detailedAddress: userfromDB.address.address || ""
-        });
+        if (userfromDB?.address) {
+            setAddress({
+                division: userfromDB.address.division || "",
+                city: userfromDB.address.city || "",
+                detailedAddress: userfromDB.address.address || ""
+            });
 
-        setTempAddress({
-            division: userfromDB.address.division || "",
-            city: userfromDB.address.city || "",
-            detailedAddress: userfromDB.address.address || ""
-        });
-    }
-}, [userfromDB]);
+            setTempAddress({
+                division: userfromDB.address.division || "",
+                city: userfromDB.address.city || "",
+                detailedAddress: userfromDB.address.address || ""
+            });
+        }
+    }, [userfromDB]);
 
 
     const handleRemove = (item) => {
@@ -116,9 +116,11 @@ export default function CartPage() {
                 cartProducts.length === 0
                     ? (
                         <div className="text-center pb-8 sm:p-12">
-                            <Image src="/emptyCart.svg" alt="Empty Cart" width={320} height={10} className="mx-auto border" />
-                            <p className="-mt-10 text-[24px] text-center font-semibold text-red-700"> Your cart is currently empty.</p>
-                            <Link href='/shop'><button className="cursor-pointer text-md mt-7 font-semibold rounded-sm px-6 py-2.5 bg-gray-200">Retun to shop</button></Link>
+                            <div className="pr-3">
+                                <Image src="/emptyCart.svg" alt="Empty Cart" width={320} height={10} className=" mx-auto" />
+                            </div>
+                            <p className="-mt-10 lg:pl-5 text-[24px] text-center font-semibold text-red-700"> Your cart is currently empty.</p>
+                            <Link href='/shop'><button className=" lg:ml-4 cursor-pointer text-md mt-7 font-semibold rounded-sm px-6 py-2.5 bg-gray-200">Retun to shop</button></Link>
                         </div>
                     )
                     : (
