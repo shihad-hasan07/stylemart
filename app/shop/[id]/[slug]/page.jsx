@@ -11,7 +11,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 
 const Product_details_page = () => {
     const { id, slug } = useParams()
-    const { data: { data: product } = {}, isLoading, error } = useGetSingleProductQuery(id)
+    const { data: { data: product } = {}, isLoading, error, refetch } = useGetSingleProductQuery(id)
 
     useEffect(() => {
         if (!product?._id) return;
@@ -32,7 +32,7 @@ const Product_details_page = () => {
             {
                 isLoading
                     ? <Product_Details_loading />
-                    : <Product_details product={product}></Product_details>
+                    : <Product_details product={product} refetch={refetch}></Product_details>
             }
             <Recently_viewed></Recently_viewed>
 

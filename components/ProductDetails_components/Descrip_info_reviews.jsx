@@ -1,25 +1,30 @@
-''
+'use client'
 import { useEffect, useState } from 'react';
 import Reviews from './Reviews';
 import useAxios from '@/hooks/useAxios';
+import { useSearchParams } from 'next/navigation';
 
 
 const Descrip_info_reviews = ({ Info }) => {
-    const { _id, name, description, variations, colorVariation, rating } = Info;
-    const [isActive, setIsActive] = useState("description")
-    const [buttons, setButtons] = useState([
+    const params = useSearchParams();
+    const isActiveParam = params.get('active');
+
+    const { _id, slug, name, description, variations, rating, refetch } = Info;
+    // which button will be acitive
+    const [isActive, setIsActive] = useState(isActiveParam || "description")
+    const buttons = [
         { name: 'Description', value: 'description' },
         { name: 'Additional Info', value: 'additionalInfo' },
-        { name: `Reviews (${rating?.count})`, value: 'reviews' }
-    ])
+        { name: `Reviews (${rating?.count || 0})`, value: 'reviews' }
+    ]
     const [reviews, setReviews] = useState([])
     const axiosPublic = useAxios()
-    // setButtons(prev=>[...prev,prev[2].name=`Reviews (${rating.average})`])
 
+    const [isReivewUpdated, setIsReivewUpdated] = useState(0)
     useEffect(() => {
         axiosPublic.get(`/reviews/${_id}`)
             .then(data => setReviews(data?.data?.data?.reviews))
-    }, [_id])
+    }, [_id, isReivewUpdated])
 
     return (
         <>
@@ -76,10 +81,10 @@ const Descrip_info_reviews = ({ Info }) => {
 
                 {/* review */}
                 {
-                    isActive === 'reviews' && (!rating?.count == 0
-                        ? <Reviews infoFromProducts={{ _id,  name,rating }} infoForReviews={{ reviews }} />
-                        : 'No review available'
-                    )
+                    isActive === 'reviews' && <Reviews
+                        infoFromProducts={{ _id, slug, name, rating }}
+                        infoForReviews={{ reviews, setIsReivewUpdated, refetch }} />
+
                 }
             </div >
         </>

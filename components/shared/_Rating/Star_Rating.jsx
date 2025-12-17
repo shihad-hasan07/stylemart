@@ -9,7 +9,7 @@ export default function Star_Rating({ rating, big }) {
                     key={index}
                     // size={13}
                     // size={`${big ? '32' : '13'} `}
-                    className={`${big ? 'text-2xl' : 'text-[13px]'}`}
+                    className={`${big ? 'text-4xl' : 'text-[13px]'}`}
                     color={index < rating ? "#fcc419" : "#e5e7eb"}
                 />
             ))}

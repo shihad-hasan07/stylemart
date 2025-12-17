@@ -18,9 +18,7 @@ const UserProfile_page = () => {
 
     // Example data -
     const userStats = {
-        wishlistCount: 12,
-        cartCount: 3,
-        orderCount: 8
+        orderCount: 0
     };
 
     if (!user) {

@@ -1,80 +1,111 @@
-import { useState } from "react";
-import axios from "axios";
+'use client'
+import { allContext } from "@/Auth/Authprovider";
+import useAxios from "@/hooks/useAxios";
+import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
+import { BsFillStarFill } from "react-icons/bs";
 
-const AddReview = ({ productId, userId, onReviewAdded }) => {
-    const [rating, setRating] = useState(5);
-    const [comment, setComment] = useState("");
-    const [loading, setLoading] = useState(false);
+const AddReview = ({ info }) => {
+    const { _id, slug, setIsReivewUpdated, refetch } = info
+    const { user, userfromDB } = useContext(allContext)
+    const axiosPublic = useAxios()
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const router = useRouter()
+    const [values, setValues] = useState({
+        rating: 0,
+        review: ''
+    })
 
-        if (!rating) {
-            alert("Rating is required");
-            return;
-        }
-
-        try {
-            setLoading(true);
-
-            const res = await axios.post("/api/reviews", {
-                productId,
-                userId,
-                rating,
-                comment,
-            });
-
-            // optional: parent কে জানানো (reviews refetch করতে)
-            if (onReviewAdded) {
-                onReviewAdded(res.data.data);
+    const ratingChanges = (rating) => {
+        setValues(prev => (
+            {
+                ...prev,
+                rating: rating
             }
+        ))
+    }
 
-            setComment("");
-            setRating(5);
-            alert("Review added successfully");
-        } catch (error) {
-            alert(
-                error?.response?.data?.message || "Failed to add review"
-            );
-        } finally {
-            setLoading(false);
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if (values.rating == 0) {
+            return alert('Please select a rating first')
         }
-    };
+        if (!user) {
+            return router.push(`/login?from=/shop/${_id}/${slug}?active=reviews`);
+        }
+        const finalReviewsInfo = {
+            productId: _id,
+            userId: userfromDB?._id,
+            rating: values?.rating,
+            comment: values?.review
+        }
 
+        axiosPublic.post('/reviews', finalReviewsInfo)
+            .then(res => {
+                if (res.data.success) {
+                    refetch()
+                    setIsReivewUpdated(prev => prev + 1)
+                }
+                console.log(res.data.success)
+            })
+            .catch(err => console.log('failed to add ', err))
+
+        console.log('finalReviewsInfo', finalReviewsInfo);
+    }
     return (
-        <form onSubmit={handleSubmit} className="space-y-3">
-            <h3 className="text-lg font-semibold">Add your review</h3>
+        <div>
+            <h1 className="text-xl font-semibold">Add a review</h1>
+            <p className="text-sm opacity-85">Your email address will not be published. Required fields are marked *</p>
 
-            {/* Rating */}
-            <select
-                value={rating}
-                onChange={(e) => setRating(Number(e.target.value))}
-                className="border px-3 py-2 w-full"
-            >
-                <option value={5}>⭐⭐⭐⭐⭐ (5)</option>
-                <option value={4}>⭐⭐⭐⭐ (4)</option>
-                <option value={3}>⭐⭐⭐ (3)</option>
-                <option value={2}>⭐⭐ (2)</option>
-                <option value={1}>⭐ (1)</option>
-            </select>
+            <p className="text-sm opacity-85 mt-4.5 mb-2">Your rating *</p>
+            <div className="flex items-center gap-3.5">
+                <div onClick={() => ratingChanges(1)}>
+                    <BsFillStarFill size={15} className={`flex cursor-pointer text-[#666666] hover:text-[#cafd10]  ${values.rating == '1' && 'text-[#cafd10]'}`} />
+                </div>
 
-            {/* Comment */}
-            <textarea
-                placeholder="Write your review..."
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                className="border px-3 py-2 w-full"
-                rows={4}
-            />
+                <div className=" border-l border-gray-400 h-5" />
 
-            <button
-                type="submit"
-                disabled={loading}
-                className="bg-black text-white px-4 py-2 disabled:opacity-50"
-            >
-                {loading ? "Submitting..." : "Submit Review"}
-            </button>
-        </form>
+                <div onClick={() => ratingChanges(2)} className={`flex cursor-pointer text-[#666666] hover:text-[#cafd10]  ${values.rating == '2' && 'text-[#cafd10]'}`}>
+                    <BsFillStarFill size={15} />
+                    <BsFillStarFill size={15} />
+                </div>
+
+                <div className=" border-l border-gray-400 h-5" />
+
+                <div onClick={() => ratingChanges(3)} className={`flex cursor-pointer text-[#666666] hover:text-[#cafd10]  ${values.rating == '3' && 'text-[#cafd10]'}`}>
+                    <BsFillStarFill size={15} />
+                    <BsFillStarFill size={15} />
+                    <BsFillStarFill size={15} />
+                </div>
+                <div className=" border-l border-gray-400 h-5" />
+                <div onClick={() => ratingChanges(4)} className={`flex cursor-pointer text-[#666666] hover:text-[#cafd10]  ${values.rating == '4' && 'text-[#cafd10]'}`}>
+                    <BsFillStarFill size={15} />
+                    <BsFillStarFill size={15} />
+                    <BsFillStarFill size={15} />
+                    <BsFillStarFill size={15} />
+                </div>
+                <div className=" border-l border-gray-400 h-5" />
+                <div onClick={() => ratingChanges(5)} className={`flex cursor-pointer text-[#666666] hover:text-[#cafd10]  ${values.rating == '5' && 'text-[#cafd10]'}`}>
+                    <BsFillStarFill size={15} />
+                    <BsFillStarFill size={15} />
+                    <BsFillStarFill size={15} />
+                    <BsFillStarFill size={15} />
+                </div>
+            </div>
+
+            <p className="text-sm opacity-85 mt-4.5 mb-2">Your review *</p>
+            <form onSubmit={handleSubmit} className="flex flex-col">
+                <textarea onChange={(e) =>
+                    setValues(prev => ({
+                        ...prev,
+                        review: e.target.value
+                    }))
+                } rows={6} className=" w-full lg:w-3/4 px-4 py-1.5 bg-[#f1f3f5] focus:bg-white focus:outline-red-600" required />
+
+                <button type="submit" className="cursor-pointer bg-[#f05350] hover:bg-[#f05350dc] text-white w-[120px] px-6 py-2 font-[500] mt-4 tracking-wide">Submit</button>
+            </form>
+        </div>
     );
 };
 
