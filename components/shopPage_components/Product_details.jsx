@@ -78,7 +78,7 @@ const Product_details = ({ product, refetch }) => {
                 <p className="bg-[#ebe0dff1] mt-6 w-fit font-medium px-3 rounded-xs py-1 text-red-600 text-sm tracking-wide">{stock?.inStock ? 'In Stock' : 'Out of stock'}</p>
 
                 {/* cart - wishlist */}
-                <AddTo_Cart info={{ selectedColor, selectedSize, _id, name, slug, price, sale, images, stock }} />
+                <AddTo_Cart info={{ selectedColor, selectedSize, _id, name, slug, price, sale, images, stock,colors: availableColors,sizes: availableSizes  }} />
                 <AddTo_Wishlist wishlistCount={wishlistCount} info={{ _id, slug, name, price, sale, image: images[0], stock }} />
 
                 <hr className="opacity-15 my-6" />

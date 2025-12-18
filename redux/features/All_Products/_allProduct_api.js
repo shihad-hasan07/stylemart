@@ -6,7 +6,7 @@ const allProduct_api = createApi({
         // baseUrl: 'http://localhost:5000/api/v1'
         baseUrl: 'https://stylemart-server-v2.vercel.app/api/v1'
     }),
-    tagTypes: ['allProducts'],
+    tagTypes: ['allProducts', 'Product'],
     endpoints: (builder) => ({
         getAllProducts: builder.query({
             query: (params) => ({
@@ -16,7 +16,9 @@ const allProduct_api = createApi({
             providesTags: ['allProducts']
         }),
         getSingleProduct: builder.query({
-            query: (id) => `/products/single/${id}`
+            query: (id) => `/products/single/${id}`,
+            providesTags: (id) => [{ type: 'Product', id }],
+            keepUnusedDataFor: 10,
         })
     })
 })

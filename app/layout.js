@@ -7,6 +7,7 @@ import ReduxProvider from '@/redux/ReduxProvider';
 import Authprovider from '@/Auth/Authprovider';
 import 'react-toastify/dist/ReactToastify.css';
 import ToastProvider from '@/components/shared/ToastProvider';
+import WishlistModal from '@/components/shared/wishlist/WishlistModal';
 
 
 const jost = Jost({
@@ -31,9 +32,9 @@ export default function RootLayout({ children }) {
             <MidNavbar />
             <div className='min-h-[305px]'>
               {children}
+              <WishlistModal />
             </div>
             <Footer />
-
           </ReduxProvider>
         </Authprovider>
       </body>

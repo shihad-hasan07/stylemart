@@ -6,10 +6,12 @@ import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist } from '@/redux/features/addToWishlist/slice_addtoWishlist';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const Product_card = ({ product, shopPage, home }) => {
     const { _id, name, images, rating, price, sale, stock, slug } = product;
-
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
     const dispatch = useDispatch()
 
@@ -29,6 +31,10 @@ const Product_card = ({ product, shopPage, home }) => {
             inStock: stock.inStock
         }));
 
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("wishlist", "true");
+        params.set("product", name);
+        router.replace(`?${params.toString()}`, { scroll: false });
     }
 
 

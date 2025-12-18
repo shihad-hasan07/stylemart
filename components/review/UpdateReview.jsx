@@ -1,16 +1,18 @@
 'use client'
 import { allContext } from "@/Auth/Authprovider";
 import useAxios from "@/hooks/useAxios";
+import allProduct_api from "@/redux/features/All_Products/_allProduct_api";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const UpdateReveiw = ({ info }) => {
     const { _id, slug, setIsReivewUpdated, refetch, myReview, setIsOpen, isOpen } = info
     const { user, userfromDB } = useContext(allContext)
     const axiosPublic = useAxios()
-
+    const dispatch = useDispatch()
     const router = useRouter()
     const [values, setValues] = useState({
         rating: myReview?.rating,
@@ -46,6 +48,9 @@ const UpdateReveiw = ({ info }) => {
             .then(res => {
                 if (res.data.success) {
                     refetch()
+                    dispatch(allProduct_api.util.invalidateTags([
+                        { type: 'Product', id: _id }
+                    ]))
                     setIsReivewUpdated(prev => prev + 1)
                     setIsOpen(!isOpen)
                     toast.success("Review updated")
@@ -54,7 +59,7 @@ const UpdateReveiw = ({ info }) => {
                 }
             })
             .catch(err => {
-                toast.error(err?.message)
+                toast.error("Failed to update")
             })
     }
 
