@@ -6,7 +6,7 @@ import Related_Products_loading from '../loading_components/Related_Products_loa
 const Related_Prducts = ({ info }) => {
     const { _id, categories, tags } = info
     const { data, isLoading, error } = useGetAllProductsQuery()
-    const products = data?.data || [];
+    const products = data?.data?.products || [];
 
     const relatedProducts = products
         ?.filter(p =>

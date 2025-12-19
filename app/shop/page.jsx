@@ -45,7 +45,9 @@ const shop_page = () => {
         refetchOnReconnect: true,
     });
 
-    const products = data?.data || [];
+    const products = data?.data?.products || [];
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(12);
 
     // demo start
     const STANDARD_COLORS = [
@@ -247,17 +249,56 @@ const shop_page = () => {
         return result;
     }, [price_filtered_products, instock_clicked, onsale_clicked]);
 
+
     // dynamic filters generator for color and sizes
     useEffect(() => {
         const newFilters = generateFilters(AllfilteredProducts);
-
-        setFilters(prev => {
-            const isSame =
-                JSON.stringify(prev) === JSON.stringify(newFilters);
-
-            return isSame ? prev : newFilters;
-        });
+        setFilters(prev =>
+            JSON.stringify(prev) === JSON.stringify(newFilters)
+                ? prev
+                : newFilters
+        );
     }, [AllfilteredProducts]);
+
+    /* ================= FRONTEND PAGINATION ================= */
+    const totalItems = AllfilteredProducts.length;
+    const totalPages = Math.ceil(totalItems / limit);
+
+    const hasPrev = page > 1;
+    const hasNext = page < totalPages;
+
+    useEffect(() => {
+        if (page > totalPages && totalPages > 0) {
+            setPage(1);
+        }
+    }, [totalPages]);
+
+    const startIndex = (page - 1) * limit;
+    const paginatedProducts = AllfilteredProducts.slice(
+        startIndex,
+        startIndex + limit
+    );
+
+    /* sliding window */
+    const windowSize = 3;
+    const half = Math.floor(windowSize / 2);
+
+    let startPage = page - half;
+    let endPage = page + half;
+
+    if (startPage < 1) {
+        startPage = 1;
+        endPage = windowSize;
+    }
+
+    if (endPage > totalPages) {
+        endPage = totalPages;
+        startPage = Math.max(1, endPage - windowSize + 1);
+    }
+
+    const pages = [];
+    for (let p = startPage; p <= endPage; p++) pages.push(p);
+
 
     const clearAllFilters = () => {
         setSelected_filter_color([]);
@@ -306,17 +347,32 @@ const shop_page = () => {
                     <FiFilter /> <span>Filter</span>
                 </button>
 
-                <p className='text-xs text-gray-600'>Showing {AllfilteredProducts.length} results</p>
+                <p className='text-xs hidden xl:block text-gray-600'>Showing {paginatedProducts?.length} results</p>
 
-                <div className='font-medium text-[14px]'>
-                    <label className="text-gray-600">Sort by :</label>
-                    <select className="w-36 cursor-pointer outline-0 border-0">
-                        <option value="">Select by popularity</option>
-                        <option value="">Select by rating</option>
-                        <option value="">Select by latest</option>
-                        <option value="">Price: low to high</option>
-                        <option value="">Price: high to low</option>
-                    </select>
+                <div className='font-medium text-[14px] gap-3 flex items-center divide-x divide-gray-400'>
+                    <div>
+                        <label className="text-gray-400">Sort by:</label>
+                        <select className="w-32 sm:w-36  mr-3 cursor-pointer outline-0 border-0">
+                            <option value="">Select by popularity</option>
+                            <option value="">Select by rating</option>
+                            <option value="">Select by latest</option>
+                            <option value="">Price: low to high</option>
+                            <option value="">Price: high to low</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="text-gray-400">Show:</label>
+                        <select value={limit}
+                            onChange={(e) => setLimit(Number(e.target.value))}
+                            className="cursor-pointer outline-0 border-0">
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="16">16</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+
                 </div>
             </div>
 
@@ -406,12 +462,12 @@ const shop_page = () => {
                         </>
                     }
 
+                    {/* PRODUCTS */}
                     <div className='grid grid-cols-2 min-[800px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 2xl:grid-cols-4 gap-4 pl-0 xl:pl-6'>
                         {isLoading &&
                             [...Array(4)].map((_, idx) => <Shop_page_loading key={idx} />)
                         }
-
-                        {AllfilteredProducts.map((product, idx) =>
+                        {paginatedProducts.map((product, idx) =>
                             <Product_card
                                 home={false}
                                 key={idx}
@@ -420,6 +476,41 @@ const shop_page = () => {
                             />
                         )}
                     </div>
+
+                    {/* PAGINATION */}
+                    {totalPages > 1 && (
+                        <div className="flex items-center justify-center gap-2 mt-8">
+                            <button
+                                onClick={() => setPage(p => p - 1)}
+                                disabled={!hasPrev}
+                                className="cursor-pointer disabled:cursor-not-allowed px-4 py-2 rounded bg-red-500 text-white disabled:opacity-40"
+                            >
+                                ← Prev
+                            </button>
+
+                            {pages.map(p => (
+                                <button
+                                    key={p}
+                                    onClick={() => setPage(p)}
+                                    className={`w-10 h-10 rounded cursor-pointer
+                                ${page === p
+                                            ? "bg-[#2a2a2a] text-gray-300"
+                                            : "bg-gray-100 hover:bg-gray-200"
+                                        }`}
+                                >
+                                    {p}
+                                </button>
+                            ))}
+
+                            <button
+                                onClick={() => setPage(p => p + 1)}
+                                disabled={!hasNext}
+                                className="cursor-pointer disabled:cursor-not-allowed px-4 py-2 rounded bg-red-500 text-white disabled:opacity-40"
+                            >
+                                Next →
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
             <Recently_viewed></Recently_viewed>
