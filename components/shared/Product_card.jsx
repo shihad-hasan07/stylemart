@@ -43,11 +43,11 @@ const Product_card = ({ product, shopPage, home }) => {
 
             {/* image */}
             <Link href={`/shop/${_id}/${slug}`}>
-                <div className={`relative ${shopPage
+                <div className={`relative  ${shopPage
                     ? 'h-[300px] min-[530]:h-[350px] min-[620]:h-[370px] min-[715]:h-[400px] md:h-[370px]'
                     : `${home
                         ? 'h-[550px] sm:h-[380px] lg:h-[400px] 2xl:h-[450px]'
-                        : 'h-[250px] sm:h-[280px] md:h-[270px] lg:h-[350px] xl:h-[400px] 2xl:h-[450px]'}`}  bg-[#faf7fa]`}
+                        : 'h-[250px] sm:h-[280px] md:h-[270px] lg:h-[350px] xl:h-[400px] 2xl:h-[420px]'}`}  bg-[#faf7fa]`}
                 >
                     <Image placeholder="blur" priority={home == true ? true : false} blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
                         src={images[0]} fill alt={name}

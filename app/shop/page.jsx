@@ -249,7 +249,6 @@ const shop_page = () => {
         return result;
     }, [price_filtered_products, instock_clicked, onsale_clicked]);
 
-
     // dynamic filters generator for color and sizes
     useEffect(() => {
         const newFilters = generateFilters(AllfilteredProducts);
@@ -260,8 +259,67 @@ const shop_page = () => {
         );
     }, [AllfilteredProducts]);
 
+    // FIlter by order like (defalut ,latset, rating ,lowToHigh,HighToLow)
+    const [order, setOrder] = useState("default");
+
+    const orderWiseProducts = useMemo(() => {
+        if (!AllfilteredProducts?.length) return [];
+
+        let products = [...AllfilteredProducts];
+
+        //  Default = Latest
+        if (order === "default" || order === "latest") {
+            products.sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
+
+        } else if (order === "rating") {
+            // Top Rated (average × log(count + 1))
+            products.sort((a, b) => {
+                const scoreA =
+                    (a.rating?.average || 0) *
+                    Math.log((a.rating?.count || 0) + 1);
+
+                const scoreB =
+                    (b.rating?.average || 0) *
+                    Math.log((b.rating?.count || 0) + 1);
+
+                return scoreB - scoreA;
+            });
+
+        } else if (order === "highestSale") {
+            //  Highest percentage discount
+            products = products
+                .filter(p => p.sale?.active)
+                .sort((a, b) => {
+                    const percentA =
+                        ((a.price - a.sale.price) / a.price) * 100;
+                    const percentB =
+                        ((b.price - b.sale.price) / b.price) * 100;
+                    return percentB - percentA;
+                });
+
+        } else if (order === "lowToHigh") {
+            products.sort(
+                (a, b) =>
+                    (a.sale?.active ? a.sale.price : a.price) -
+                    (b.sale?.active ? b.sale.price : b.price)
+            );
+
+        } else if (order === "highToLow") {
+            products.sort(
+                (a, b) =>
+                    (b.sale?.active ? b.sale.price : b.price) -
+                    (a.sale?.active ? a.sale.price : a.price)
+            );
+        }
+
+        return products;
+
+    }, [order, AllfilteredProducts]);
+
     /* ================= FRONTEND PAGINATION ================= */
-    const totalItems = AllfilteredProducts.length;
+    const totalItems = orderWiseProducts.length;
     const totalPages = Math.ceil(totalItems / limit);
 
     const hasPrev = page > 1;
@@ -274,7 +332,7 @@ const shop_page = () => {
     }, [totalPages]);
 
     const startIndex = (page - 1) * limit;
-    const paginatedProducts = AllfilteredProducts.slice(
+    const paginatedProducts = orderWiseProducts.slice(
         startIndex,
         startIndex + limit
     );
@@ -310,7 +368,7 @@ const shop_page = () => {
     }
 
     return (
-        <div className='container mx-auto px-5 xl:px-20 mt-2'>
+        <div className='container mx-auto px-5 xl:px-20 pt-2'>
 
             {/* navigation */}
             <div className='flex items-center gap-1 text-[14px]'>
@@ -352,19 +410,25 @@ const shop_page = () => {
                 <div className='font-medium text-[14px] gap-3 flex items-center divide-x divide-gray-400'>
                     <div>
                         <label className="text-gray-400">Sort by:</label>
-                        <select className="w-32 sm:w-36  mr-3 cursor-pointer outline-0 border-0">
-                            <option value="">Select by popularity</option>
-                            <option value="">Select by rating</option>
-                            <option value="">Select by latest</option>
-                            <option value="">Price: low to high</option>
-                            <option value="">Price: high to low</option>
+                        <select
+                            value={order}
+                            onChange={(e) => setOrder(e.target.value)}
+                            className="w-32 sm:w-[140px] px-0.5 mr-3 cursor-pointer outline-0 border-0"
+                        >
+                            <option value="latest">Latest products</option>
+                            <option value="rating">Top Rated</option>
+                            <option value="highestSale">Highest Discount</option>
+                            <option value="endingSoon">Ending Soon</option>
+                            <option value="lowToHigh">Price: Low → High</option>
+                            <option value="highToLow">Price: High → Low</option>
                         </select>
                     </div>
+
                     <div>
                         <label className="text-gray-400">Show:</label>
                         <select value={limit}
                             onChange={(e) => setLimit(Number(e.target.value))}
-                            className="cursor-pointer outline-0 border-0">
+                            className="cursor-pointer sm:w-[40px] text-center outline-0 border-0">
                             <option value="8">8</option>
                             <option value="12">12</option>
                             <option value="16">16</option>
@@ -394,41 +458,14 @@ const shop_page = () => {
                     handleModal={() => (
                         isFilterOpen ? closeFilter() : openFilter()
                     )}
-                    props={{
-                        // closeFilter,
-                        filters,
-                        selected_filter_color,
-                        setSelected_filter_color,
-                        selected_filter_size,
-                        setSelected_filter_size,
-                        minPrice,
-                        setMinPrice,
-                        maxPrice,
-                        setMaxPrice,
-                        priceRange,
-                        setPriceRange,
-                        instock_clicked, onsale_clicked,
-                        setInstock_clicked, setOnsale_clicked
-                    }}
+                    props={{ filters, selected_filter_color, setSelected_filter_color, selected_filter_size, setSelected_filter_size, minPrice, setMinPrice, maxPrice, setMaxPrice, priceRange, setPriceRange, instock_clicked, onsale_clicked, setInstock_clicked, setOnsale_clicked }}
                 />
 
                 {/* Large screen filter */}
                 <div className="pb-2 hidden xl:block sticky top-0 self-start h-fit">
                     <Main_Filter_lg
                         props={{
-                            filters,
-                            selected_filter_color,
-                            setSelected_filter_color,
-                            selected_filter_size,
-                            setSelected_filter_size,
-                            minPrice,
-                            setMinPrice,
-                            maxPrice,
-                            setMaxPrice,
-                            priceRange,
-                            setPriceRange,
-                            instock_clicked, onsale_clicked,
-                            setInstock_clicked, setOnsale_clicked
+                            filters, selected_filter_color, setSelected_filter_color, selected_filter_size, setSelected_filter_size, minPrice, setMinPrice, maxPrice, setMaxPrice, priceRange, setPriceRange, instock_clicked, onsale_clicked, setInstock_clicked, setOnsale_clicked
                         }}
                     />
                 </div>
@@ -444,15 +481,7 @@ const shop_page = () => {
                         instock_clicked == true || onsale_clicked == true
                     ) &&
                         <Clear_filter
-                            props={{
-                                selected_filter_color,
-                                setSelected_filter_color,
-                                selected_filter_size,
-                                setSelected_filter_size,
-                                minPrice, maxPrice, priceRange, setPriceRange,
-                                instock_clicked, onsale_clicked,
-                                setInstock_clicked, setOnsale_clicked
-                            }}
+                            props={{ selected_filter_color, setSelected_filter_color, selected_filter_size, setSelected_filter_size, minPrice, maxPrice, priceRange, setPriceRange, instock_clicked, onsale_clicked, setInstock_clicked, setOnsale_clicked }}
                         />
                     }
 
@@ -468,11 +497,7 @@ const shop_page = () => {
                             [...Array(4)].map((_, idx) => <Shop_page_loading key={idx} />)
                         }
                         {paginatedProducts.map((product, idx) =>
-                            <Product_card
-                                home={false}
-                                key={idx}
-                                product={product}
-                                shopPage={true}
+                            <Product_card home={false} key={idx} product={product} shopPage={true}
                             />
                         )}
                     </div>

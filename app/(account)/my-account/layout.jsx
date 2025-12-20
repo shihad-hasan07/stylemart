@@ -9,7 +9,7 @@ import { RxCross1, RxHamburgerMenu } from "react-icons/rx";
 import PrivateRoute_user from "@/Routes_controller/PrivateRoute_user";
 
 export default function Layout({ children }) {
-    const { user, logOut } = useContext(allContext)
+    const { user, loading, userfromDB, logOut } = useContext(allContext)
     const [isactive, setIsactive] = useState('')
     const [menu, setMenu] = useState(false)
 
@@ -25,7 +25,7 @@ export default function Layout({ children }) {
         window.addEventListener("resize", checkScreen);
         return () => window.removeEventListener("resize", checkScreen);
     }, []);
-
+    const isAdmin = userfromDB?.role == 'admin'
     return (
         <PrivateRoute_user>
 
@@ -48,8 +48,8 @@ export default function Layout({ children }) {
                                                     alt="profile"
                                                 />)
                                                 : (
-                                                <img src='/userNull.jpg' className='w-full h-full object-cover rounded-full' alt="" />
-                                            )
+                                                    <img src='/userNull.jpg' className='w-full h-full object-cover rounded-full' alt="" />
+                                                )
                                         }
                                         {console.log('img from layout', user?.photoURL)}
                                     </div>
@@ -82,7 +82,11 @@ export default function Layout({ children }) {
                                 </div>
                             </Link>
                             <hr className="opacity-10" />
-
+                            <div>
+                                {
+                                    isAdmin && 'HI IAM ADMIN'
+                                }
+                            </div>
                             {/* wishlist */}
                             <Link onClick={() => setIsactive('/my-account/wishlist')} href='/my-account/wishlist'>
                                 <div className={`${isactive == '/my-account/wishlist' && 'bg-gray-100'} flex items-center gap-2 py-3 pl-4`}>

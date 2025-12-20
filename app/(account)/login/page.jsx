@@ -52,7 +52,7 @@ const Login_page = () => {
     }
 
     return (
-        <div className='container mx-auto px-0 xl:px-20 mt-2'>
+        <div className='container mx-auto px-0 xl:px-20 pt-2'>
             {/* navigation */}
             <div className='flex items-center px-5 xl:px-0 gap-1 text-[14px] max-w-3/4'>
                 <Link href='/'><p>Home</p></Link>

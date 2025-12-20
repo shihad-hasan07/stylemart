@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
             <ToastProvider />
             <TopNavbar />
             <MidNavbar />
-            <div className='min-h-[305px]'>
+            <div className=' min-h-[305px]'>
               {children}
               <WishlistModal />
             </div>

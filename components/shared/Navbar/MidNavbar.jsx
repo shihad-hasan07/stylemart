@@ -8,6 +8,7 @@ import LeftSide_modal from "../LeftSide_modal";
 import BottomNavbar from "./BottomNavbar";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const MidNavbar = () => {
     const { user, loading, logOut } = useContext(allContext)
@@ -26,9 +27,8 @@ const MidNavbar = () => {
     }
     return (
         <div>
-
             {/* for large device */}
-            <div className="hidden xl:flex container mx-auto px-20 pt-5 pb-4 justify-between items-center  w-full">
+            <div className=" hidden xl:flex container mx-auto px-20 pt-5 pb-4 justify-between items-center  w-full">
                 <div className="flex items-center gap-6">
                     <div>
                         <Link href='/'>
@@ -62,13 +62,22 @@ const MidNavbar = () => {
                                 :
                                 <div className="flex items-center gap-1.5">
                                     {
-                                        user ?
-                                            <Link href={`${user ? '/my-account' : '/login'}`} >
-                                                <div className="w-[45px] h-[45px] rounded-full">
-                                                    <img src={`${user.photoURL ? user.photoURL : '/userNull.jpg'}`} className="w-full h-full object-cover rounded-full" alt="nmae" />
+                                        user && (
+                                            <Link href='/my-account'>
+                                                <div className="w-[45px] h-[45px] rounded-full overflow-hidden relative">
+                                                    <Image
+                                                        src={user.photoURL || '/userNull.jpg'}
+                                                        alt={user.displayName || 'User'}
+                                                        fill
+                                                        className="object-cover"
+                                                        priority
+                                                        onError={(e) => {
+                                                            e.target.srcset = '/userNull.jpg';
+                                                        }}
+                                                    />
                                                 </div>
                                             </Link>
-                                            : <UserRound size={28} strokeWidth={2} />
+                                        )
                                     }
                                     <div>
                                         <Link href={`${user ? '/my-account' : '/login'}`}>

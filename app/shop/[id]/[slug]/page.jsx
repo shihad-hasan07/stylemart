@@ -20,7 +20,7 @@ const Product_details_page = () => {
     }, [product?._id]);
 
     return (
-        <div className='container mx-auto px-5 xl:px-20  mt-2'>
+        <div className='container mx-auto px-5 xl:px-20  pt-2'>
             {/* navigation */}
             <div className='flex items-center gap-1 text-[14px] max-w-3/4'>
                 <Link href='/'><p>Home</p></Link>

@@ -25,11 +25,32 @@ const WeeksSale = () => {
 
     // filter parameter men----women---outerwear
     const [filteredData, setFilteredData] = useState([])
-    const handleClick = (id) => {
-        setisActive(id)
-        const data = allProducts.filter(res => res.categories.some(data => data.toLowerCase().includes(id)))
-        setFilteredData(data)
-    }
+    const handleClick = (btn) => {
+        setisActive(btn.toLowerCase());
+
+        const data = allProducts
+            // category match
+            .filter(product =>
+                product.categories.some(
+                    category => category.toLowerCase() === btn.toLowerCase()
+                )
+            )
+            // শুধু sale active
+            .filter(product => product.sale?.active)
+            // highest percentage discount first
+            .sort((a, b) => {
+                const percentA =
+                    ((a.price - a.sale.price) / a.price) * 100;
+
+                const percentB =
+                    ((b.price - b.sale.price) / b.price) * 100;
+
+                return percentB - percentA;
+            })
+            .slice(0, 7);
+
+        setFilteredData(data);
+    };
 
     useEffect(() => {
         handleClick('men')
@@ -47,7 +68,7 @@ const WeeksSale = () => {
                     <div className='space-x-1'>
                         {
                             buttons.map((btn, idx) => (
-                                <button key={idx} onClick={() => handleClick(btn.id)}
+                                <button key={idx} onClick={() => handleClick(btn.buttonName)}
                                     className={`cursor-pointer text-[15px] font-[450] tracking-wider px-3 rounded-sm py-1
                                      ${active == btn.id
                                             ? 'bg-[#ededee] '

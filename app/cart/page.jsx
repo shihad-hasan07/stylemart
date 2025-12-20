@@ -396,7 +396,7 @@ export default function CartPage() {
                                                             placeholder="Coupon code"
                                                             className="flex-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-cyan-500"
                                                         />
-                                                        <button className="px-6 py-2 bg-cyan-500 text-white font-medium rounded hover:bg-cyan-600 transition-colors">
+                                                        <button className="px-6 py-2 cursor-pointer bg-[#1e2939] text-white font-medium rounded hover:bg-[#1e2939e3] transition-colors">
                                                             Apply coupon
                                                         </button>
                                                         <button
