@@ -1,6 +1,7 @@
 'use client'
 import { allContext } from "@/Auth/Authprovider";
 import useAxios from "@/hooks/useAxios";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
@@ -9,7 +10,7 @@ import { toast } from "react-toastify";
 const AddReview = ({ info }) => {
     const { _id, slug, setIsReivewUpdated, refetch } = info
     const { user, userfromDB } = useContext(allContext)
-    const axiosPublic = useAxios()
+    const axiosSecure=useAxiosSecure()
 
     const router = useRouter()
     const [values, setValues] = useState({
@@ -37,12 +38,11 @@ const AddReview = ({ info }) => {
         }
         const finalReviewsInfo = {
             productId: _id,
-            userId: userfromDB?._id,
             rating: values?.rating,
             comment: values?.review
         }
 
-        axiosPublic.post('/reviews', finalReviewsInfo)
+        axiosSecure.post('/reviews', finalReviewsInfo)
             .then(res => {
                 if (res.data.success) {
                     refetch()

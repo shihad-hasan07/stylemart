@@ -21,6 +21,16 @@
   }
 } */
 
+
+/* inpur type search er defalut cross icon ta soranor jonno */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  display: none;
+}
+input[type="search"] {
+  appearance: textfield;
+}
+
 .wrap-anywhere {
   overflow-wrap: anywhere;
   word-break: break-word;

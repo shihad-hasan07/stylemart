@@ -28,14 +28,24 @@ const Authprovider = ({ children }) => {
   // get the use from db 
   const [userfromDB, setUserfromDB] = useState(null);
   const [latestUpdate, setLatestUpdate] = useState(0);
+  const [dbUserLoading, setDbUserLoading] = useState(false)
+
   useEffect(() => {
     if (!user?.email) return;
 
+    setDbUserLoading(true);
+
     axiosPublic
       .get(`/users/single?gmail=${user.email}`)
-      .then(res => setUserfromDB(res.data.data))
-      .catch(console.error);
+      .then(res => {
+        setUserfromDB(res.data.data);
+      })
+      .catch(console.error)
+      .finally(() => {
+        setDbUserLoading(false);
+      });
   }, [user?.email, latestUpdate]);
+
 
 
   // Simple signup without email verification
@@ -221,7 +231,8 @@ const Authprovider = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      user, userfromDB, setUserfromDB, setLatestUpdate,
+      userfromDB, setUserfromDB, setLatestUpdate, dbUserLoading,
+      user,
       loading,
       error,
       signup,

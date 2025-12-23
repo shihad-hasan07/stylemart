@@ -1,6 +1,6 @@
 'use client'
 import { allContext } from "@/Auth/Authprovider";
-import useAxios from "@/hooks/useAxios";
+import useAxiosSecure from "@/hooks/useAxiosSecure";
 import allProduct_api from "@/redux/features/All_Products/_allProduct_api";
 import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
@@ -10,8 +10,8 @@ import { toast } from "react-toastify";
 
 const UpdateReveiw = ({ info }) => {
     const { _id, slug, setIsReivewUpdated, refetch, myReview, setIsOpen, isOpen } = info
-    const { user, userfromDB } = useContext(allContext)
-    const axiosPublic = useAxios()
+    const { user } = useContext(allContext)
+    const axiosSecure = useAxiosSecure()
     const dispatch = useDispatch()
     const router = useRouter()
     const [values, setValues] = useState({
@@ -27,8 +27,10 @@ const UpdateReveiw = ({ info }) => {
         ))
     }
 
+    const [loading, setLoading] = useState(false)
     const handleUpdate = (e) => {
         e.preventDefault()
+        if (loading) return;
 
         if (values.rating == 0) {
             return alert('Please select a rating first')
@@ -37,20 +39,24 @@ const UpdateReveiw = ({ info }) => {
             return router.push(`/login?from=/shop/${_id}/${slug}?active=reviews`);
         }
         const finalReviewsInfo = {
-            userId: userfromDB?._id,
             rating: values?.rating,
             comment: values?.review
         }
+        if (finalReviewsInfo.rating === myReview?.rating && finalReviewsInfo.comment === myReview.comment) {
+            setLoading(false);
+            setIsOpen(!isOpen);
+            toast.success("Review updated");
+            return;
+        }
 
-        console.log('hi ', myReview?._id, finalReviewsInfo);
-
-        axiosPublic.patch(`/reviews/${myReview?._id}`, finalReviewsInfo)
+        setLoading(true)
+        axiosSecure.patch(`/reviews/${myReview?._id}`, finalReviewsInfo)
             .then(res => {
                 if (res.data.success) {
-                    refetch()
                     dispatch(allProduct_api.util.invalidateTags([
                         { type: 'Product', id: _id }
                     ]))
+                    refetch()
                     setIsReivewUpdated(prev => prev + 1)
                     setIsOpen(!isOpen)
                     toast.success("Review updated")
@@ -60,6 +66,9 @@ const UpdateReveiw = ({ info }) => {
             })
             .catch(err => {
                 toast.error("Failed to update")
+            })
+            .finally(() => {
+                setLoading(false)
             })
     }
 
@@ -113,10 +122,25 @@ const UpdateReveiw = ({ info }) => {
                     }))
                 } rows={5} className=" text-base w-full lg:w-3/4 px-4 py-2 bg-[#f1f3f5] focus:bg-white focus:outline-red-600" required />
 
-                <div className=" space-x-3 text-base">
-                    <button type="submit" className="cursor-pointer bg-[#f05350] hover:bg-[#f05350dc] text-white w-[170px] px-6 py-2 font-[500] mt-4 tracking-wide">Update Review</button>
+                <div className="flex space-x-3 text-base">
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={` relative flex items-center justify-center gap-2 w-[170px] px-6 py-2 font-[500] mt-4 tracking-wide text-white
+                          ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#f05350] hover:bg-[#f05350dc] cursor-pointer"}`}
+                    >
+                        {loading
+                            ? (<>
+                                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                                Updating...</>)
+                            : (
+                                "Update Review "
+                            )}
+                    </button>
+
+                    {/* <button type="submit" className="cursor-pointer bg-[#f05350] hover:bg-[#f05350dc] text-white w-[170px] px-6 py-2 font-[500] mt-4 tracking-wide">Update Review</button> */}
                     {/* <button type="button" className="cursor-pointer bg-[#f05350] hover:bg-[#f05350dc] text-white w-[120px] px-6 py-2 font-[500] mt-4 tracking-wide">Cancel</button> */}
-                    <button type="button" onClick={() => { setIsOpen(!isOpen); setValues({ rating: myReview?.rating, review: myReview?.comment }) }}
+                    <button type="button" disabled={loading} onClick={() => { setIsOpen(!isOpen); setValues({ rating: myReview?.rating, review: myReview?.comment }) }}
                         className="cursor-pointer bg-white hover:bg-gray-100 text-[#f05350] border-2 border-[#f05350] w-[120px] px-6 py-[7px] font-[500] mt-4 tracking-wide">Cancel</button>
                 </div>
                 {/* <button type="button" className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2"> Cancel </button> */}

@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const MidNavbar = () => {
-    const { user, loading, logOut } = useContext(allContext)
+    const { user, loading, dbUserLoading, userfromDB, logOut } = useContext(allContext)
     const { cartProducts, totalItems, totalPrice } = useSelector(state => state.cart)
     const { wishlistProducts } = useSelector(state => state.wishlist)
     const router = useRouter()
@@ -66,7 +66,8 @@ const MidNavbar = () => {
                                             <Link href='/my-account'>
                                                 <div className="w-[45px] h-[45px] rounded-full overflow-hidden relative">
                                                     <Image
-                                                        src={user.photoURL || '/userNull.jpg'}
+                                                        src={`${!(user?.photoURL == (null || "" || "null" || undefined)) ? user?.photoURL : '/userNull.jpg'}`}
+                                                        // src={'/userNull.jpg'}
                                                         alt={user.displayName || 'User'}
                                                         fill
                                                         className="object-cover"
@@ -99,11 +100,35 @@ const MidNavbar = () => {
                                                     or
                                                     <Link href='/login'><p className="hover:text-red-600">Login</p></Link>
                                                 </div>
-                                                : <div className="flex text-sm gap-1 font-medium">
-                                                    <Link href='/my-account'><p className="hover:text-red-600">Profile</p></Link>
-                                                    or
-                                                    <p onClick={() => logOut()} className="cursor-pointer hover:text-red-600">Logout</p>
+                                                : <div className="flex text-sm gap-1 font-medium items-center">
+                                                    <Link href="/my-account">
+                                                        <p className="hover:text-red-600">Profile</p>
+                                                    </Link>
+
+                                                    {/* dashboard link (only admin) */}
+                                                    {dbUserLoading ? (
+                                                        <span className="text-gray-400">| Checking role…</span>
+                                                    ) : (
+                                                        userfromDB?.role == 'admin' && (
+                                                            <>
+                                                                <span>|</span>
+                                                                <Link href="/admin">
+                                                                    <p className="hover:text-red-600">Dashboard</p>
+                                                                </Link>
+                                                            </>
+                                                        )
+                                                    )}
+
+                                                    <span>|</span>
+
+                                                    <p
+                                                        onClick={() => logOut()}
+                                                        className="cursor-pointer hover:text-red-600"
+                                                    >
+                                                        Logout
+                                                    </p>
                                                 </div>
+
 
                                         }
                                     </div>
@@ -140,7 +165,7 @@ const MidNavbar = () => {
                 <button onClick={() => queryhandler('Women')} className="cursor-pointer"><p>Women</p></button>
                 <button onClick={() => queryhandler('Men')} className="cursor-pointer" ><p>Men</p></button>
                 <button onClick={() => queryhandler('Outerwear')} className="cursor-pointer"><p>Outerwear</p></button>
-                <Link href='/'><p>Blog</p></Link>
+                <Link href='/blog'><p>Blog</p></Link>
                 <Link href='/'><p>Best Discount</p></Link>
             </div>
 

@@ -9,9 +9,11 @@ import RatingBars from '../review/RatingBars';
 import UpdateReveiw from '../review/UpdateReview';
 import Swal from 'sweetalert2';
 import useAxios from '@/hooks/useAxios';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
 
 const Reviews = ({ infoFromProducts, infoForReviews }) => {
-    const axiosPublic = useAxios()
+    // const axiosPublic = useAxios()
+    const axiosSecure = useAxiosSecure()
     const { userfromDB, user } = useContext(allContext)
     const { _id, slug, name, rating } = infoFromProducts;
     const { reviews = [], setIsReivewUpdated, refetch } = infoForReviews;
@@ -29,7 +31,7 @@ const Reviews = ({ infoFromProducts, infoForReviews }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const handleDelete = async () => {
-        const result = await Swal.fire({
+        Swal.fire({
             title: 'Delete Review?',
             text: "You won't be able to revert this!",
             icon: 'warning',
@@ -37,15 +39,23 @@ const Reviews = ({ infoFromProducts, infoForReviews }) => {
             confirmButtonColor: '#ef4444',
             cancelButtonColor: '#6b7280',
             confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        })
+            cancelButtonText: 'Cancel',
 
-        if (result.isConfirmed) {
-            try {
-                await axiosPublic.delete(`/reviews/${myReview._id}`, {
-                    data: { userId: userfromDB?._id }
-                })
+            showLoaderOnConfirm: true,
+            allowOutsideClick: () => !Swal.isLoading(),
 
+            preConfirm: async () => {
+                try {
+                    await axiosSecure.delete(`/reviews/${myReview._id}`)
+                    setIsOpen(false)
+                } catch (error) {
+                    Swal.showValidationMessage(
+                        'Failed to delete review'
+                    )
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
                 Swal.fire({
                     title: 'Deleted!',
                     text: 'Your review has been deleted.',
@@ -54,17 +64,12 @@ const Reviews = ({ infoFromProducts, infoForReviews }) => {
                     showConfirmButton: false
                 })
 
-                refetch() 
-                setIsReivewUpdated(prev=>prev+1)
-            } catch (error) {
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Failed to delete review.',
-                    icon: 'error'
-                })
+                refetch()
+                setIsReivewUpdated(prev => prev + 1)
             }
-        }
+        })
     }
+
     return (
         <>
             <div>
