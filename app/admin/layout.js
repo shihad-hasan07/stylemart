@@ -8,6 +8,8 @@ import Sidebar from './components/Sidebar/Sidebar';
 import { SidebarProvider } from './components/Sidebar/sidebarContext/sidebarContext';
 import Header from './components/Header';
 
+const ALLOWED_ROLES = ['admin', 'manager', 'staff'];
+
 export default function AdminLayout({ children }) {
     const { user, logOut, loading, userfromDB } = useContext(allContext);
     const router = useRouter();
@@ -20,7 +22,7 @@ export default function AdminLayout({ children }) {
             return;
         }
 
-        if (userfromDB && userfromDB.role !== 'admin') {
+        if (userfromDB && !ALLOWED_ROLES.includes(userfromDB?.role)) {
             router.replace('/');
         }
     }, [loading, user, userfromDB, router]);
@@ -31,7 +33,7 @@ export default function AdminLayout({ children }) {
         </div>
     }
 
-    if (!user || userfromDB.role !== 'admin') {
+    if (!user || !ALLOWED_ROLES.includes(userfromDB?.role)) {
         return null;
     }
 
@@ -43,8 +45,7 @@ export default function AdminLayout({ children }) {
 
                 <div className="flex flex-col flex-1">
                     <Header info={{ user, logOut }} />
-                    {/* <main className="flex-1 overflow-y-auto bg-[#f9fafb] p-6"> */}
-                    <main className="flex-1 overflow-y-auto bg-gray-200 p-6">
+                    <main className="flex-1 overflow-y-auto bg-gray-200">
                         {children}
                     </main>
                 </div>

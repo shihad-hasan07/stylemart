@@ -1,11 +1,12 @@
 import React from 'react';
+import Routes_heading_texts from '../../components/shared/Routes_heading_texts';
 
-const page = () => {
+const Order_page = () => {
     return (
         <div>
-            orders
+            <Routes_heading_texts name={'orders'} />
         </div>
     );
 };
 
-export default page;
+export default Order_page;

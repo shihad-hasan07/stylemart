@@ -3,10 +3,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "./sidebarContext/sidebarContext";
 import { Box, Ellipsis, House, LayoutDashboard, Settings, ShoppingCart, Tag, Users } from "lucide-react";
-import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
-import { FaArrowLeft } from "react-icons/fa";
 import { BsArrowLeftShort } from "react-icons/bs";
-import { ImHome } from "react-icons/im";
+import { useEffect } from "react";
+
+const ALLOWED_ROLES = ['admin', 'manager', 'staff'];
 
 export default function Sidebar({ role }) {
     const { isExpanded, isMobileOpen, isHovered, activeItem,
@@ -15,6 +15,12 @@ export default function Sidebar({ role }) {
 
     const shouldExpand = isMobileOpen || isExpanded || isHovered;
 
+    const pathname = usePathname()
+
+    useEffect(() => {
+        if (pathname === "/admin") setActiveItem("Dashboard")
+    }, [pathname]);
+
     const menu = [
         {
             name: "Dashboard",
@@ -22,14 +28,24 @@ export default function Sidebar({ role }) {
             icons: <LayoutDashboard className={`${activeItem == "Dashboard" ? 'text-blue-500' : 'text-gray-500'}`} />
         },
         {
+            name: "Demo",
+            href: "/admin/demo",
+            icons: <LayoutDashboard className={`${activeItem == "Dashboard" ? 'text-blue-500' : 'text-gray-500'}`} />
+        },
+        {
+            name: "Product demo",
+            href: "/admin/productsDemo",
+            icons: <LayoutDashboard className={`${activeItem == "Dashboard" ? 'text-blue-500' : 'text-gray-500'}`} />
+        },
+        {
             name: "Products",
             href: '/admin/products',
-            icons: <Box className={`${activeItem == "Products" ? 'text-blue-500' : 'text-gray-500'}`} size={23} />
+            icons: <Box className={`${activeItem == "Products" ? 'text-blue-500' : 'text-gray-500'}`} size={25} />
         },
         {
             name: "Orders",
             href: '/admin/orders',
-            icons: <ShoppingCart className={`${activeItem == "Orders" ? 'text-blue-500' : 'text-gray-500'}`} />
+            icons: <ShoppingCart className={`${activeItem == "Orders" ? 'text-blue-500' : 'text-gray-500'}`} size={28} />
         },
         {
             name: "Sales",
@@ -47,6 +63,7 @@ export default function Sidebar({ role }) {
             icons: <Settings className={`${activeItem == "Settings" ? 'text-blue-500' : 'text-gray-500'}`} />
         }
     ];
+
     return (
         <div className="shrink-0">
 
@@ -54,12 +71,12 @@ export default function Sidebar({ role }) {
             {isMobileOpen && (<div onClick={toggleMobileSidebar} className="fixed top-20 left-0 right-0   bottom-0 bg-black/40 z-40 lg:hidden" />)}
 
             <aside onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}
-                className={`fixed top-20 -mt-3 h-[calc(100vh-0rem)] lg:relative lg:top-0 lg:h-screen z-40 border-r bg-white border-gray-300 transition-all duration-300 ease-in-out
-                ${isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${shouldExpand ? "w-64" : "w-20"}`}
+                className={`fixed top-20  h-[calc(100vh-0rem)] lg:relative lg:top-0 lg:h-screen z-40 border-r bg-white border-gray-300 transition-all duration-300 ease-in-out
+                ${isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} ${shouldExpand ? "w-[280px]" : "w-20"}`}
             >
 
                 {/* user status admin---manager---staff */}
-                <div className="flex items-center px-3 mt-4 h-[70px]">
+                <div className="flex items-center px-3 pt-4 h-[70px]">
                     {/* owner */}
                     {
                         role == "admin" &&
@@ -107,7 +124,7 @@ export default function Sidebar({ role }) {
                 </div>
 
                 {/* back to home */}
-                <House className={`text-gray-600  p-1 transition-all duration-300 ${shouldExpand ? 'opacity-0 translate-x-3 translate-y-4 ' : '-mt-2 opacity-100  translate-x-5 translate-y-4.5 mb-7'}`} size={34} />
+                <House className={`text-gray-600  p-1 mt-1 transition-all duration-300 ${shouldExpand ? 'opacity-0 translate-x-3 translate-y-4 ' : '-mt-2 opacity-100  translate-x-5 translate-y-4.5 mb-7'}`} size={34} />
                 <Link href='/'>
                     <div className={`flex -mt-3.5 hover:bg-gray-100 rounded-xl py-2.5 px-1 items-center mx-3 transition-all duration-300 ${shouldExpand ? 'opacity-100 -translate-y-3 h-fit ' : 'opacity-0 -translate-y-3 h-0'}`}>
                         <BsArrowLeftShort size={28} className="text-gray-600" />

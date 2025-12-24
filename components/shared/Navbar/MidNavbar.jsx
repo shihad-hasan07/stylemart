@@ -10,6 +10,8 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
+const ALLOWED_ROLES = ['admin', 'manager', 'staff'];
+
 const MidNavbar = () => {
     const { user, loading, dbUserLoading, userfromDB, logOut } = useContext(allContext)
     const { cartProducts, totalItems, totalPrice } = useSelector(state => state.cart)
@@ -109,8 +111,9 @@ const MidNavbar = () => {
                                                     {dbUserLoading ? (
                                                         <span className="text-gray-400">| Checking role…</span>
                                                     ) : (
-                                                        userfromDB?.role == 'admin' && (
+                                                        ALLOWED_ROLES.includes(userfromDB?.role) && (
                                                             <>
+                                                                {console.log(userfromDB?.role)}
                                                                 <span>|</span>
                                                                 <Link href="/admin">
                                                                     <p className="hover:text-red-600">Dashboard</p>

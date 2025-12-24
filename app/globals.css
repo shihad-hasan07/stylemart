@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+body {
+  margin: 0;
+  padding: 0;
+}
+
 /* :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -27,6 +32,7 @@ input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   display: none;
 }
+
 input[type="search"] {
   appearance: textfield;
 }

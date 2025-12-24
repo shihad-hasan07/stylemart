@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
+import { BsArrowLeftShort } from "react-icons/bs";
+import Link from "next/link";
 
 export default function Header({ info }) {
     const { user, logOut } = info
@@ -27,7 +29,7 @@ export default function Header({ info }) {
     }, []);
 
     return (
-        <header className="relative z-50 h-[70px] md:h-[76px] py-4 px-4 flex items-center justify-between  border-b border-gray-300">
+        <header className="relative z-50 h-[70px] md:h-[80px] px-4 flex items-center justify-between  border-b border-gray-300">
 
             <div className="flex gap-2 items-center">
                 {/* hamburger--- device-- lg */}
@@ -87,7 +89,13 @@ export default function Header({ info }) {
                     <p className="">{user?.displayName}</p>
                     <p className="text-sm">{user?.email}</p>
                     <hr className=" border-b border-gray-300 my-3" />
-                    <p className="flex items-center cursor-pointer gap-1.5 hover:bg-gray-200 px-2 py-1.5 rounded-md"><CiLogout size={21} /> <span>Logout</span></p>
+                    <Link href='/'>
+                        <div className='flex items-center cursor-pointer gap-1.5 hover:bg-gray-200 px-2 py-1.5 rounded-md'>
+                            <BsArrowLeftShort size={28} className="-ml-1" />
+                            <span >Back to Store</span>
+                        </div>
+                    </Link>
+                    <p onClick={logOut} className="flex items-center cursor-pointer gap-1.5 hover:bg-gray-200 px-2 py-1.5 rounded-md"><CiLogout size={21} /> <span>Logout</span></p>
                 </div>
             }
 
