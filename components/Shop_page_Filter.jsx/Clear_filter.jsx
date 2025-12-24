@@ -2,7 +2,7 @@ import React from 'react';
 import { RxCross2 } from 'react-icons/rx';
 import { FiMinus } from "react-icons/fi";
 
-const Clear_filter = ({ props }) => {
+const Clear_filter = ({ props, categoryFilter }) => {
     const { instock_clicked, onsale_clicked,
         setInstock_clicked, setOnsale_clicked, minPrice, maxPrice, priceRange, setPriceRange, selected_filter_color, setSelected_filter_color, selected_filter_size, setSelected_filter_size } = props;
 
@@ -30,6 +30,7 @@ const Clear_filter = ({ props }) => {
 
 
     const clearAllFilters = () => {
+        categoryFilter.allCategories = []
         setSelected_filter_color([]);
         setSelected_filter_size([]);
         setPriceRange([minPrice, maxPrice]);

@@ -386,7 +386,7 @@ const shop_page = () => {
                     <label key={idx} className="flex text-[14px] font-[450] items-center gap-2 px-3 py-1 border border-[#b2c9e0] rounded-xs cursor-pointer">
                         <input
                             type="checkbox"
-                            className='peer w-3 h-3 bg-[#f1f3f5] accent-[#ee403d]'
+                            className='cursor-pointer peer w-3 h-3 bg-[#f1f3f5] accent-[#ee403d]'
                             checked={selectedCategory.includes(category)}
                             onChange={() => handleSelectedCategory(category)}
                         />

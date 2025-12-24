@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 
-const Main_Filter_for_sm = ({ props, isOpen, handleModal }) => {
+const Main_Filter_for_sm = ({ props, isOpen, handleModal, dashboard }) => {
     const {
         filters,
         selected_filter_color,
@@ -110,7 +110,7 @@ const Main_Filter_for_sm = ({ props, isOpen, handleModal }) => {
 
 
     return (
-        <div className={`overflow-y-auto scrollbar-thin fixed top-0 left-0 h-full w-4/6
+        <div className={`overflow-y-auto scrollbar-thin fixed top-0 left-0 h-full ${dashboard ? 'w-[290px] sm:w-[350px]' : 'w-4/6'} 
              bg-white shadow-2xl  transform transition-transform duration-300 ease-in-out z-50
                   ${isOpen ? 'translate-x-0' : '-translate-x-full'} px-5 pt-10 pb-8`}
         >
