@@ -18,7 +18,7 @@ export default function AdminLayout({ children }) {
         if (loading) return;
 
         if (!user) {
-            router.replace('/login?from=/admin');
+            router.replace('/login?from=/dashboard');
             return;
         }
 

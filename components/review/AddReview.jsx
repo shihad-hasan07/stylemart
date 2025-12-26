@@ -10,7 +10,8 @@ import { toast } from "react-toastify";
 const AddReview = ({ info }) => {
     const { _id, slug, setIsReivewUpdated, refetch } = info
     const { user, userfromDB } = useContext(allContext)
-    const axiosSecure=useAxiosSecure()
+    const axiosSecure = useAxiosSecure()
+    const [loading, setLoading] = useState(false)
 
     const router = useRouter()
     const [values, setValues] = useState({
@@ -42,6 +43,7 @@ const AddReview = ({ info }) => {
             comment: values?.review
         }
 
+        setLoading(true)
         axiosSecure.post('/reviews', finalReviewsInfo)
             .then(res => {
                 if (res.data.success) {
@@ -53,6 +55,7 @@ const AddReview = ({ info }) => {
             .catch(err => {
                 toast.error(err?.message)
                 console.log('failed to add ', err)
+                setLoading(false)
             })
 
         console.log('finalReviewsInfo', finalReviewsInfo);
@@ -107,7 +110,22 @@ const AddReview = ({ info }) => {
                     }))
                 } rows={5} className=" w-full lg:w-3/4 px-4 py-2 bg-[#f1f3f5] focus:bg-white focus:outline-red-600" required />
 
-                <button type="submit" className="cursor-pointer bg-[#f05350] hover:bg-[#f05350dc] text-white w-[120px] px-6 py-2 font-[500] mt-4 tracking-wide">Submit</button>
+
+
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className={` relative flex items-center justify-center gap-2 w-[170px] px-6 py-2 font-[500] mt-4 tracking-wide text-white
+                          ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#f05350] hover:bg-[#f05350dc] cursor-pointer"}`}
+                >
+                    {loading
+                        ? (<>
+                            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                            Submitting...</>)
+                        : (
+                            "Submit"
+                        )}
+                </button>
             </form>
         </div>
     );

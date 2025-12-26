@@ -18,48 +18,43 @@ export default function Sidebar({ role }) {
     const pathname = usePathname()
 
     useEffect(() => {
-        if (pathname === "/admin") setActiveItem("Dashboard")
+        if (pathname === "/dashboard") setActiveItem("Dashboard")
     }, [pathname]);
 
     const menu = [
         {
             name: "Dashboard",
-            href: "/admin",
+            href: "/dashboard",
             icons: <LayoutDashboard className={`${activeItem == "Dashboard" ? 'text-blue-500' : 'text-gray-500'}`} />
         },
         {
             name: "Demo",
-            href: "/admin/demo",
-            icons: <LayoutDashboard className={`${activeItem == "Dashboard" ? 'text-blue-500' : 'text-gray-500'}`} />
-        },
-        {
-            name: "Product demo",
-            href: "/admin/productsDemo",
+            href: "/dashboard/demo",
             icons: <LayoutDashboard className={`${activeItem == "Dashboard" ? 'text-blue-500' : 'text-gray-500'}`} />
         },
         {
             name: "Products",
-            href: '/admin/products',
+            href: '/dashboard/products',
             icons: <Box className={`${activeItem == "Products" ? 'text-blue-500' : 'text-gray-500'}`} size={25} />
         },
         {
             name: "Orders",
-            href: '/admin/orders',
+            href: '/dashboard/orders',
             icons: <ShoppingCart className={`${activeItem == "Orders" ? 'text-blue-500' : 'text-gray-500'}`} size={28} />
         },
         {
             name: "Sales",
-            href: '/admin/sales',
+            href: '/dashboard/sales',
             icons: <Tag className={`${activeItem == "Sales" ? 'text-blue-500' : 'text-gray-500'}`} />
         },
         {
             name: "Customers",
-            href: '/admin/customers',
+            href: '/dashboard/customers',
             icons: <Users className={`${activeItem == "Customers" ? 'text-blue-500' : 'text-gray-500'}`} />
         },
         {
             name: "Settings",
-            href: '/admin/settings',
+            href: '/dashboard/settings',
             icons: <Settings className={`${activeItem == "Settings" ? 'text-blue-500' : 'text-gray-500'}`} />
         }
     ];

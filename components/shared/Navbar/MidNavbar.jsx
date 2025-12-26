@@ -115,7 +115,7 @@ const MidNavbar = () => {
                                                             <>
                                                                 {console.log(userfromDB?.role)}
                                                                 <span>|</span>
-                                                                <Link href="/admin">
+                                                                <Link href="/dashboard">
                                                                     <p className="hover:text-red-600">Dashboard</p>
                                                                 </Link>
                                                             </>

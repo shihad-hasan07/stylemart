@@ -80,7 +80,7 @@ export default function ProfileUpdatePage() {
 
             // Append image only if user selected a new one
             if (imageFile) {
-                form.append("photo", imageFile);
+                form.append("image", imageFile);
             } else {
                 console.log(user.photoURL);
                 form.append('photoURL', user?.photoURL)

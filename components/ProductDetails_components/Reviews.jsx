@@ -64,7 +64,7 @@ const Reviews = ({ infoFromProducts, infoForReviews }) => {
                     showConfirmButton: false
                 })
 
-                refetch()
+                refetch?.();
                 setIsReivewUpdated(prev => prev + 1)
             }
         })

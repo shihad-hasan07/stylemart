@@ -15,9 +15,11 @@ import FilterProductNotfound from '@/components/shared/FilterProductNotfound';
 import Clear_filter from '@/components/Shop_page_Filter.jsx/Clear_filter';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Products_page = () => {
-    const { data, error, refetch, isLoading } = useGetAllProductsQuery(undefined, { refetchOnMountOrArgChange: true, refetchOnFocus: true, refetchOnReconnect: true, });
+    const { data, error, refetch, isLoading } = useGetAllProductsQuery(undefined, { pollingInterval: 30000, refetchOnMountOrArgChange: true, refetchOnFocus: true, refetchOnReconnect: true, });
+    // const { data, error, refetch, isLoading } = useGetAllProductsQuery();
     const { user, logOut, loading, userfromDB } = useContext(allContext);
     const [openMenuId, setOpenMenuId] = useState(null);
     const axiosSecure = useAxiosSecure()
@@ -56,7 +58,7 @@ const Products_page = () => {
     };
     const handleEdit = (id) => {
         if (id) {
-            router.push(`/admin/products/update/${id}`)
+            router.push(`/dashboard/products/update/${id}`)
         }
     }
     const handleDelete = async (id) => {
@@ -101,8 +103,15 @@ const Products_page = () => {
         })
     }
 
-    // for the filter in this page -----start( Reuse form shop page)
-    const allCategories = [...new Set(products.flatMap(res => res.categories))];
+    // below things are for the filter in this page -----start( Reuse form shop page)
+    // const allCategories = [...new Set(products.flatMap(res => res.categories))];
+    const allCategories = Object.entries(
+        products.flatMap(p => p.categories)
+            .reduce((a, c) => ((a[c] = (a[c] || 0) + 1), a), {})
+    )
+        .sort((a, b) => b[1] - a[1])
+        .map(([c]) => c);
+
     const [isFilterOpen, setIsFIlterOpen] = useState(false)
     const STANDARD_COLORS = [
         { name: "Black", hex: "#000000" },
@@ -122,17 +131,15 @@ const Products_page = () => {
         "XS", "S", "M", "L", "XL", "XXL",
         "24", "26", "28", "30", "32", "34"
     ];
-    function generateFilters(products) {
 
+    function generateFilters(products) {
         const colorCount = {};
         const sizeCount = {};
-
         // init 0
         STANDARD_COLORS.forEach(c => (colorCount[c.name] = 0));
         STANDARD_SIZES.forEach(s => (sizeCount[s] = 0));
 
         products.forEach(product => {
-
             // ==== COLOR ====
             const colorVar = product.variations?.find(v => v.attribute === "Color");
             if (colorVar) {
@@ -140,7 +147,6 @@ const Products_page = () => {
                     if (colorCount[col] !== undefined) colorCount[col]++;
                 });
             }
-
             // ==== SIZE ====
             const sizeVar = product.variations?.find(v => v.attribute === "Size");
             if (sizeVar) {
@@ -289,7 +295,7 @@ const Products_page = () => {
         setSelectedCategory([])
     }
 
-    //  for filter end
+    //  filter end
 
 
     if (isLoading) return <Products_page_loading />
@@ -321,13 +327,16 @@ const Products_page = () => {
             <div className='px-6 m-5 bg-white rounded-xl py-5'>
                 <div className='flex items-center justify-between'>
                     <div className='flex gap-2.5'>
-                        <button onClick={() => setIsFIlterOpen(true)} className='cursor-pointer flex items-center gap-1.5 text-sm sm:text-base border border-gray-400 rounded-md px-4 sm:px-5.5 py-2'><FiFilter /><span>Filter</span></button>
-                        <button className='cursor-pointer flex items-center gap-1.5 text-sm sm:text-base border border-gray-400 rounded-md px-3 sm:px-4 py-2'><RxDownload /><span>Export</span></button>
+                        <button onClick={() => setIsFIlterOpen(true)} className='cursor-pointer flex items-center gap-1.5 text-sm sm:text-base border border-gray-300 rounded-md px-4 sm:px-5.5 py-2'><FiFilter /><span>Filter</span></button>
+                        <button className='cursor-pointer flex items-center gap-1.5 text-sm sm:text-base border border-gray-300 rounded-md px-3 sm:px-4 py-2'><RxDownload /><span>Export</span></button>
                     </div>
                     {/*  add products button */}
                     {
-                        role == 'staff' ? <button className='border border-gray-400 rounded-md px-3 text-sm sm:text-base sm:px-5.5 py-2 font-semibold bg-red-500 hover:opacity-90 text-white'>Inventory</button>
-                            : <button className='cursor-pointer flex items-center gap-1.5 border border-gray-400 rounded-md px-3 text-sm sm:text-base sm:px-5.5 py-2 font-semibold bg-red-500 hover:opacity-90 text-white'><HiOutlinePlusSm size={22} /><span>Add product</span></button>
+                        role == 'staff' ? <button className='border border-gray-400 rounded-md px-3 text-sm sm:text-base sm:px-5.5 py-2 font-semibold bg-red-500 hover:opacity-90 text-white'>
+                            Inventory</button>
+                            : <Link href={'/dashboard/products/add'}> <button className='cursor-pointer flex items-center gap-1.5 border border-gray-400 rounded-md px-3 text-sm sm:text-base sm:px-5.5 py-2 font-semibold bg-red-500 hover:opacity-90 text-white'><HiOutlinePlusSm size={22} />
+                                <span>Add product</span></button>
+                            </Link>
                     }
                 </div>
             </div>
