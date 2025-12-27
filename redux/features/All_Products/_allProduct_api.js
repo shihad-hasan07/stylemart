@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const allProduct_api = createApi({
     reducerPath: 'allProductApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:5000/api/v1'
-        // baseUrl: 'https://stylemart-server-v2.vercel.app/api/v1'
+        // baseUrl: 'http://localhost:5000/api/v1'
+        baseUrl: 'https://stylemart-server-v2.vercel.app/api/v1'
     }),
     tagTypes: ['allProducts', 'Product'],
     endpoints: (builder) => ({

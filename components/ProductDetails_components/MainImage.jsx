@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
 
-const MainImage = ({ images, sale, price }) => {
+const MainImage = ({ images, sale, price, preview }) => {
     const [selectedImage, setSelectedImage] = useState(0)
     const [position, setPosition] = useState({ x: 50, y: 50 });
     const [isHovering, setIsHovering] = useState(false);
@@ -15,7 +15,7 @@ const MainImage = ({ images, sale, price }) => {
         const y = ((e.clientY - rect.top) / rect.height) * 100;
         setPosition({ x, y });
     };
-    
+
     return (
         <div className="">
             {/* image zoom on hover */}
@@ -23,16 +23,20 @@ const MainImage = ({ images, sale, price }) => {
                 className="relative h-[480px] sm:h-[540px] md:h-[590px] lg:h-[630px] xl:h-[700px] overflow-hidden cursor-crosshair"
                 onMouseMove={handleMouseMove} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}
             >
-                <Image placeholder="blur" loading="lazy"
-                    blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
-                    src={images[selectedImage]} fill alt={name}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 25vw, 25vw"
-                    className='rounded-xs object-cover bg-[#e8e8e8] transition-transform duration-75'
-                    style={{
-                        transform: isHovering ? 'scale(2)' : 'scale(1)',
-                        transformOrigin: `${position.x}% ${position.y}%`
-                    }}
-                />
+                {
+                    images?.length > 0 && images[selectedImage] ?
+                        <Image placeholder="blur" loading="lazy"
+                            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjBmMCIvPjwvc3ZnPg=="
+                            src={images && images[selectedImage]} fill alt={name}
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 25vw, 25vw"
+                            className='rounded-xs object-cover bg-[#e8e8e8] transition-transform duration-75'
+                            style={{
+                                transform: isHovering ? 'scale(2)' : 'scale(1)',
+                                transformOrigin: `${position.x}% ${position.y}%`
+                            }}
+                        />
+                        : <div className="rounded-xs object-cover bg-[#e8e8e8] transition-transform duration-75 w-full h-full"></div>
+                }
 
                 {
                     sale?.active ?

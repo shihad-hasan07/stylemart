@@ -12,8 +12,30 @@ import Select_by_variations from "../ProductDetails_components/Select_by_variati
 import Descrip_info_reviews from "../ProductDetails_components/Descrip_info_reviews";
 import Related_Prducts from "../ProductDetails_components/Related_Prducts";
 
-const Product_details = ({ product, refetch }) => {
-    const { _id, sku, name, slug, brand, description, price, sale, images, categories, sortDescription, tags, rating, stock, variations, cartCount, wishlistCount, createdAt, updatedAt } = product;
+const Product_details = ({ product, refetch, preview = false }) => {
+    // const { _id, sku, name, slug, brand, description, price, sale, images,
+    //     categories, sortDescription, tags, rating, stock,
+    //     variations, cartCount, wishlistCount, createdAt, updatedAt }
+    //     = product;
+
+    const { _id,
+        sku,
+        name,
+        slug,
+        brand,
+        description,
+        price,
+        sale,
+        images = [],
+        categories = [],
+        sortDescription,
+        tags = [],
+        rating = { average: 0, count: 0 },
+        stock = {},
+        variations = [],
+        cartCount = 0,
+        wishlistCount = 0,
+    } = product;
 
     // for select size and color part
     const [selectedColor, setSelectedColor] = useState('');
@@ -27,9 +49,9 @@ const Product_details = ({ product, refetch }) => {
 
 
     return (
-        <div className="grid md:grid-cols-2 gap-x-10 gap-y-2 my-6">
+        <div className={`grid md:grid-cols-2 gap-x-10 gap-y-2  ${!preview && 'my-6'}`}>
             {/* text part */}
-            <MainImage images={images} sale={sale} price={price}></MainImage>
+            <MainImage preview={preview} images={images} sale={sale} price={price}></MainImage>
 
             {/*  text part */}
             <div>
@@ -37,10 +59,14 @@ const Product_details = ({ product, refetch }) => {
                 <p className="text-3xl font-semibold tracking-wide">{name}</p>
 
                 {/* rating */}
-                <div className='flex gap-2 mt-2.5 mb-3 items-center'>
-                    <Star_Rating rating={rating.average}></Star_Rating>
-                    <span className='text-xs font-semibold'>{rating.count} reviews</span>
-                </div>
+
+                {
+                    !preview &&
+                    <div className='flex gap-2 mt-2.5 mb-3 items-center'>
+                        <Star_Rating rating={rating.average}></Star_Rating>
+                        <span className='text-xs font-semibold'>{rating.count} reviews</span>
+                    </div>
+                }
 
 
                 {/* brand */}
@@ -78,23 +104,30 @@ const Product_details = ({ product, refetch }) => {
                 <p className="bg-[#ebe0dff1] mt-6 w-fit font-medium px-3 rounded-xs py-1 text-red-600 text-sm tracking-wide">{stock?.inStock ? 'In Stock' : 'Out of stock'}</p>
 
                 {/* cart - wishlist */}
-                <AddTo_Cart info={{ selectedColor, selectedSize, _id, name, slug, price, sale, images, stock, colors: availableColors, sizes: availableSizes }} />
-                <AddTo_Wishlist wishlistCount={wishlistCount} info={{ _id, slug, name, price, sale, image: images[0], stock }} />
+                <div className={preview ? "pointer-events-none opacity-90" : ""}>
+                    <AddTo_Cart info={{ selectedColor, selectedSize, _id, name, slug, price, sale, images, stock, colors: availableColors, sizes: availableSizes }} />
+                    <AddTo_Wishlist wishlistCount={wishlistCount} info={{ _id, slug, name, price, sale, image: images[0], stock }} />
+                </div>
 
                 <hr className="opacity-15 my-6" />
 
                 <Promises_And_additional_info sku={sku} categories={categories} tags={tags} />
-                <SocialProfile></SocialProfile>
+                <div className={`${preview?'pointer-events-none':''}`}>
+                    <SocialProfile></SocialProfile>
+                </div>
             </div>
 
             {/* Decription - AdditionalInfo - Review */}
             <div className="md:col-span-2 mt-7 md:mt-5">
-                <Descrip_info_reviews Info={{ _id, slug, name, description, variations, rating, colorVariation, refetch }} />
+                <Descrip_info_reviews preview={preview} Info={{ _id, slug, name, description, variations, rating, colorVariation, refetch }} />
             </div>
+
 
             {/* Show  max 4 related to the products */}
             <div className="md:col-span-2 mt-10">
-                <Related_Prducts info={{ _id, categories, tags }} />
+                {!preview &&
+                    <Related_Prducts info={{ _id, categories, tags }} />
+                }
             </div>
         </div >
     );

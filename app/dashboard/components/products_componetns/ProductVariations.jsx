@@ -3,20 +3,19 @@ import { useEffect, useState } from "react";
 import { Plus, X, ChevronDown, Palette, Ruler } from "lucide-react";
 
 const VARIATION_TYPES = ["Color", "Size"];
-
 const STANDARD_COLORS = [
     { name: "Black", hex: "#000000" },
-    { name: "White", hex: "#FFFFFF" },
-    { name: "Gray", hex: "#9CA3AF" },
-    { name: "Navy Blue", hex: "#1E3A8A" },
-    { name: "Blue", hex: "#3B82F6" },
-    { name: "Red", hex: "#EF4444" },
-    { name: "Maroon", hex: "#991B1B" },
-    { name: "Green", hex: "#10B981" },
-    { name: "Olive", hex: "#84CC16" },
-    { name: "Beige", hex: "#FDE68A" },
-    { name: "Brown", hex: "#92400E" },
-    { name: "Pink", hex: "#EC4899" },
+    { name: "White", hex: "#e5e7eb" },
+    { name: "Gray", hex: "#808080" },
+    { name: "Navy Blue", hex: "#0b1d63" },
+    { name: "Blue", hex: "#1e73ff" },
+    { name: "Red", hex: "#ff2e2e" },
+    { name: "Maroon", hex: "#7b1b1b" },
+    { name: "Green", hex: "#1c7c3c" },
+    { name: "Olive", hex: "#808000" },
+    { name: "Beige", hex: "#f5e1b8" },
+    { name: "Brown", hex: "#6b3b1f" },
+    { name: "Pink", hex: "#f3a6b3" },
 ];
 
 const STANDARD_SIZES = [
@@ -24,20 +23,20 @@ const STANDARD_SIZES = [
     "24", "26", "28", "30", "32", "34"
 ];
 
-export default function ProductVariations({ setProductVaritaions }) {
-    const [variations, setVariations] = useState([]);
-    const [openDropdown, setOpenDropdown] = useState(null);
+export default function ProductVariations({ variations, setProductVaritaions, dropDown }) {
+
+    const { openDropdown, setOpenDropdown } = dropDown
 
     const usedAttributes = variations.map(v => v.attribute);
 
     const addVariation = (attribute) => {
         if (!attribute) return;
-        setVariations([...variations, { attribute, options: [] }]);
+        setProductVaritaions([...variations, { attribute, options: [] }]);
         setOpenDropdown(variations.length);
     };
 
     const removeVariation = (index) => {
-        setVariations(variations.filter((_, i) => i !== index));
+        setProductVaritaions(variations.filter((_, i) => i !== index));
         setOpenDropdown(null);
     };
 
@@ -58,17 +57,8 @@ export default function ProductVariations({ setProductVaritaions }) {
             updated[vIndex].options.sort((a, b) => STANDARD_SIZES.indexOf(a) - STANDARD_SIZES.indexOf(b));
         }
 
-        setVariations(updated);
+        setProductVaritaions(updated);
     };
-
-    useEffect(() => {
-        setProductVaritaions?.(variations);
-    }, [variations]);
-
-    // const handleSave = () => {
-    //     setProductVaritaions?.(variations);
-    //     console.log("Backend payload 👉", variations);
-    // };
 
     return (
         <div className="">
@@ -80,18 +70,6 @@ export default function ProductVariations({ setProductVaritaions }) {
                         <h2 className='font-bold col-span-2 text-lg mb-1.5'>Product Variations</h2>
                         <p className="text-xs sm:text-sm text-gray-600">Add color and size variations for your product</p>
                     </div>
-                    {/* <div>
-                        {variations.length > 0 && (
-                            <div className="flex justify-end">
-                                <button
-                                    onClick={handleSave}
-                                    className="w-full sm:w-auto px-8 py-3 bg-gray-900 text-white text-sm font-semibold rounded-lg hover:bg-gray-800 shadow-sm hover:shadow transition-all cursor-pointer"
-                                >
-                                    Save Product Variations
-                                </button>
-                            </div>
-                        )}
-                    </div> */}
                 </div>
 
                 {/* Add Variation Dropdown */}
@@ -132,7 +110,7 @@ export default function ProductVariations({ setProductVaritaions }) {
                                         <p className="text-xs text-gray-500">{variation.options.length} selected</p>
                                     </div>
                                 </div>
-                                <button onClick={() => removeVariation(vIndex)} className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-lg transition-colors cursor-pointer">
+                                <button type="button" onClick={() => removeVariation(vIndex)} className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-lg transition-colors cursor-pointer">
                                     <X className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </button>
                             </div>
@@ -156,7 +134,7 @@ export default function ProductVariations({ setProductVaritaions }) {
                                                         />
                                                     )}
                                                     <span className="text-xs sm:text-sm font-medium text-gray-700">{opt}</span>
-                                                    <button onClick={() => toggleOption(vIndex, opt)} className="text-gray-400 hover:text-gray-600 cursor-pointer">
+                                                    <button type="button" onClick={() => toggleOption(vIndex, opt)} className="text-gray-400 hover:text-gray-600 cursor-pointer">
                                                         <X className="w-3.5 h-3.5" />
                                                     </button>
                                                 </div>
@@ -167,7 +145,7 @@ export default function ProductVariations({ setProductVaritaions }) {
 
                                 {/* Dropdown section */}
                                 <div>
-                                    <button onClick={() => setOpenDropdown(openDropdown === vIndex ? null : vIndex)} className="w-full flex items-center justify-between rounded-lg border border-gray-300 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all cursor-pointer" >
+                                    <button type="button" onClick={() => setOpenDropdown(openDropdown === vIndex ? null : vIndex)} className="w-full flex items-center justify-between rounded-lg border border-gray-300 px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all cursor-pointer" >
                                         <span className="flex items-center gap-2">
                                             <Plus className="w-4 h-4" />
                                             Select {variation.attribute}

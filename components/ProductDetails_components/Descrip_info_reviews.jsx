@@ -5,7 +5,7 @@ import useAxios from '@/hooks/useAxios';
 import { useSearchParams } from 'next/navigation';
 
 
-const Descrip_info_reviews = ({ Info }) => {
+const Descrip_info_reviews = ({ Info, preview = false }) => {
     const params = useSearchParams();
     const isActiveParam = params.get('active');
 
@@ -15,16 +15,23 @@ const Descrip_info_reviews = ({ Info }) => {
     const buttons = [
         { name: 'Description', value: 'description' },
         { name: 'Additional Info', value: 'additionalInfo' },
-        { name: `Reviews (${rating?.count || 0})`, value: 'reviews' }
+        !preview && { name: `Reviews (${rating?.count || 0})`, value: 'reviews' }
     ]
     const [reviews, setReviews] = useState([])
     const axiosPublic = useAxios()
 
     const [isReivewUpdated, setIsReivewUpdated] = useState(0)
     useEffect(() => {
-        axiosPublic.get(`/reviews/${_id}`)
-            .then(data => setReviews(data?.data?.data?.reviews))
-    }, [_id, isReivewUpdated])
+        if (preview) return;
+        if (!_id) return;
+
+        axiosPublic
+            .get(`/reviews/${_id}`)
+            .then(res => {
+                setReviews(res?.data?.data?.reviews || []);
+            });
+
+    }, [_id, isReivewUpdated, preview]);
 
     return (
         <>
@@ -80,11 +87,12 @@ const Descrip_info_reviews = ({ Info }) => {
                 }
 
                 {/* review */}
+
                 {
-                    isActive === 'reviews' && <Reviews
+                    !preview && (isActive === 'reviews' && <Reviews
                         infoFromProducts={{ _id, slug, name, rating }}
                         infoForReviews={{ reviews, setIsReivewUpdated, refetch }} />
-
+                    )
                 }
             </div >
         </>

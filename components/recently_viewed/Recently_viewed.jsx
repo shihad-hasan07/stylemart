@@ -10,8 +10,8 @@ export default function Recently_viewed() {
     const axiosPublic = useAxios();
 
     useEffect(() => {
-        // const TTL = 48 * 60 * 60 * 1000;
-        const TTL =  5000;
+        const TTL = 48 * 60 * 60 * 1000;
+        // const TTL =  5000;
         const now = Date.now();
 
         const stored = JSON.parse(
