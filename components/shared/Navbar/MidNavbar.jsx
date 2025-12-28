@@ -113,7 +113,6 @@ const MidNavbar = () => {
                                                     ) : (
                                                         ALLOWED_ROLES.includes(userfromDB?.role) && (
                                                             <>
-                                                                {console.log(userfromDB?.role)}
                                                                 <span>|</span>
                                                                 <Link href="/dashboard">
                                                                     <p className="hover:text-red-600">Dashboard</p>

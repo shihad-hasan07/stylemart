@@ -1,21 +1,636 @@
 'use client'
-import Products_page_loading from '@/app/dashboard/components/Loader/Products_page_loading';
+import Routes_heading_texts from '@/app/dashboard/components/shared/Routes_heading_texts';
+import useAxiosSecure from '@/hooks/useAxiosSecure';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/material_blue.css";
+import Product_details from '@/components/shopPage_components/Product_details';
+import { toast } from 'react-toastify';
+import ProductVariations from '@/app/dashboard/components/products_componetns/ProductVariations';
+import { useParams, useRouter } from 'next/navigation';// Add this import at top
 import { useGetSingleProductQuery } from '@/redux/features/All_Products/_allProduct_api';
-import { useParams, useRouter } from 'next/navigation';
-import React from 'react';
+import ProductFormSkeleton from '@/app/dashboard/components/products_componetns/UpdateProducts_loading';
 
-const update_Products = () => {
+const categories = [
+    "Men", "Women", "Kids", "Baby", "Outerwear",
+    "Accessories", "Bags", "Belts", "Watches", "Wallets", "Shoes", "Others"
+];
+
+const UpdateProduct = () => {
+    const axiosSecure = useAxiosSecure();
+    const router = useRouter();
     const { id } = useParams()
-    const router = useRouter()
-    const { data: { data: product } = {}, isLoading, error, refetch } = useGetSingleProductQuery(id)
 
+    // RTK Query diye product fetch
+    const { data: { data: product } = {}, isLoading, error, refetch } = useGetSingleProductQuery(id);
 
-    if (isLoading) return <Products_page_loading/>
+    const [openPreview, setOpenPreview] = useState(false);
+    const { register, handleSubmit, getValues, setValue, watch, reset, clearErrors, formState: { errors, isSubmitting } } = useForm({
+        defaultValues: {
+            saleEnd: '',
+        },
+        mode: "onChange",
+    });
+
+    // Image state: { type: 'existing' | 'new', url?: string, file?: File, preview?: string }
+    const [images, setImages] = useState([null, null, null, null]);
+    const [imageError, setImageError] = useState("");
+    const [productVariations, setProductVariations] = useState([]);
+
+    // Product data load hole form pre-fill
+    useEffect(() => {
+        if (product) {
+            // Basic fields
+            setValue('name', product.name);
+            setValue('brand', product.brand || '');
+            setValue('sku', product.sku);
+            setValue('slug', product.slug);
+            setValue('sortDescription', product.sortDescription);
+            setValue('description', product.description);
+            setValue('price', product.price);
+            setValue('quantity', product.stock.quantity);
+            setValue('inStock', String(product.stock.inStock));
+            setValue('categories', product.categories);
+            setValue('tags', product.tags.join(', '));
+
+            // Sale settings
+            setValue('sale', product.sale.active);
+            setValue('saleprice', product.sale.price || '');
+            if (product.sale.ends) {
+                const saleDate = new Date(product.sale.ends).toISOString().split('T')[0];
+                setValue('saleEnd', saleDate);
+            }
+
+            // Existing images load
+            const loadedImages = [...Array(4)].map((_, i) => {
+                if (product.images[i]) {
+                    return { type: 'existing', url: product.images[i] };
+                }
+                return null;
+            });
+            setImages(loadedImages);
+
+            const variationsCopy = product.variations
+                ? JSON.parse(JSON.stringify(product.variations))
+                : [];
+            setProductVariations(variationsCopy);
+        }
+    }, [product, setValue]);
+
+    // New image upload
+    const handleImageChange = (e, index) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const updated = [...images];
+        updated[index] = {
+            type: 'new',
+            file,
+            preview: URL.createObjectURL(file),
+        };
+
+        setImages(updated);
+        setImageError("");
+    };
+
+    // Image remove with validation (minimum 1 ta must thakte hobe)
+    const removeImage = (index) => {
+        const nonNullImages = images.filter(img => img !== null);
+
+        if (nonNullImages.length <= 1) {
+            setImageError("At least 1 image is required");
+            return;
+        }
+
+        const updated = [...images];
+        updated[index] = null;
+        setImages(updated);
+        setImageError("");
+    };
+
+    const selectedCategories = watch("categories") || [];
+    const saleActive = watch("sale");
+    const saleEnd = watch("saleEnd");
+
+    useEffect(() => {
+        register("saleEnd", {
+            validate: (value) => {
+                if (!saleActive) return true;
+                return value ? true : "Sale end date is required";
+            },
+        });
+    }, [register, saleActive]);
+
+    const handleClose = () => setOpenPreview(false);
+    const [openDropdown, setOpenDropdown] = useState(null);
+
+    const onSubmit = async (data) => {
+        // Minimum 1 image validation
+        const hasAtLeastOneImage = images.some(img => img !== null);
+        if (!hasAtLeastOneImage) {
+            setImageError("At least 1 image is required");
+            return;
+        }
+        setImageError("");
+
+        data.inStock = data.inStock === "true";
+        const saleEndISOFormat = data.sale && data.saleEnd
+            ? new Date(`${data.saleEnd}T23:59:59Z`).toISOString()
+            : null;
+
+        const finalData = {
+            sku: data.sku,
+            name: data.name,
+            slug: data.slug,
+            brand: data.brand,
+            description: data.description,
+            sortDescription: data.sortDescription,
+            price: data.price,
+            sale: {
+                active: data.sale,
+                price: data.saleprice || null,
+                ends: (data.saleEnd && saleEndISOFormat) || null,
+            },
+            categories: data.categories || [],
+            tags: data.tags || [],
+            stock: {
+                inStock: data.inStock,
+                quantity: data.quantity,
+            },
+            variations: productVariations
+        };
+
+        const formData = new FormData();
+        formData.append("data", JSON.stringify(finalData));
+
+        // Existing images (URLs)
+        const existingImageUrls = images
+            .filter(img => img?.type === 'existing')
+            .map(img => img.url);
+
+        formData.append("existingImages", JSON.stringify(existingImageUrls));
+
+        // New images (Files)
+        images.forEach(img => {
+            if (img?.type === 'new' && img.file) {
+                formData.append("images", img.file);
+            }
+        });
+
+        try {
+            const res = await axiosSecure.patch(`/products/update/${id}`, formData);
+
+            if (res?.data?.success) {
+                toast.success("Product updated successfully");
+                refetch(); // Product data refresh
+                router.push('/dashboard/products');
+            } else {
+                toast.error("Something went wrong");
+            }
+        } catch (err) {
+            toast.error(err?.response?.data?.message || "Failed to update product");
+        }
+    };
+
+    // Live preview data
+    const liveProduct = {
+        sku: watch("sku"),
+        name: watch("name"),
+        slug: watch("slug"),
+        brand: watch("brand"),
+        description: watch("description"),
+        sortDescription: watch("sortDescription"),
+        price: watch("price"),
+        sale: {
+            active: watch("sale"),
+            price: watch("saleprice"),
+            ends: watch("saleEnd"),
+        },
+        images: images
+            .filter(Boolean)
+            .map(img => img.type === 'existing' ? img.url : img.preview),
+        categories: watch("categories") || [],
+        tags: watch("tags") || [],
+        stock: {
+            inStock: watch("inStock") === "true",
+            quantity: watch("quantity"),
+        },
+        variations: productVariations,
+        rating: { average: 0, count: 0 },
+        wishlistCount: 0,
+        cartCount: 0,
+    };
+
+    if (isLoading) {
         return (
-            <div>
-                {product?.name}
-            </div>
+            <>
+                <Routes_heading_texts
+                    name="Update Product"
+                    backButtonLink={true}
+                    isSubmitting={false}
+                />
+                <ProductFormSkeleton />
+            </>
         );
+    }
+
+    if (error || !product) {
+        return (
+            <>
+                <Routes_heading_texts
+                    name="Update Product"
+                    backButtonLink={true}
+                    isSubmitting={false}
+                />
+                <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
+                    <div className="text-center">
+                        <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Failed to Load Product</h3>
+                        <p className="text-gray-600 mb-6">The product you're looking for could not be found or loaded.</p>
+                        <button
+                            onClick={() => router.push('/dashboard/products')}
+                            className="px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                        >
+                            Back to Products
+                        </button>
+                    </div>
+                </div>
+            </>
+        );
+    }
+
+    return (
+        <div>
+            <Routes_heading_texts
+                name={`Update Product: ${product?.name}`}
+                backButtonLink={true}
+                isSubmitting={isSubmitting}
+            />
+
+            {openPreview ? (
+                <div onClick={handleClose} className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+                    <div onClick={(e) => e.stopPropagation()} className="bg-white w-full max-w-[95vw] sm:max-w-[90vw] max-h-[95vh] sm:max-h-[90vh] overflow-y-auto px-4 sm:px-6 lg:px-10 rounded-xl relative">
+                        <div className="sticky top-0 flex justify-between py-2.5 lg:py-3 bg-white z-50">
+                            <h2 className="text-xl font-bold">Product Preview</h2>
+                            <button type="button" onClick={handleClose} className="text-2xl">✕</button>
+                        </div>
+
+                        <div className="pb-5">
+                            <Product_details product={liveProduct} preview={true} />
+                        </div>
+
+                        <div className="sticky bottom-0 bg-white py-2.5 lg:py4 flex justify-end gap-3 z-40">
+                            <button type="button" onClick={handleClose} className="cursor-pointer px-4.5 py-2 bg-red-500 text-white rounded">
+                                Back to Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <form
+                    id="updateProductForm"
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="px-6 m-5 bg-white rounded-xl py-5 mt-3"
+                >
+                    <h2 className='font-bold col-span-2 text-lg mb-3'>Basic Information</h2>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+
+                        {/* Product Name */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Product Name <span className="text-red-500">*</span></label>
+                            <input
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800"
+                                placeholder="e.g. Classic Denim Jacket"
+                                {...register("name", { required: "Product name required" })}
+                            />
+                            {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
+                        </div>
+
+                        {/* Brand */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Brand</label>
+                            <input
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800"
+                                placeholder="e.g. Stylemart"
+                                {...register('brand')}
+                            />
+                        </div>
+
+                        {/* SKU */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">SKU <span className="text-red-500">*</span></label>
+                            <input
+                                className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                placeholder="e.g. NIKE-AIR-MAX-42"
+                                {...register("sku", {
+                                    required: "SKU is required",
+                                    setValueAs: (value) => value
+                                        .trim()
+                                        .replace(/\s+/g, "-")
+                                        .replace(/-+/g, "-")
+                                        .replace(/^-|-$/g, "")
+                                })}
+                            />
+                            {errors.sku && <p className="text-xs text-red-500 mt-1">{errors.sku.message}</p>}
+                        </div>
+
+                        {/* Slug */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Slug <span className="text-red-500">*</span></label>
+                            <input
+                                className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                placeholder="e.g. classic-denim-jacket"
+                                {...register("slug", {
+                                    required: "Slug is required",
+                                    setValueAs: (value) =>
+                                        value
+                                            .toLowerCase()
+                                            .trim()
+                                            .replace(/\s+/g, "-")
+                                            .replace(/-+/g, "-")
+                                            .replace(/^-|-$/g, ""),
+                                })}
+                            />
+                            {errors.slug && <p className="text-xs text-red-500 mt-1">{errors.slug.message}</p>}
+                        </div>
+
+                        {/* Short Description */}
+                        <div className="md:col-span-2">
+                            <label className="block text-sm font-semibold mb-1">Short Description <span className="text-red-500">*</span></label>
+                            <textarea
+                                rows={2}
+                                className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                placeholder="A brief one-line description..."
+                                {...register("sortDescription", { required: "Sort description is required" })}
+                            />
+                            {errors.sortDescription && <p className="text-xs text-red-500 mt-1">{errors.sortDescription.message}</p>}
+                        </div>
+
+                        {/* Full Description */}
+                        <div className="md:col-span-2">
+                            <label className="block text-sm font-semibold mb-1">Full Description <span className="text-red-500">*</span></label>
+                            <textarea
+                                rows={5}
+                                className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                placeholder="Detailed product description..."
+                                {...register("description", { required: "Products full description required" })}
+                            />
+                            {errors.description && <p className="text-xs text-red-500 mt-1">{errors.description.message}</p>}
+                        </div>
+                    </div>
+
+                    <hr className='mt-6 mb-5 text-gray-300' />
+
+                    <h2 className='font-bold col-span-2 text-lg mb-3'>Pricing & Stock</h2>
+                    <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+                        {/* Price */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Price (৳) <span className="text-red-500">*</span></label>
+                            <input
+                                type="number"
+                                step="1"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800"
+                                placeholder="e.g. 1500"
+                                {...register("price", {
+                                    required: "Price is required",
+                                    valueAsNumber: true,
+                                    min: { value: 0, message: "Price cannot be negative" },
+                                })}
+                            />
+                            {errors.price && <p className="text-xs text-red-500 mt-1">{errors.price.message}</p>}
+                        </div>
+
+                        {/* Stock Quantity */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Stock Quantity <span className="text-red-500">*</span></label>
+                            <input
+                                type="number"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800"
+                                placeholder="e.g. 20"
+                                {...register("quantity", {
+                                    required: "Quantity is required",
+                                    valueAsNumber: true,
+                                    min: { value: 0, message: "Quantity cannot be negative" },
+                                })}
+                            />
+                            {errors.quantity && <p className="text-xs text-red-500 mt-1">{errors.quantity.message}</p>}
+                        </div>
+
+                        {/* Stock Status */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Stock Status</label>
+                            <select
+                                className="cursor-pointer w-full rounded-md border border-gray-300 px-3 py-2"
+                                value={String(watch("inStock"))}
+                                {...register("inStock")}
+                            >
+                                <option value="true" className='cursor-pointer'>In Stock</option>
+                                <option value="false">Out of Stock</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr className='mt-6 mb-5 text-gray-300' />
+
+                    {/* Sale Settings */}
+                    <div className='flex justify-between'>
+                        <div className='mb-5'>
+                            <h2 className='font-bold col-span-2 text-lg mb-1.5'>Sale Setting</h2>
+                            <p className="text-xs sm:text-sm text-gray-600">Control sale status, discounted price, and sale duration</p>
+                        </div>
+                        <div className="md:col-span-2 flex items-center gap-3">
+                            <label className="text-sm font-semibold">Active Sale</label>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" className="sr-only peer" {...register("sale")} />
+                                <div className="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-red-500 transition-colors" />
+                                <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5" />
+                            </label>
+                        </div>
+                    </div>
+
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+                        {/* Sale Price */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Sale Price (৳) <span className="text-red-500">*</span></label>
+                            <input
+                                type="number"
+                                step="1"
+                                className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                {...register("saleprice", {
+                                    valueAsNumber: true,
+                                    min: { value: 0, message: "Price cannot be negative" },
+                                    validate: (value) => {
+                                        if (!saleActive) return true;
+                                        if (!value) return "Sale price is required";
+                                        const price = getValues("price");
+                                        return value < price || "Sale price must be lower than regular price";
+                                    },
+                                })}
+                            />
+                            {errors.saleprice && <p className="text-xs text-red-500 mt-1">{errors.saleprice.message}</p>}
+                        </div>
+
+                        {/* Sale End Date */}
+                        <div>
+                            <label className="block text-sm font-semibold mb-1">Sale End <span className="text-red-500">*</span></label>
+                            <div className="relative">
+                                <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400">📅</span>
+                                <Flatpickr
+                                    value={saleEnd}
+                                    options={{
+                                        dateFormat: "Y-m-d",
+                                        minDate: "today",
+                                        disableMobile: true,
+                                    }}
+                                    placeholder="Select sale end date"
+                                    onChange={([date]) => {
+                                        if (date) {
+                                            const formatted = date.toISOString().split("T")[0];
+                                            setValue("saleEnd", formatted, { shouldValidate: true });
+                                        }
+                                    }}
+                                    className="w-full rounded-md border border-gray-300 pl-10 pr-3 py-[9px] text-sm focus:outline-none focus:ring-2 focus:ring-blue-800 cursor-pointer"
+                                />
+                            </div>
+                            {errors.saleEnd && <p className="text-xs text-red-500 mt-1">{errors.saleEnd.message}</p>}
+                        </div>
+                    </div>
+
+                    <hr className='mt-6 mb-5 text-gray-300' />
+
+                    {/* Categories */}
+                    <div>
+                        <label className="block text-sm font-semibold mb-2">Categories <span className="text-red-500">*</span></label>
+                        <div className="flex flex-wrap gap-3">
+                            {categories.map((cat) => {
+                                const isChecked = selectedCategories.includes(cat);
+                                const isDisabled = selectedCategories.length >= 2 && !isChecked;
+
+                                return (
+                                    <label
+                                        key={cat}
+                                        className={`flex items-center gap-2 px-3.5 py-2 border border-gray-300 rounded-sm ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            value={cat}
+                                            disabled={isDisabled}
+                                            {...register("categories", {
+                                                validate: (value) =>
+                                                    value.length <= 2 || "You can select up to 2 categories only",
+                                            })}
+                                        />
+                                        <span className="text-sm">{cat}</span>
+                                    </label>
+                                );
+                            })}
+                        </div>
+                        {errors.categories && <p className="text-xs text-red-500 mt-1">{errors.categories.message}</p>}
+                    </div>
+
+                    {/* Tags */}
+                    <div className="mt-6">
+                        <label className="block text-sm font-semibold mb-1">Tags (comma separated)</label>
+                        <input
+                            type="text"
+                            className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-800"
+                            placeholder="denim, jacket, casual, layering"
+                            {...register("tags", {
+                                setValueAs: (value) => {
+                                    if (typeof value !== "string") return [];
+                                    return value
+                                        .split(",")
+                                        .map(tag => tag.trim())
+                                        .filter(Boolean);
+                                },
+                                validate: (value) =>
+                                    value.length <= 5 || "You can add up to 5 tags only",
+                            })}
+                        />
+                        {errors.tags && <p className="text-xs text-red-500 mt-1">{errors.tags.message}</p>}
+                    </div>
+
+                    <hr className='mt-6 mb-5 text-gray-300' />
+
+                    {/* Upload Images */}
+                    <div>
+                        <label className="block text-sm font-semibold mb-2">Product Images (min 1, max 4)</label>
+                        {imageError && <p className="text-xs font-medium text-red-500 mb-2">{imageError}</p>}
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            {images.map((img, index) => (
+                                <div key={index} className="relative">
+                                    <label className="h-40 sm:h-50 xl:h-60 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-blue-500">
+                                        <input
+                                            type="file"
+                                            accept="image/jpeg,image/png,image/webp"
+                                            className="hidden"
+                                            onChange={(e) => handleImageChange(e, index)}
+                                        />
+
+                                        {img ? (
+                                            <img
+                                                src={img.type === 'existing' ? img.url : img.preview}
+                                                alt="Preview"
+                                                className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                                            />
+                                        ) : (
+                                            <div className="text-center text-gray-500">
+                                                <p className="text-sm font-medium">Upload Image</p>
+                                                <p className="text-xs">JPG, PNG, WEBP</p>
+                                            </div>
+                                        )}
+                                    </label>
+
+                                    {img && (
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(index)}
+                                            className="cursor-pointer absolute top-1 right-1 bg-black/60 text-white rounded-full w-6 h-6 text-xs"
+                                        >
+                                            ✕
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <hr className='mt-6 mb-5 text-gray-300' />
+
+                    <ProductVariations
+                        variations={productVariations}
+                        setProductVaritaions={setProductVariations}
+                        dropDown={{ openDropdown, setOpenDropdown }}
+                    />
+
+                    <div className='flex flex-col sm:flex-row gap-4 items-center justify-end mt-6'>
+                        <button
+                            type="button"
+                            disabled={isSubmitting}
+                            onClick={() => setOpenPreview(true)}
+                            className="cursor-pointer w-full sm:w-auto px-6 py-2.5 rounded-lg border-2 border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                        >
+                            Preview
+                        </button>
+
+                        <button
+                            type='submit'
+                            disabled={isSubmitting}
+                            className="cursor-pointer w-full sm:w-auto px-6 py-2.5 rounded-lg font-semibold bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                            {isSubmitting ? "Updating…" : "Update Product"}
+                        </button>
+                    </div>
+                </form>
+            )}
+        </div>
+    );
 };
 
-export default update_Products;
+export default UpdateProduct;

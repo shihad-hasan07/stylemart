@@ -25,7 +25,6 @@ export default function Layout({ children }) {
         window.addEventListener("resize", checkScreen);
         return () => window.removeEventListener("resize", checkScreen);
     }, []);
-    const isAdmin = userfromDB?.role == 'admin'
     return (
         <PrivateRoute_user>
 
@@ -82,11 +81,6 @@ export default function Layout({ children }) {
                                 </div>
                             </Link>
                             <hr className="opacity-10" />
-                            <div>
-                                {
-                                    isAdmin && 'HI IAM ADMIN'
-                                }
-                            </div>
                             {/* wishlist */}
                             <Link onClick={() => setIsactive('/my-account/wishlist')} href='/my-account/wishlist'>
                                 <div className={`${isactive == '/my-account/wishlist' && 'bg-gray-100'} flex items-center gap-2 py-3 pl-4`}>
