@@ -22,7 +22,7 @@ const Reviews = ({ infoFromProducts, infoForReviews }) => {
 
     const myReview = user && reviews?.find(review => review?.user?._id == userfromDB?._id)
     const otherReviews = user ? reviews?.filter(review => review?.user?._id !== userfromDB?._id) : reviews
-
+    console.log(reviews);
     const ratingCounts = reviews.reduce((acc, r) => {
         acc[r.rating] = (acc[r.rating] || 0) + 1;
         return acc;
@@ -98,7 +98,8 @@ const Reviews = ({ infoFromProducts, infoForReviews }) => {
                                     <div className=''>
                                         <div className=' flex gap-4 bg-gray-100 px-3 pt-6 pb-4 '>
                                             <div className='w-[45px] h-[45px] shrink-0'>
-                                                <img src={myReview?.user?.photoURL} className='w-full h-full rounded-full' alt="" />
+                                                <img referrerPolicy="no-referrer" crossOrigin="anonymous" loading="lazy"
+                                                    src={user?.photoURL || '/userNull.jpg'} className='w-full h-full rounded-full' alt="" />
                                             </div>
                                             <div>
                                                 <Star_Rating rating={myReview?.rating}></Star_Rating>
@@ -139,7 +140,8 @@ const Reviews = ({ infoFromProducts, infoForReviews }) => {
                                         ? allReviews.map((r, idx) => (
                                             <div key={idx} className=' flex gap-4 px-3 pt-6 pb-5'>
                                                 <div className='w-[45px] h-[45px] shrink-0'>
-                                                    <img src={r?.user?.photoURL} className='w-full h-full rounded-full' alt="" />
+                                                    <img referrerPolicy="no-referrer" crossOrigin="anonymous" loading="lazy"
+                                                        src={r?.user?.photoURL || '/userNull.jpg'} className='w-full h-full rounded-full' alt={user?.displayName} />
                                                 </div>
                                                 <div >
                                                     <Star_Rating rating={r?.rating}></Star_Rating>

@@ -62,7 +62,7 @@ const LeftSide_modal = ({ isOpen, setisOpen, handleModal }) => {
                         <Link href='/wishlist' className="flex items-center gap-2"><span><Heart size={18} /></span>Wishlist</Link>
                         <Link href='/cart' className="flex items-center gap-2"><ShoppingCart size={18} />Shopping Cart</Link>
                         <Link href='/my-account' className="flex items-center gap-2"><UserRound size={18} />My Account</Link>
-                        <Link href='/' className="flex items-center gap-2"><MdCall size={18} />Contact</Link>
+                        <Link href='/contact' className="flex items-center gap-2"><MdCall size={18} />Contact</Link>
                     </div>
 
                     {/* categories */}

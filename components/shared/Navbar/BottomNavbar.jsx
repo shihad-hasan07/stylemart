@@ -81,7 +81,7 @@ const BottomNavbar = ({ handleModal }) => {
                     <div className=' -mx-3'>
                         {
                             dbUserLoading ?
-                                <div class="w-8 h-8 border-red-800 border-t-2 border-r-2 border-double rounded-full animate-spin"></div>
+                                <div className="w-8 h-8 border-red-800 border-t-2 border-r-2 border-double rounded-full animate-spin"></div>
                                 : (ALLOWED_ROLES.includes(userfromDB?.role)
                                     ?
                                     <Link href="/dashboard">

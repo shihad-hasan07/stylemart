@@ -66,8 +66,23 @@ export default function Header({ info }) {
             <div className="px-3 cursor-pointer flex items-center gap-1" onClick={() => setIsOpen(!isOpen)}>
                 <div className="relative rounded-full mr-1 w-9 sm:w-10 lg:w-11 h-9 sm:h-10 lg:h-11">
                     <Image
-                        src={`${!(user?.photoURL == (null || "" || "null" || undefined)) ? user?.photoURL : '/userNull.jpg'}`}
-                        fill alt={user?.displayName} className="rounded-full" />
+                        referrerPolicy="no-referrer"
+                        crossOrigin="anonymous"
+                        unoptimized={true}
+                        loading="lazy"
+                        priority={false}
+                        src={
+                            user?.photoURL &&
+                                user.photoURL !== "null" &&
+                                user.photoURL !== ""
+                                ? user.photoURL
+                                : "/userNull.jpg"
+                        }
+                        alt={user?.displayName || "User"}
+                        fill
+                        className="object-cover rounded-full"
+                    />
+
                 </div>
                 <p className=" text-xs sm:text-sm lg:text-md  font-medium">
                     {user.displayName ? user.displayName.slice(0, 15) : 'Account'}

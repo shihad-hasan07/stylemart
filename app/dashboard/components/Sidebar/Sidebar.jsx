@@ -9,6 +9,7 @@ import { useEffect } from "react";
 const ALLOWED_ROLES = ['admin', 'manager', 'staff'];
 
 export default function Sidebar({ role }) {
+
     const { isExpanded, isMobileOpen, isHovered, activeItem,
         openSubmenu, toggleSidebar, toggleMobileSidebar,
         setIsHovered, setActiveItem, toggleSubmenu } = useSidebar();
@@ -19,6 +20,8 @@ export default function Sidebar({ role }) {
 
     useEffect(() => {
         if (pathname === "/dashboard") setActiveItem("Dashboard")
+        if (pathname.includes('orders')) setActiveItem("Orders")
+        if (pathname.includes('products')) setActiveItem("Products")
     }, [pathname]);
 
     const menu = [
@@ -27,11 +30,11 @@ export default function Sidebar({ role }) {
             href: "/dashboard",
             icons: <LayoutDashboard className={`${activeItem == "Dashboard" ? 'text-blue-500' : 'text-gray-500'}`} />
         },
-        {
-            name: "Demo",
-            href: "/dashboard/demo",
-            icons: <LayoutDashboard className={`${activeItem == "Dashboard" ? 'text-blue-500' : 'text-gray-500'}`} />
-        },
+        // {
+        //     name: "Demo",
+        //     href: "/dashboard/demo",
+        //     icons: <LayoutDashboard className={`${activeItem == "Dashboard" ? 'text-blue-500' : 'text-gray-500'}`} />
+        // },
         {
             name: "Products",
             href: '/dashboard/products',
@@ -52,12 +55,15 @@ export default function Sidebar({ role }) {
             href: '/dashboard/customers',
             icons: <Users className={`${activeItem == "Customers" ? 'text-blue-500' : 'text-gray-500'}`} />
         },
+
+        role == 'admin' &&
         {
             name: "Settings",
             href: '/dashboard/settings',
             icons: <Settings className={`${activeItem == "Settings" ? 'text-blue-500' : 'text-gray-500'}`} />
         }
-    ];
+
+    ].filter(Boolean);
 
     return (
         <div className="shrink-0">

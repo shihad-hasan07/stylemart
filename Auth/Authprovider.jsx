@@ -25,6 +25,29 @@ const Authprovider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+
+  // store info
+  const [storeInfo, setStoreInfo] = useState(null);
+  const [storeLoading, setStoreLoading] = useState(true);
+
+  const loadStoreInfo = async () => {
+    try {
+      setStoreLoading(true);
+      const res = await axiosPublic.get('/settings/store');
+      const data = res.data?.data || res.data;
+      setStoreInfo(data);
+    } catch (err) {
+      console.error('Failed to load store info', err);
+    } finally {
+      setStoreLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadStoreInfo();
+  }, []);
+
+
   // get the use from db 
   const [userfromDB, setUserfromDB] = useState(null);
   const [latestUpdate, setLatestUpdate] = useState(0);
@@ -241,8 +264,12 @@ const Authprovider = ({ children }) => {
       githubLogin,
       updateProfileFn,
       logOut,
+
+      storeInfo,
+      storeLoading,
+      reloadStoreInfo: loadStoreInfo,
     }),
-    [user, loading, error, userfromDB]
+    [user, loading, error, userfromDB,storeInfo,storeLoading]
   );
 
   return (

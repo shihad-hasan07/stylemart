@@ -27,6 +27,14 @@ const MidNavbar = () => {
             setisOpen(!isOpen)
         }, 100)
     }
+
+    const avatarSrc =
+        typeof user?.photoURL === "string" &&
+            user.photoURL.startsWith("http")
+            ? user.photoURL
+            : "/userNull.jpg";
+
+    console.log('profile img', user?.photoURL);
     return (
         <div>
             {/* for large device */}
@@ -68,16 +76,23 @@ const MidNavbar = () => {
                                             <Link href='/my-account'>
                                                 <div className="w-[45px] h-[45px] rounded-full overflow-hidden relative">
                                                     <Image
-                                                        src={`${!(user?.photoURL == (null || "" || "null" || undefined)) ? user?.photoURL : '/userNull.jpg'}`}
-                                                        // src={'/userNull.jpg'}
-                                                        alt={user.displayName || 'User'}
+                                                        referrerPolicy="no-referrer"
+                                                        crossOrigin="anonymous"
+                                                        unoptimized={true}
+                                                        loading="lazy"
+                                                        priority={false}
+                                                        src={
+                                                            user?.photoURL &&
+                                                                user.photoURL !== "null" &&
+                                                                user.photoURL !== ""
+                                                                ? user.photoURL
+                                                                : "/userNull.jpg"
+                                                        }
+                                                        alt={user?.displayName || "User"}
                                                         fill
                                                         className="object-cover"
-                                                        priority
-                                                        onError={(e) => {
-                                                            e.target.srcset = '/userNull.jpg';
-                                                        }}
                                                     />
+
                                                 </div>
                                             </Link>
                                         )
@@ -167,7 +182,7 @@ const MidNavbar = () => {
                 <button onClick={() => queryhandler('Women')} className="cursor-pointer"><p>Women</p></button>
                 <button onClick={() => queryhandler('Men')} className="cursor-pointer" ><p>Men</p></button>
                 <button onClick={() => queryhandler('Outerwear')} className="cursor-pointer"><p>Outerwear</p></button>
-                <Link href='/blog'><p>Blog</p></Link>
+                {/* <Link href='/blog'><p>Blog</p></Link> */}
                 <Link href='/'><p>Best Discount</p></Link>
             </div>
 

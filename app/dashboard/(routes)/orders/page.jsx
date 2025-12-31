@@ -1,17 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Routes_heading_texts from '../../components/shared/Routes_heading_texts';
-import {
-    Loader2,
-    Package,
-    Search,
-    ChevronDown,
-    ChevronUp,
-    Phone,
-    Edit2,
-    MoreVertical
-} from 'lucide-react';
+import { Loader2, Package, Search, ChevronDown, ChevronUp, Phone, Edit2, MoreVertical } from 'lucide-react';
 import useAxios from '@/hooks/useAxios';
+import { useParams, useSearchParams } from 'next/navigation';
 
 const Order_page = () => {
     const axiosSecure = useAxios();
@@ -61,6 +53,7 @@ const Order_page = () => {
     useEffect(() => {
         fetchOrders();
     }, [activeTab, currentPage]);
+
 
     // Update order status
     const handleOrderStatusUpdate = async (orderId, newStatus, e) => {
@@ -156,8 +149,8 @@ const Order_page = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-white">
-            <Routes_heading_texts name={'Orders'} total={totalOrders} />
+        <div className="min-h-screen ">
+            <Routes_heading_texts name={'orders'} total={totalOrders} />
 
             {/* Filter and Search Section */}
             <div className='px-6 m-5 bg-white rounded-xl py-5 border border-gray-200'>
@@ -171,11 +164,10 @@ const Order_page = () => {
                                     setActiveTab(tab.value);
                                     setCurrentPage(1);
                                 }}
-                                className={`px-4 py-2 text-sm font-medium transition-colors rounded-md ${
-                                    activeTab === tab.value
-                                        ? 'bg-red-500 text-white'
-                                        : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
-                                }`}
+                                className={`cursor-pointer px-4 py-2 text-sm font-medium transition-colors rounded-md ${activeTab === tab.value
+                                    ? 'bg-red-500 text-white'
+                                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'
+                                    }`}
                             >
                                 {tab.label}
                             </button>
@@ -410,7 +402,7 @@ const Order_page = () => {
                                                             onChange={(e) => handleOrderStatusUpdate(order._id, e.target.value, e)}
                                                             onClick={(e) => e.stopPropagation()}
                                                             disabled={updatingOrder === order._id}
-                                                            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                                            className="cursor-pointer w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                         >
                                                             <option value="pending">Pending</option>
                                                             <option value="confirmed">Confirmed</option>
@@ -432,7 +424,7 @@ const Order_page = () => {
                                                                     onChange={(e) => handlePaymentStatusUpdate(order._id, e.target.value, e)}
                                                                     onClick={(e) => e.stopPropagation()}
                                                                     disabled={updatingOrder === order._id}
-                                                                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                                                    className="cursor-pointer w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-gray-900 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                                                 >
                                                                     <option value="pending">Pending</option>
                                                                     <option value="verified">Verified</option>
