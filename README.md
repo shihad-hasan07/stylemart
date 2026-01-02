@@ -1,70 +1,70 @@
-<div align="center">
+# 🛍️ StyleMart - Advanced Single-Vendor E-commerce Client
 
-<h1>🧾 <b>E-Commerce Product Data Model</b></h1>
+StyleMart is a high-performance, full-stack e-commerce frontend built with **Next.js**. The platform is designed to provide a seamless shopping experience for customers while offering a powerful, role-based management system for business owners and staff.
 
-<p>🛍️ A clean, flexible and production-ready JSON structure for modern e-commerce platforms.<br>
-Works seamlessly with <b>MongoDB</b>, <b>Express</b>, and <b>Next.js</b>.</p>
+## 🚀 Live Demo
+[Explore StyleMart Live](https://stylemart-shop.vercel.app/)
 
-<hr width="60%">
+---
 
-</div>
+## 🛠️ Tech Stack & Architecture
 
-<h2>📦 Product JSON Structure</h2>
+- **Framework:** Next.js 14+ (App Router) for Server-Side Rendering (SSR) & SEO optimization.
+- **Styling:** Tailwind CSS for a modern, mobile-first responsive UI.
+- **Authentication:** Firebase Auth with **Firebase ID Token** integration for secure session handling.
+- **Form Management:** React Hook Form for optimized and validated input handling.
+- **State & Data:** Axios for API communication and Context API for global state.
+- **Media:** Cloudinary SDK for real-time image transformation and fast loading.
 
-```jsonc
-{
-  "id": "",                                   // Unique product identifier
-  "name": "Casual Cotton Shirt",              // Product title
-  "slug": "casual-cotton-shirt",              // SEO-friendly URL (auto-generated from name)
-  "brand": "",                                // Brand name (optional)
-  "description": "",                          // Short or detailed description
+---
 
-  "price": 24.99,                             // Original product price
+## ✨ Key Modules & Features
 
-  "sale": {                                   // Sale information
-    "active": true,                           // True => sale active
-    "price": 19.99,                           // Discounted sale price
-    "ends": "2025-12-10T23:59:59Z"            // Sale end date (ISO format)
-  },
+### 👤 Role-Based Access Control (RBAC)
+The application dynamically changes its interface based on 4 distinct user roles:
+- **Owner:** Full access to financial data, staff management, and site configurations.
+- **Manager:** Oversees inventory, order fulfillment, and staff performance.
+- **Staff:** Handles daily order processing and payment verification.
+- **Customer:** Browses products, manages profile, tracks orders, and submits reviews.
 
-  "images": [                                 // Product images (gallery)
-    "https://via.placeholder.com/600x600.png?text=Shirt+Front",
-    "https://via.placeholder.com/600x600.png?text=Shirt+Back"
-  ],
+### 💳 Secure Manual Payment Workflow
+- Integrated a custom checkout flow where users can pay via mobile banking (bKash/Nagad).
+- Users submit their **Transaction ID**, which is then queued for manual verification by the Staff/Admin.
 
-  "categories": ["Men", "Clothing"],          // Filtering and navigation categories
-  "tags": ["cotton", "casual", "shirt"],      // Search keywords or related tags
+### 📦 Dynamic Inventory & Filtering
+- Supports complex product variations (Multiple sizes, colors, and stock levels).
+- Advanced filtering system by category, price range, and product attributes.
 
-  "rating": {                                 // User feedback summary
-    "average": 4.5,                           // Average of all reviews
-    "count": 58                               // Total number of reviews
-  },
+### ⚙️ Admin & Staff Dashboard
+- **Real-time Stats:** Overview of total sales, pending orders, and new users.
+- **Live Site Settings:** Admins can change the shop's logo, contact info, and banners directly from the UI without touching the code.
 
-  "stock": {                                  // Inventory details
-    "inStock": true,                          // Out of stock if false
-    "quantity": 35                            // Available quantity
-  },
+### 💬 Feedback System
+- Fully functional Star Rating and Review system to enhance social proof and customer trust.
 
-  // 🔸 Product variations (Dynamic)
-  // - Only color → keep Color
-  // - Only size  → keep Size
-  // - Both       → include both
-  // - None       → keep empty array []
-  "variations": [
-    {
-      "attribute": "Color",
-      "options": ["Blue", "White", "Gray"]
-    },
-    {
-      "attribute": "Size",
-      "options": ["S", "M", "L", "XL"]
-    }
-  ],
+---
 
-  // 🔸 Popularity analytics
-  "cartCount": 30,                            // Users who added to cart
-  "wishlistCount": 12,                        // Users who wishlisted
+## 📈 Future Roadmap
+- [ ] Integration of automated payment gateways (SSLCommerz/Stripe).
+- [ ] Real-time push notifications for order status updates.
+- [ ] AI-powered product recommendation system.
+- [ ] Multi-language support for global scalability.
 
-  "createdAt": "2025-11-01T09:00:00Z",        // Creation date
-  "updatedAt": "2025-11-08T18:00:00Z"         // Last update
-}
+---
+
+## 💡 Final Thoughts
+**StyleMart** is not just an e-commerce site; it's a scalable solution for business owners who want total control over their operations. By focusing on **security (RBAC)**, **performance (SSR)**, and **user experience**, this project demonstrates a production-grade approach to building modern web applications. 
+
+Whether you are looking for a robust admin management system or a smooth shopping experience, StyleMart bridges the gap between complexity and simplicity.
+
+---
+
+## 👨‍💻 Get In Touch
+I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+
+- **Portfolio:** [shihad-hasan.web.app](https://shihad-hasan.web.app/)
+- **LinkedIn:** [Your LinkedIn Profile](https://www.linkedin.com/in/shihad-hasan07/)
+- **Email:** shihadhasan607255@gmail.com
+
+---
+⭐️ *If you like this project, feel free to give it a star!*
