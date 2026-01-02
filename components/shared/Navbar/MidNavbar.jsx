@@ -124,7 +124,7 @@ const MidNavbar = () => {
 
                                                     {/* dashboard link (only admin) */}
                                                     {dbUserLoading ? (
-                                                        <span className="text-gray-400">| Checking role…</span>
+                                                        <span className="text-gray-400">…</span>
                                                     ) : (
                                                         ALLOWED_ROLES.includes(userfromDB?.role) && (
                                                             <>
