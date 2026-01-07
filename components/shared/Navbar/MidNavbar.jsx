@@ -34,7 +34,6 @@ const MidNavbar = () => {
             ? user.photoURL
             : "/userNull.jpg";
 
-    console.log('profile img', user?.photoURL);
     return (
         <div>
             {/* for large device */}

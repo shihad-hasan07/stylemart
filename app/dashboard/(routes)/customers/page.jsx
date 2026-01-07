@@ -1,12 +1,17 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Search, Eye, Loader2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import useAxiosSecure from '@/hooks/useAxiosSecure';
 import Routes_heading_texts from '../../components/shared/Routes_heading_texts';
+import { allContext } from '@/Auth/Authprovider';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const CustomersPage = () => {
     const axiosSecure = useAxiosSecure();
+    const { userfromDB, dbUserLoading } = useContext(allContext)
+    const router = useRouter()
 
     const [customers, setCustomers] = useState([]);
     const [allCustomers, setAllCustomers] = useState([]); // Store all customers
@@ -20,6 +25,17 @@ const CustomersPage = () => {
     const [searchLoading, setSearchLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+
+    useEffect(() => {
+        if (!dbUserLoading) {
+
+            if (userfromDB?.role === 'staff') {
+                toast.error('You do not have permission to access this page');
+                router.push('/dashboard'); // Redirect to dashboard or another page
+                return;
+            }
+        }
+    }, [userfromDB, dbUserLoading]);
 
     // Fetch customers
     useEffect(() => {
@@ -240,15 +256,35 @@ const CustomersPage = () => {
                                     {/* Desktop View */}
                                     <div className="hidden lg:grid grid-cols-12 gap-4 items-center">
                                         {/* Customer */}
-                                        <div className="col-span-3 flex items-center gap-3">
+                                        <div className="col-span-3 flex  items-center gap-3">
                                             {customer.photoURL ? (
-                                                <img referrerPolicy="no-referrer" crossOrigin="anonymous" loading="lazy"
-                                                    src={customer.photoURL}
-                                                    alt={customer.name}
-                                                    className="w-10 h-10 rounded-full object-cover"
-                                                />
+                                                <div className='relative w-10  h-10 rounded-full shrink-0'>
+
+                                                    <Image
+                                                        referrerPolicy="no-referrer"
+                                                        crossOrigin="anonymous"
+                                                        unoptimized={true}
+                                                        loading="lazy"
+                                                        priority={false}
+                                                        src={
+                                                            customer?.photoURL &&
+                                                                customer.photoURL !== "null" &&
+                                                                customer.photoURL !== ""
+                                                                ? customer.photoURL
+                                                                : "/userNull.jpg"
+                                                        }
+                                                        alt={customer?.displayName || "User"}
+                                                        fill
+                                                        className="w-10  h-10 rounded-full object-cover shrink-0"
+                                                    />
+                                                </div>
+                                                // <img referrerPolicy="no-referrer" crossOrigin="anonymous" loading="lazy"
+                                                //     src={customer.photoURL}
+                                                //     alt={customer.name}
+                                                //     className="w-10  h-10 rounded-full object-cover shrink-0"
+                                                // />
                                             ) : (
-                                                <div className={`w-10 h-10 rounded-full ${getAvatarColor(customer.name)} flex items-center justify-center text-white font-semibold text-sm`}>
+                                                <div className={`w-10 h-10 shrink-0 rounded-full ${getAvatarColor(customer.name)} flex items-center justify-center text-white font-semibold text-sm`}>
                                                     {getInitials(customer.name)}
                                                 </div>
                                             )}
