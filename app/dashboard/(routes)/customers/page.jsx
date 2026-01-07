@@ -349,11 +349,31 @@ const CustomersPage = () => {
                                     <div className="lg:hidden">
                                         <div className="flex items-start gap-3">
                                             {customer.photoURL ? (
-                                                <img referrerPolicy="no-referrer" crossOrigin="anonymous" loading="lazy"
-                                                    src={customer.photoURL}
-                                                    alt={customer.name}
-                                                    className="w-12 h-12 rounded-full object-cover shrink-0"
-                                                />
+                                                <div className='relative w-12 h-12 rounded-full shrink-0'>
+
+                                                    <Image
+                                                        referrerPolicy="no-referrer"
+                                                        crossOrigin="anonymous"
+                                                        unoptimized={true}
+                                                        loading="lazy"
+                                                        priority={false}
+                                                        src={
+                                                            customer?.photoURL &&
+                                                                customer.photoURL !== "null" &&
+                                                                customer.photoURL !== ""
+                                                                ? customer.photoURL
+                                                                : "/userNull.jpg"
+                                                        }
+                                                        alt={customer?.displayName || "User"}
+                                                        fill
+                                                        className="w-12 h-12 rounded-full object-cover shrink-0"
+                                                    />
+                                                </div>
+                                                // <img referrerPolicy="no-referrer" crossOrigin="anonymous" loading="lazy"
+                                                //     src={customer.photoURL}
+                                                //     alt={customer.name}
+                                                //     className="w-12 h-12 rounded-full object-cover shrink-0"
+                                                // />
                                             ) : (
                                                 <div className={`w-12 h-12 rounded-full ${getAvatarColor(customer.name)} flex items-center justify-center text-white font-semibold shrink-0`}>
                                                     {getInitials(customer.name)}
